@@ -1,5 +1,15 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.7.0'
+    }
+}
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -19,9 +29,18 @@ android {
 }
 
 dependencies {
-    implementation project(':lib')
+    implementation project(':livedatautils')
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testImplementation 'junit:junit:4.12'
     testImplementation "android.arch.core:core-testing:1.0.0"
+}
+
+publish {
+    publishVersion = rootProject.version
+    groupId = rootProject.group
+    artifactId = name
+    uploadName = rootProject.name
+    website = 'https://github.com/musichin/LiveDataUtils'
+    licences = ['MIT']
 }

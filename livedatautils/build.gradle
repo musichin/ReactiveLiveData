@@ -1,4 +1,14 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.7.0'
+    }
+}
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -19,4 +29,13 @@ android {
 
 dependencies {
     api 'android.arch.lifecycle:extensions:1.0.0'
+}
+
+publish {
+    publishVersion = rootProject.version
+    groupId = rootProject.group
+    artifactId = name
+    uploadName = rootProject.name
+    website = 'https://github.com/musichin/LiveDataUtils'
+    licences = ['MIT']
 }
