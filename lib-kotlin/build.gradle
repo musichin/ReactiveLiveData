@@ -1,15 +1,16 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
+
+
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
-
-
     }
 
     buildTypes {
@@ -22,5 +23,9 @@ android {
 }
 
 dependencies {
-    api 'android.arch.lifecycle:extensions:1.0.0'
+    implementation project(':lib')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation "android.arch.core:core-testing:1.0.0"
 }
