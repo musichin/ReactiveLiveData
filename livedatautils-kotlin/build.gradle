@@ -36,6 +36,10 @@ dependencies {
     testImplementation "android.arch.core:core-testing:1.0.0"
 }
 
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+
 publish {
     publishVersion = rootProject.version
     groupId = rootProject.group

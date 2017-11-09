@@ -3,9 +3,12 @@ This library provides basic transformation functions for your [`LiveData`](https
 
 ## Function
 * `map`
+* `switchMap`
 * `filter`
 * `filterNotNull`
 * `distinctUntilChanged`
+* `merge`
+* combineLatest
 * and more...
 
 ## Example

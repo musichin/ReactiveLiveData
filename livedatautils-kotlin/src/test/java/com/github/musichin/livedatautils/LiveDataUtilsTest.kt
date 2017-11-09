@@ -1,6 +1,8 @@
 package com.github.musichin.livedatautils
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.core.util.Function
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import org.junit.Rule
 import org.junit.Test
@@ -13,7 +15,7 @@ class LiveDataUtilsTest {
     @Test
     fun testEmpty() {
         val observer = TestObserver<String>()
-        LiveDataUtils.empty<String>().observeForever(observer)
+        LiveDataUtils.never<String>().observeForever(observer)
 
         observer.assertEmpty()
     }
@@ -65,5 +67,46 @@ class LiveDataUtilsTest {
         listOf(1, 1, 2, 3, 3, 3, 4, 5, 5, 6).forEach { data.value = it }
 
         observer.assertEquals(1, 2, 3, 4, 5, 6)
+    }
+
+    @Test
+    fun testDistinctUntilChangedWithKeySelector() {
+        val observer = TestObserver<Int>()
+        val data = MutableLiveData<Int>()
+        data.distinctUntilChanged { it % 2 == 0 }.observeForever(observer)
+        listOf(1, 1, 2, 3, 5, 7, 2, 4, 1, 5).forEach { data.value = it }
+
+        observer.assertEquals(1, 2, 3, 2, 1)
+    }
+
+    @Test
+    fun testMerge() {
+        val observer = TestObserver<Int>()
+        val data1 = MutableLiveData<Int>()
+        val data2 = MutableLiveData<Int>()
+        listOf(data1, data2).merge().observeForever(observer)
+        data1.value = 1
+        data2.value = 2
+        data2.value = 3
+        data1.value = 4
+        data2.value = 5
+
+        observer.assertEquals(1, 2, 3, 4, 5)
+    }
+
+    @Test
+    fun testCombineLatest() {
+        val observer = TestObserver<String>()
+        val data1 = MutableLiveData<Int>()
+        val data2 = MutableLiveData<String>()
+        val func: Function<Array<Any>, String> = Function { it.joinToString("") }
+        listOf(data1 as LiveData<Int>, data2 as LiveData<String>).combineLatest(func).observeForever(observer)
+        data1.value = 1
+        data2.value = "a"
+        data2.value = "b"
+        data1.value = 4
+        data2.value = "c"
+
+        observer.assertEquals("1a", "1b", "4b", "4c")
     }
 }
