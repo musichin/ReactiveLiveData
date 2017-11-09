@@ -34,4 +34,6 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 27
     buildToolsVersion = '27.0.1'
+    website = 'https://github.com/musichin/livedatautils'
+    licences = ['MIT']
 }

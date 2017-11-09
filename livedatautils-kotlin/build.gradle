@@ -45,6 +45,6 @@ publish {
     groupId = rootProject.group
     artifactId = name
     uploadName = rootProject.name
-    website = 'https://github.com/musichin/LiveDataUtils'
-    licences = ['MIT']
+    website = rootProject.website
+    licences = rootProject.licences
 }
