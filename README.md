@@ -9,23 +9,31 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `distinct`
 * `distinctUntilChanged`
 * `merge`
-* combineLatest
+* `combineLatest`
 * and more...
 
 ## Examples
 
 ### `filter`
 ```kotlin
-val data: LiveData<Int> = // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-data.filter { it % 2 == 1 }.observe(this) {
+val source: LiveData<Int> = // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+source.filter { it % 2 == 1 }.observe(this) {
     println(it) // 1, 3, 5, 7, 9
+}
+```
+
+### `distinct`
+```kotlin
+val source: LiveData<Int> = // 1, 2, 1, 3, 2, 4, 1, 3, 2, 5
+source.distinct().observe(this) {
+    println(it) // 1, 2, 3, 4, 5
 }
 ```
 
 ### `distinctUntilChanged`
 ```kotlin
-val data: LiveData<Int> = // 1, 2, 2, 3, 4, 4, 4, 5
-data.distinctUntilChanged().observe(this) {
+val source: LiveData<Int> = // 1, 2, 2, 3, 4, 4, 4, 5
+source.distinctUntilChanged().observe(this) {
     println(it) // 1, 2, 3, 4, 5
 }
 ```
