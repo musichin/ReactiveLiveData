@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.bintray-release'
 
 buildscript {
@@ -29,6 +30,15 @@ android {
 
 dependencies {
     api 'android.arch.lifecycle:extensions:1.0.0'
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    testImplementation 'junit:junit:4.12'
+    testImplementation "android.arch.core:core-testing:1.0.0"
+}
+
+tasks.withType(Javadoc).all {
+    enabled = false
 }
 
 publish {

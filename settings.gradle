@@ -1,1 +1,1 @@
-include ':livedatautils', ':livedatautils-kotlin'
+include ':livedatautils'

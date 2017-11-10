@@ -1,8 +1,6 @@
 package com.github.musichin.livedatautils
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.core.util.Function
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +30,7 @@ class LiveDataUtilsTest {
     @Test
     fun testMap() {
         val observer = TestObserver<Int>()
-        LiveDataUtils.just("test").map { it?.length }.observeForever(observer)
+        LiveDataUtils.just("test").map { it.length }.observeForever(observer)
 
         observer.assertSize(1)
         observer.assertEquals(4)
@@ -84,7 +82,7 @@ class LiveDataUtilsTest {
         val observer = TestObserver<Int>()
         val data1 = MutableLiveData<Int>()
         val data2 = MutableLiveData<Int>()
-        listOf(data1, data2).merge().observeForever(observer)
+        LiveDataUtils.merge(data1, data2).observeForever(observer)
         data1.value = 1
         data2.value = 2
         data2.value = 3
@@ -95,18 +93,35 @@ class LiveDataUtilsTest {
     }
 
     @Test
-    fun testCombineLatest() {
+    fun testCombineLatestPair() {
         val observer = TestObserver<String>()
-        val data1 = MutableLiveData<Int>()
-        val data2 = MutableLiveData<String>()
-        val func: Function<Array<Any>, String> = Function { it.joinToString("") }
-        listOf(data1 as LiveData<Int>, data2 as LiveData<String>).combineLatest(func).observeForever(observer)
-        data1.value = 1
-        data2.value = "a"
-        data2.value = "b"
-        data1.value = 4
-        data2.value = "c"
+        val s1 = MutableLiveData<Int>()
+        val s2 = MutableLiveData<String>()
+        LiveDataUtils.combineLatest(s1, s2) { t1, t2 -> "$t1$t2" }.observeForever(observer)
+        s1.value = 1
+        s2.value = "a"
+        s2.value = "b"
+        s1.value = 4
+        s2.value = "c"
 
         observer.assertEquals("1a", "1b", "4b", "4c")
+    }
+
+    @Test
+    fun testCombineLatestTriple() {
+        val observer = TestObserver<String>()
+        val s1 = MutableLiveData<Int>()
+        val s2 = MutableLiveData<String>()
+        val s3 = MutableLiveData<String>()
+        LiveDataUtils.combineLatest(s1, s2, s3) { t1, t2, t3 -> "$t1$t2$t3" }.observeForever(observer)
+        s2.value = "#"
+        s1.value = 1
+        s3.value = "a"
+        s3.value = "b"
+        s1.value = 4
+        s2.value = "!"
+        s3.value = "c"
+
+        observer.assertEquals("1#a", "1#b", "4#b", "4!b", "4!c")
     }
 }
