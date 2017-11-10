@@ -7,7 +7,6 @@ import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.Transformations
 import android.support.annotation.MainThread
-import java.util.HashSet
 
 object LiveDataUtils {
     private val NOT_SET = Any()
@@ -151,15 +150,15 @@ object LiveDataUtils {
         val values = arrayOfNulls<Any?>(size)
         for (index in 0..size - 1) values[index] = NOT_SET
 
-        val emits = HashSet<Int>()
+        var emits = 0
         for (index in 0..size - 1) {
             val observer = Observer<Any> { t ->
-                values[index] = t
-                var combine = emits.size == size
+                var combine = emits == size
                 if (!combine) {
-                    emits.add(index)
-                    combine = emits.size == size
+                    if (values[index] == NOT_SET) emits++
+                    combine = emits == size
                 }
+                values[index] = t
 
                 if (combine) {
                     result.value = combiner.apply(values as Array<T>)
