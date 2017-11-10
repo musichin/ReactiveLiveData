@@ -122,13 +122,7 @@ object LiveDataUtils {
     @Suppress("UNCHECKED_CAST")
     fun <T, K> distinct(source: LiveData<T>, func: (T) -> K): LiveData<T> {
         val keys = HashSet<Any?>()
-        val result = MediatorLiveData<T>()
-        result.addSource(source) {
-            if (keys.add(func(it as T))) {
-                result.value = it
-            }
-        }
-        return result
+        return filter(source) { keys.add(func(it)) }
     }
 
     @MainThread
