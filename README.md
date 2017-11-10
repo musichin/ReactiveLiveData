@@ -1,7 +1,7 @@
 # LiveData Utils [ ![Download](https://api.bintray.com/packages/musichin/maven/livedatautils/images/download.svg) ](https://bintray.com/musichin/maven/livedatautils/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.1.51-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/livedatautils.svg?branch=master)](https://travis-ci.org/musichin/livedatautils)
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects
 
-## Function
+## Functions
 * `map`
 * `switchMap`
 * `filter`
@@ -11,7 +11,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * combineLatest
 * and more...
 
-## Example
+## Examples
 
 ### `filter`
 ```kotlin
@@ -26,6 +26,17 @@ data.filter { it % 2 == 1 }.observe(this) {
 val data: LiveData<Int> = // 1, 2, 2, 3, 4, 4, 4, 5
 data.distinctUntilChanged().observe(this) {
     println(it) // 1, 2, 3, 4, 5
+}
+```
+
+## Binaries
+```groovy
+repositories {
+    maven { url 'https://bintray.com/musichin/maven' }
+}
+
+dependencies {
+    implementation 'com.github.musichin.livedatautils:livedatautils:x.y.z'
 }
 ```
 
