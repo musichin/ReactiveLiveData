@@ -58,6 +58,16 @@ class LiveDataUtilsTest {
     }
 
     @Test
+    fun testDistinct() {
+        val observer = TestObserver<Int>()
+        val data = MutableLiveData<Int>()
+        data.distinct().observeForever(observer)
+        listOf(1, 1, 2, 3, 1, 3, 4, 5, 5, 2, 4, 5, 6).forEach { data.value = it }
+
+        observer.assertEquals(1, 2, 3, 4, 5, 6)
+    }
+
+    @Test
     fun testDistinctUntilChanged() {
         val observer = TestObserver<Int>()
         val data = MutableLiveData<Int>()

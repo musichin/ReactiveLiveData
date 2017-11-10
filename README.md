@@ -6,6 +6,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `switchMap`
 * `filter`
 * `filterNotNull`
+* `distinct`
 * `distinctUntilChanged`
 * `merge`
 * combineLatest

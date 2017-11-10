@@ -79,7 +79,7 @@ object LiveDataUtils {
     @Suppress("UNCHECKED_CAST")
     fun <T> filter(source: LiveData<T>, func: (T) -> Boolean): LiveData<T> {
         val result = MediatorLiveData<T>()
-        result.addSource(source) { t -> if (func(t as T)) result.value = t }
+        result.addSource(source) { if (func(it as T)) result.value = it }
         return result
     }
 
@@ -92,14 +92,14 @@ object LiveDataUtils {
 
     @MainThread
     @JvmStatic
-    fun <T> distinctUntilChanged(source: LiveData<T>, func: Function<T, Any>): LiveData<T> {
+    fun <T, K> distinctUntilChanged(source: LiveData<T>, func: Function<T, K>): LiveData<T> {
         return distinctUntilChanged(source, func::apply)
     }
 
     @MainThread
     @JvmStatic
-    fun <T> distinctUntilChanged(source: LiveData<T>, func: (T) -> Any): LiveData<T> {
-        var prev = NOT_SET
+    fun <T, K> distinctUntilChanged(source: LiveData<T>, func: (T) -> K): LiveData<T> {
+        var prev: Any? = NOT_SET
         return filter(source) {
             val key = func(it)
             if (key !== prev) {
@@ -109,6 +109,32 @@ object LiveDataUtils {
                 false
             }
         }
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T, K> distinct(source: LiveData<T>, func: Function<T, K>): LiveData<T> {
+        return distinct(source, func::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T, K> distinct(source: LiveData<T>, func: (T) -> K): LiveData<T> {
+        val keys = HashSet<Any?>()
+        val result = MediatorLiveData<T>()
+        result.addSource(source) {
+            if (keys.add(func(it as T))) {
+                result.value = it
+            }
+        }
+        return result
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> distinct(source: LiveData<T>): LiveData<T> {
+        return distinct(source) { it }
     }
 
     @MainThread
@@ -259,10 +285,19 @@ fun <T> LiveData<T>.filter(func: (T) -> Boolean): LiveData<T> =
 fun <T> LiveData<T?>.filterNotNull(): LiveData<T> =
         LiveDataUtils.filterNotNull(this)
 
-fun <T> LiveData<T>.distinctUntilChanged(func: Function<T, Any>): LiveData<T> =
+fun <T, K> LiveData<T>.distinct(func: Function<T, K>): LiveData<T> =
+        LiveDataUtils.distinct(this, func)
+
+fun <T, K> LiveData<T>.distinct(func: (T) -> K): LiveData<T> =
+        LiveDataUtils.distinct(this, func)
+
+fun <T> LiveData<T>.distinct(): LiveData<T> =
+        LiveDataUtils.distinct(this)
+
+fun <T, K> LiveData<T>.distinctUntilChanged(func: Function<T, K>): LiveData<T> =
         LiveDataUtils.distinctUntilChanged(this, func)
 
-fun <T> LiveData<T>.distinctUntilChanged(func: (T) -> Any): LiveData<T> =
+fun <T, K> LiveData<T>.distinctUntilChanged(func: (T) -> K): LiveData<T> =
         LiveDataUtils.distinctUntilChanged(this, func)
 
 fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> =
