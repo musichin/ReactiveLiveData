@@ -14,12 +14,14 @@ object LiveDataUtils {
 
 
     @MainThread
+    @JvmStatic
     @Suppress("UNCHECKED_CAST")
     fun <T> observe(source: LiveData<T>, owner: LifecycleOwner, observer: (T) -> Unit) {
         source.observe(owner, Observer { observer(it as T) })
     }
 
     @MainThread
+    @JvmStatic
     @Suppress("UNCHECKED_CAST")
     fun <T> observeForever(source: LiveData<T>, owner: LifecycleOwner, observer: (T) -> Unit) {
         source.observeForever({ observer(it as T) })
