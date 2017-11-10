@@ -2,9 +2,11 @@ language: android
 
 android:
   components:
+    - tools
     - build-tools-27.0.1
   licenses:
     - 'android-sdk-license-.+'
+    - 'android-sdk-preview-license-.+'
 
 script: ./gradlew assembleRelease
 
