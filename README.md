@@ -1,4 +1,4 @@
-# LiveData Utils [![Kotlin](https://img.shields.io/badge/Kotlin-1.1.51-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/livedatautils.svg?branch=master)](https://travis-ci.org/musichin/livedatautils)
+# LiveData Utils [ ![Download](https://api.bintray.com/packages/musichin/maven/livedatautils/images/download.svg) ](https://bintray.com/musichin/maven/livedatautils/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.1.51-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/livedatautils.svg?branch=master)](https://travis-ci.org/musichin/livedatautils)
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects
 
 ## Function
