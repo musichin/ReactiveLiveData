@@ -26,7 +26,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-version = '0.0.1'
+version = System.getenv("TRAVIS_TAG") ?: 'snapshot'
 group = 'com.github.musichin.livedatautils'
 
 ext {
