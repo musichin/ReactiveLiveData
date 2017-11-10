@@ -32,7 +32,7 @@ data.distinctUntilChanged().observe(this) {
 ## Binaries
 ```groovy
 repositories {
-    maven { url 'https://bintray.com/musichin/maven' }
+    maven { url 'https://dl.bintray.com/musichin/maven' }
 }
 
 dependencies {
