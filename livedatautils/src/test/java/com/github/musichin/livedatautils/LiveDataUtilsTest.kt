@@ -2,6 +2,9 @@ package com.github.musichin.livedatautils
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -50,9 +53,9 @@ class LiveDataUtilsTest {
     @Test
     fun testFilterNotNull() {
         val observer = TestObserver<Int>()
-        val data = MutableLiveData<Int?>()
-        data.filterNotNull().observeForever(observer)
-        listOf(1, null, 2, null, 3, 4).forEach { data.value = it }
+        val source = MutableLiveData<Int?>()
+        source.filterNotNull().observeForever(observer)
+        listOf(1, null, 2, null, 3, 4).forEach { source.value = it }
 
         observer.assertEquals(1, 2, 3, 4)
     }
@@ -60,9 +63,9 @@ class LiveDataUtilsTest {
     @Test
     fun testDistinct() {
         val observer = TestObserver<Int>()
-        val data = MutableLiveData<Int>()
-        data.distinct().observeForever(observer)
-        listOf(1, 1, 2, 3, 1, 3, 4, 5, 5, 2, 4, 5, 6).forEach { data.value = it }
+        val source = MutableLiveData<Int>()
+        source.distinct().observeForever(observer)
+        listOf(1, 1, 2, 3, 1, 3, 4, 5, 5, 2, 4, 5, 6).forEach { source.value = it }
 
         observer.assertEquals(1, 2, 3, 4, 5, 6)
     }
@@ -80,9 +83,9 @@ class LiveDataUtilsTest {
     @Test
     fun testDistinctUntilChangedWithKeySelector() {
         val observer = TestObserver<Int>()
-        val data = MutableLiveData<Int>()
-        data.distinctUntilChanged { it % 2 == 0 }.observeForever(observer)
-        listOf(1, 1, 2, 3, 5, 7, 2, 4, 1, 5).forEach { data.value = it }
+        val source = MutableLiveData<Int>()
+        source.distinctUntilChanged { it % 2 == 0 }.observeForever(observer)
+        listOf(1, 1, 2, 3, 5, 7, 2, 4, 1, 5).forEach { source.value = it }
 
         observer.assertEquals(1, 2, 3, 2, 1)
     }
@@ -90,14 +93,14 @@ class LiveDataUtilsTest {
     @Test
     fun testMerge() {
         val observer = TestObserver<Int>()
-        val data1 = MutableLiveData<Int>()
-        val data2 = MutableLiveData<Int>()
-        LiveDataUtils.merge(data1, data2).observeForever(observer)
-        data1.value = 1
-        data2.value = 2
-        data2.value = 3
-        data1.value = 4
-        data2.value = 5
+        val source1 = MutableLiveData<Int>()
+        val source2 = MutableLiveData<Int>()
+        LiveDataUtils.merge(source1, source2).observeForever(observer)
+        source1.value = 1
+        source2.value = 2
+        source2.value = 3
+        source1.value = 4
+        source2.value = 5
 
         observer.assertEquals(1, 2, 3, 4, 5)
     }
@@ -133,5 +136,38 @@ class LiveDataUtilsTest {
         s3.value = "c"
 
         observer.assertEquals("1#a", "1#b", "4#b", "4!b", "4!c")
+    }
+
+    @Test
+    fun testOnValue() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Int>()
+
+        val onValueCollection = mutableListOf<Int>()
+        val onValueCollector: (Int) -> Unit = {
+            onValueCollection.add(it)
+        }
+        val monitoredSource = source.doOnValue(onValueCollector)
+        monitoredSource.observeForever(observer)
+        source.value = 1
+        source.value = 2
+        source.value = 3
+
+        observer.assertEquals(1, 2, 3)
+        assertEquals(listOf(1, 2, 3), onValueCollection)
+    }
+
+    @Test
+    fun testOnActiveAndOnInactive() {
+        val observer = TestObserver<Int>()
+        var active = false
+        val source = MutableLiveData<Int>()
+        val monitoredSource = source.doOnActive { active = true }.doOnInactive { active = false }
+        monitoredSource.observeForever(observer)
+        assertTrue(active)
+        monitoredSource.removeObserver(observer)
+        assertFalse(active)
+        monitoredSource.observeForever(observer)
+        assertTrue(active)
     }
 }

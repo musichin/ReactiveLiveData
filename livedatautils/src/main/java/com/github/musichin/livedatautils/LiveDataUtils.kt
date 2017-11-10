@@ -14,6 +14,24 @@ object LiveDataUtils {
 
     @MainThread
     @JvmStatic
+    fun <T> observe(source: LiveData<T>, owner: LifecycleOwner) {
+        source.observe(owner, Observer { })
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> observe(source: LiveData<T>, owner: LifecycleOwner, observer: Observer<T>) {
+        source.observe(owner, observer)
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> observe(source: LiveData<T>, owner: LifecycleOwner, observer: Function<T, Unit>) {
+        observe(source, owner, observer::apply)
+    }
+
+    @MainThread
+    @JvmStatic
     @Suppress("UNCHECKED_CAST")
     fun <T> observe(source: LiveData<T>, owner: LifecycleOwner, observer: (T) -> Unit) {
         source.observe(owner, Observer { observer(it as T) })
@@ -22,7 +40,27 @@ object LiveDataUtils {
     @MainThread
     @JvmStatic
     @Suppress("UNCHECKED_CAST")
-    fun <T> observeForever(source: LiveData<T>, owner: LifecycleOwner, observer: (T) -> Unit) {
+    fun <T> observeForever(source: LiveData<T>) {
+        source.observeForever({ })
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> observeForever(source: LiveData<T>, observer: Observer<T>) {
+        source.observeForever(observer)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T> observeForever(source: LiveData<T>, observer: Function<T, Unit>) {
+        observeForever(source, observer::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T> observeForever(source: LiveData<T>, observer: (T) -> Unit) {
         source.observeForever({ observer(it as T) })
     }
 
@@ -236,8 +274,310 @@ object LiveDataUtils {
                                       source2: LiveData<T2>,
                                       source3: LiveData<T3>,
                                       combiner: (T1, T2, T3) -> R): LiveData<R> {
-        val func = Function<Array<Any>, R> { input -> combiner(input[0] as T1, input[1] as T2, input[2] as T3) }
+        val func = Function<Array<Any>, R> { input ->
+            combiner(input[0] as T1, input[1] as T2, input[2] as T3)
+        }
         return combineLatest(func, source1 as LiveData<Any>, source2 as LiveData<Any>, source3 as LiveData<Any>)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T1, T2, T3, T4, R> combineLatest(source1: LiveData<T1>,
+                                          source2: LiveData<T2>,
+                                          source3: LiveData<T3>,
+                                          source4: LiveData<T4>,
+                                          combiner: (T1, T2, T3, T4) -> R): LiveData<R> {
+        val func = Function<Array<Any>, R> { input ->
+            combiner(input[0] as T1, input[1] as T2, input[2] as T3, input[3] as T4)
+        }
+        return combineLatest(func,
+                source1 as LiveData<Any>,
+                source2 as LiveData<Any>,
+                source3 as LiveData<Any>,
+                source4 as LiveData<Any>)
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T1, T2, T3, T4, R> combineLatest(source1: LiveData<T1>,
+                                          source2: LiveData<T2>,
+                                          source3: LiveData<T3>,
+                                          source4: LiveData<T4>,
+                                          combiner: Function4<T1, T2, T3, T4, R>): LiveData<R> {
+        return combineLatest(source1, source2, source3, source4, combiner::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T1, T2, T3, T4, T5, R> combineLatest(source1: LiveData<T1>,
+                                              source2: LiveData<T2>,
+                                              source3: LiveData<T3>,
+                                              source4: LiveData<T4>,
+                                              source5: LiveData<T5>,
+                                              combiner: (T1, T2, T3, T4, T5) -> R): LiveData<R> {
+        val func = Function<Array<Any>, R> { input ->
+            combiner(input[0] as T1, input[1] as T2, input[2] as T3, input[3] as T4, input[3] as T5)
+        }
+        return combineLatest(func,
+                source1 as LiveData<Any>,
+                source2 as LiveData<Any>,
+                source3 as LiveData<Any>,
+                source4 as LiveData<Any>,
+                source5 as LiveData<Any>)
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T1, T2, T3, T4, T5, R> combineLatest(source1: LiveData<T1>,
+                                              source2: LiveData<T2>,
+                                              source3: LiveData<T3>,
+                                              source4: LiveData<T4>,
+                                              source5: LiveData<T5>,
+                                              combiner: Function5<T1, T2, T3, T4, T5, R>): LiveData<R> {
+        return combineLatest(source1, source2, source3, source4, source5, combiner::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            combiner: Function7<T1, T2, T3, T4, T5, T6, T7, R>): LiveData<R> {
+        return combineLatest(source1, source2, source3, source4, source5, source6, source7, combiner::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T1, T2, T3, T4, T5, T6, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            combiner: (T1, T2, T3, T4, T5, T6) -> R): LiveData<R> {
+        val func = Function<Array<Any>, R> { input ->
+            combiner(input[0] as T1, input[1] as T2, input[2] as T3, input[3] as T4, input[4] as T5, input[5] as T6)
+        }
+        return combineLatest(func,
+                source1 as LiveData<Any>,
+                source2 as LiveData<Any>,
+                source3 as LiveData<Any>,
+                source4 as LiveData<Any>,
+                source5 as LiveData<Any>
+        )
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            combiner: (T1, T2, T3, T4, T5, T6, T7) -> R): LiveData<R> {
+        val func = Function<Array<Any>, R> { input ->
+            combiner(
+                    input[0] as T1,
+                    input[1] as T2,
+                    input[2] as T3,
+                    input[3] as T4,
+                    input[4] as T5,
+                    input[5] as T6,
+                    input[6] as T7
+            )
+        }
+        return combineLatest(func,
+                source1 as LiveData<Any>,
+                source2 as LiveData<Any>,
+                source3 as LiveData<Any>,
+                source4 as LiveData<Any>,
+                source5 as LiveData<Any>,
+                source6 as LiveData<Any>,
+                source7 as LiveData<Any>
+        )
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            source8: LiveData<T8>,
+            combiner: Function8<T1, T2, T3, T4, T5, T6, T7, T8, R>): LiveData<R> {
+        return combineLatest(source1, source2, source3, source4, source5, source6, source7, source8, combiner::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            source8: LiveData<T8>,
+            combiner: (T1, T2, T3, T4, T5, T6, T7, T8) -> R): LiveData<R> {
+        val func = Function<Array<Any>, R> { input ->
+            combiner(
+                    input[0] as T1,
+                    input[1] as T2,
+                    input[2] as T3,
+                    input[3] as T4,
+                    input[4] as T5,
+                    input[5] as T6,
+                    input[6] as T7,
+                    input[7] as T8
+            )
+        }
+        return combineLatest(func,
+                source1 as LiveData<Any>,
+                source2 as LiveData<Any>,
+                source3 as LiveData<Any>,
+                source4 as LiveData<Any>,
+                source5 as LiveData<Any>,
+                source6 as LiveData<Any>,
+                source7 as LiveData<Any>,
+                source8 as LiveData<Any>
+        )
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            source8: LiveData<T8>,
+            source9: LiveData<T9>,
+            combiner: Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>): LiveData<R> {
+        return combineLatest(source1, source2, source3, source4, source5, source6, source7, source8, source9,
+                combiner::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            source8: LiveData<T8>,
+            source9: LiveData<T9>,
+            combiner: (T1, T2, T3, T4, T5, T6, T7, T8, T9) -> R): LiveData<R> {
+        val func = Function<Array<Any>, R> { input ->
+            combiner(
+                    input[0] as T1,
+                    input[1] as T2,
+                    input[2] as T3,
+                    input[3] as T4,
+                    input[4] as T5,
+                    input[5] as T6,
+                    input[6] as T7,
+                    input[7] as T8,
+                    input[8] as T9
+            )
+        }
+        return combineLatest(func,
+                source1 as LiveData<Any>,
+                source2 as LiveData<Any>,
+                source3 as LiveData<Any>,
+                source4 as LiveData<Any>,
+                source5 as LiveData<Any>,
+                source6 as LiveData<Any>,
+                source7 as LiveData<Any>,
+                source8 as LiveData<Any>,
+                source9 as LiveData<Any>
+        )
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            source8: LiveData<T8>,
+            source9: LiveData<T9>,
+            source10: LiveData<T10>,
+            combiner: Function10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>): LiveData<R> {
+        return combineLatest(source1, source2, source3, source4, source5, source6, source7, source8, source9, source10,
+                combiner::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> combineLatest(
+            source1: LiveData<T1>,
+            source2: LiveData<T2>,
+            source3: LiveData<T3>,
+            source4: LiveData<T4>,
+            source5: LiveData<T5>,
+            source6: LiveData<T6>,
+            source7: LiveData<T7>,
+            source8: LiveData<T8>,
+            source9: LiveData<T9>,
+            source10: LiveData<T10>,
+            combiner: (T1, T2, T3, T4, T5, T6, T7, T8, T9, T10) -> R): LiveData<R> {
+        val func = Function<Array<Any>, R> { input ->
+            combiner(
+                    input[0] as T1,
+                    input[1] as T2,
+                    input[2] as T3,
+                    input[3] as T4,
+                    input[4] as T5,
+                    input[5] as T6,
+                    input[6] as T7,
+                    input[7] as T8,
+                    input[8] as T9,
+                    input[9] as T10
+            )
+        }
+        return combineLatest(func,
+                source1 as LiveData<Any>,
+                source2 as LiveData<Any>,
+                source3 as LiveData<Any>,
+                source4 as LiveData<Any>,
+                source5 as LiveData<Any>,
+                source6 as LiveData<Any>,
+                source7 as LiveData<Any>,
+                source8 as LiveData<Any>,
+                source9 as LiveData<Any>,
+                source10 as LiveData<Any>
+        )
     }
 
     @MainThread
@@ -247,13 +587,87 @@ object LiveDataUtils {
                                    source3: LiveData<T3>): LiveData<Triple<T1, T2, T3>> {
         return combineLatest(source1, source2, source3) { t1, t2, t3 -> Triple(t1, t2, t3) }
     }
+
+    @MainThread
+    @JvmStatic
+    fun <T> doOnValue(source: LiveData<T>, func: Function<T, Unit>): LiveData<T> {
+        return doOnValue(source, func::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T> doOnValue(source: LiveData<T>, func: (T) -> Unit): LiveData<T> {
+        val result = MediatorLiveData<T>()
+        result.addSource(source) {
+            result.value = it
+            func(it as T)
+        }
+        return result
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> doOnActive(source: LiveData<T>, func: Function<Unit, Unit>): LiveData<T> {
+        return doOnActive(source, func::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> doOnActive(source: LiveData<T>, func: (Unit) -> Unit): LiveData<T> {
+        val hook = object : LiveData<T>() {
+            override fun onActive() = func(Unit)
+        }
+
+        val result = MediatorLiveData<T>()
+        result.addSource(source) { result.value = it }
+        result.addSource(hook) { }
+        return result
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> doOnInactive(source: LiveData<T>, func: Function<Unit, Unit>): LiveData<T> {
+        return doOnInactive(source, func::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> doOnInactive(source: LiveData<T>, func: (Unit) -> Unit): LiveData<T> {
+        val hook = object : LiveData<T>() {
+            override fun onInactive() = func(Unit)
+        }
+
+        val result = MediatorLiveData<T>()
+        result.addSource(source) { result.value = it }
+        result.addSource(hook) { }
+        return result
+    }
 }
+
+fun <T> LiveData<T>.observe(owner: LifecycleOwner) =
+        LiveDataUtils.observe(this, owner)
+
+fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: Observer<T>) =
+        LiveDataUtils.observe(this, owner, observer)
+
+fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: Function<T, Unit>) =
+        LiveDataUtils.observe(this, owner, observer)
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: (T) -> Unit) =
         LiveDataUtils.observe(this, owner, observer)
 
-fun <T> LiveData<T>.observeForever(owner: LifecycleOwner, observer: (T) -> Unit) =
-        LiveDataUtils.observeForever(this, owner, observer)
+fun <T> LiveData<T>.observeForever() =
+        LiveDataUtils.observeForever(this)
+
+fun <T> LiveData<T>.observeForever(observer: Observer<T>) =
+        LiveDataUtils.observeForever(this, observer)
+
+fun <T> LiveData<T>.observeForever(observer: Function<T, Unit>) =
+        LiveDataUtils.observeForever(this, observer)
+
+fun <T> LiveData<T>.observeForever(observer: (T) -> Unit) =
+        LiveDataUtils.observeForever(this, observer)
 
 fun <T> T.toLiveData(): LiveData<T> =
         LiveDataUtils.just(this)
@@ -320,3 +734,21 @@ fun <T1, T2, R> LiveData<T1>.combineLatestWith(other: LiveData<T2>, combiner: (T
 
 fun <T1, T2> LiveData<T1>.combineLatestWith(other: LiveData<T2>): LiveData<Pair<T1, T2>> =
         LiveDataUtils.combineLatest(this, other) { t1, t2 -> t1 to t2 }
+
+fun <T> LiveData<T>.doOnValue(func: Function<T, Unit>): LiveData<T> =
+        LiveDataUtils.doOnValue(this, func)
+
+fun <T> LiveData<T>.doOnValue(func: (T) -> Unit): LiveData<T> =
+        LiveDataUtils.doOnValue(this, func)
+
+fun <T> LiveData<T>.doOnActive(func: Function<Unit, Unit>): LiveData<T> =
+        LiveDataUtils.doOnActive(this, func)
+
+fun <T> LiveData<T>.doOnActive(func: (Unit) -> Unit): LiveData<T> =
+        LiveDataUtils.doOnActive(this, func)
+
+fun <T> LiveData<T>.doOnInactive(func: Function<Unit, Unit>): LiveData<T> =
+        LiveDataUtils.doOnInactive(this, func)
+
+fun <T> LiveData<T>.doOnInactive(func: (Unit) -> Unit): LiveData<T> =
+        LiveDataUtils.doOnInactive(this, func)
