@@ -4,6 +4,7 @@ import android.arch.core.util.Function
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.Transformations
 import android.support.annotation.MainThread
@@ -39,9 +40,22 @@ object LiveDataUtils {
 
     @MainThread
     @JvmStatic
+    fun <T> observe(source: LiveData<T>, owner: LifecycleOwner, observer: MutableLiveData<T>) {
+        source.observe(owner, Observer { observer.value = it })
+    }
+
+
+    @MainThread
+    @JvmStatic
+    fun <T> observeForever(source: LiveData<T>, observer: MutableLiveData<T>) {
+        source.observeForever { observer.value = it }
+    }
+
+    @MainThread
+    @JvmStatic
     @Suppress("UNCHECKED_CAST")
     fun <T> observeForever(source: LiveData<T>) {
-        source.observeForever({ })
+        source.observeForever { }
     }
 
     @MainThread
@@ -645,6 +659,9 @@ object LiveDataUtils {
     }
 }
 
+fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: MutableLiveData<T>) =
+        LiveDataUtils.observe(this, owner, observer)
+
 fun <T> LiveData<T>.observe(owner: LifecycleOwner) =
         LiveDataUtils.observe(this, owner)
 
@@ -661,6 +678,9 @@ fun <T> LiveData<T>.observeForever() =
         LiveDataUtils.observeForever(this)
 
 fun <T> LiveData<T>.observeForever(observer: Observer<T>) =
+        LiveDataUtils.observeForever(this, observer)
+
+fun <T> LiveData<T>.observeForever(observer: MutableLiveData<T>) =
         LiveDataUtils.observeForever(this, observer)
 
 fun <T> LiveData<T>.observeForever(observer: Function<T, Unit>) =
