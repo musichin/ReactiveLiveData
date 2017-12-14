@@ -1,4 +1,4 @@
-package com.github.musichin.reactlivedata
+package com.github.musichin.reactivelivedata
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-class ReactLiveDataTest {
+class ReactiveLiveDataTest {
     @Rule
     @JvmField
     val rule = InstantTaskExecutorRule()
@@ -17,7 +17,7 @@ class ReactLiveDataTest {
     @Test
     fun testEmpty() {
         val observer = TestObserver<String>()
-        ReactLiveData.never<String>().observeForever(observer)
+        ReactiveLiveData.never<String>().observeForever(observer)
 
         observer.assertEmpty()
     }
@@ -25,14 +25,14 @@ class ReactLiveDataTest {
     @Test
     fun testJust() {
         val observer = TestObserver<String>()
-        ReactLiveData.just("test").observeForever(observer)
+        ReactiveLiveData.just("test").observeForever(observer)
 
         observer.assertEquals("test")
     }
 
     @Test
     fun testCreate() {
-        val source = ReactLiveData.create { "test" }
+        val source = ReactiveLiveData.create { "test" }
         assertNull(source.value)
 
         val observer = TestObserver<String>()
@@ -42,7 +42,7 @@ class ReactLiveDataTest {
 
     @Test
     fun testStartWithFunction() {
-        val source = ReactLiveData.just(2).startWith<Int> { 1 }
+        val source = ReactiveLiveData.just(2).startWith<Int> { 1 }
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
@@ -52,8 +52,8 @@ class ReactLiveDataTest {
 
     @Test
     fun testStartWithLiveData() {
-        val startWith = ReactLiveData.create { 1 }
-        val source = ReactLiveData.just(2).startWith(startWith)
+        val startWith = ReactiveLiveData.create { 1 }
+        val source = ReactiveLiveData.just(2).startWith(startWith)
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
@@ -64,7 +64,7 @@ class ReactLiveDataTest {
     @Test
     fun testMap() {
         val observer = TestObserver<Int>()
-        ReactLiveData.just("test").map { it.length }.observeForever(observer)
+        ReactiveLiveData.just("test").map { it.length }.observeForever(observer)
 
         observer.assertEquals(4)
     }
@@ -124,7 +124,7 @@ class ReactLiveDataTest {
         val observer = TestObserver<Int>()
         val source1 = MutableLiveData<Int>()
         val source2 = MutableLiveData<Int>()
-        ReactLiveData.merge(source1, source2).observeForever(observer)
+        ReactiveLiveData.merge(source1, source2).observeForever(observer)
         source1.value = 1
         source2.value = 2
         source2.value = 3
@@ -139,7 +139,7 @@ class ReactLiveDataTest {
         val observer = TestObserver<String>()
         val s1 = MutableLiveData<Int>()
         val s2 = MutableLiveData<String>()
-        ReactLiveData.combineLatest(s1, s2) { t1, t2 -> "$t1$t2" }.observeForever(observer)
+        ReactiveLiveData.combineLatest(s1, s2) { t1, t2 -> "$t1$t2" }.observeForever(observer)
         s1.value = 1
         s2.value = "a"
         s2.value = "b"
@@ -155,7 +155,7 @@ class ReactLiveDataTest {
         val s1 = MutableLiveData<Int>()
         val s2 = MutableLiveData<String>()
         val s3 = MutableLiveData<String>()
-        ReactLiveData.combineLatest(s1, s2, s3) { t1, t2, t3 -> "$t1$t2$t3" }.observeForever(observer)
+        ReactiveLiveData.combineLatest(s1, s2, s3) { t1, t2, t3 -> "$t1$t2$t3" }.observeForever(observer)
         s2.value = "#"
         s1.value = 1
         s3.value = "a"

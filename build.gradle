@@ -27,13 +27,13 @@ task clean(type: Delete) {
 }
 
 version = System.getenv("TRAVIS_TAG") ?: 'snapshot'
-group = 'com.github.musichin.reactlivedata'
+group = 'com.github.musichin.reactivelivedata'
 
 ext {
     compileSdkVersion = 27
     minSdkVersion = 14
     targetSdkVersion = 27
     buildToolsVersion = '27.0.2'
-    website = 'https://github.com/musichin/reactlivedata'
+    website = 'https://github.com/musichin/reactivelivedata'
     licences = ['MIT']
 }

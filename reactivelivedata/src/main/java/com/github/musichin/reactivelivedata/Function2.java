@@ -1,4 +1,4 @@
-package com.github.musichin.reactlivedata;
+package com.github.musichin.reactivelivedata;
 
 
 public interface Function2<I1, T2, R> {
