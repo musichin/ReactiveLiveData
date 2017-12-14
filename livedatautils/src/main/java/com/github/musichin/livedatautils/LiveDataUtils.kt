@@ -386,7 +386,8 @@ object LiveDataUtils {
                 source2 as LiveData<Any>,
                 source3 as LiveData<Any>,
                 source4 as LiveData<Any>,
-                source5 as LiveData<Any>
+                source5 as LiveData<Any>,
+                source6 as LiveData<Any>
         )
     }
 
