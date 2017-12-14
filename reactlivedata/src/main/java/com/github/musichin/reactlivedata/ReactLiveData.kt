@@ -1,4 +1,4 @@
-package com.github.musichin.livedatautils
+package com.github.musichin.reactlivedata
 
 import android.arch.core.util.Function
 import android.arch.lifecycle.LifecycleOwner
@@ -9,7 +9,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.Transformations
 import android.support.annotation.MainThread
 
-object LiveDataUtils {
+object ReactLiveData {
     private val NOT_SET = Any()
 
 
@@ -195,7 +195,7 @@ object LiveDataUtils {
     @JvmStatic
     fun <T> merge(vararg sources: LiveData<T>): LiveData<T> {
         if (sources.size <= 0) {
-            return LiveDataUtils.never()
+            return ReactLiveData.never()
         }
 
         val result = MediatorLiveData<T>()
@@ -213,7 +213,7 @@ object LiveDataUtils {
     @Suppress("UNCHECKED_CAST")
     fun <T, R> combineLatest(sources: Array<out LiveData<out T>>, combiner: Function<Array<T>, R>): LiveData<R> {
         if (sources.size <= 0) {
-            return LiveDataUtils.never()
+            return ReactLiveData.never()
         }
 
         val size = sources.size
@@ -661,115 +661,115 @@ object LiveDataUtils {
 }
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: MutableLiveData<T>) =
-        LiveDataUtils.observe(this, owner, observer)
+        ReactLiveData.observe(this, owner, observer)
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner) =
-        LiveDataUtils.observe(this, owner)
+        ReactLiveData.observe(this, owner)
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: Observer<T>) =
-        LiveDataUtils.observe(this, owner, observer)
+        ReactLiveData.observe(this, owner, observer)
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: Function<T, Unit>) =
-        LiveDataUtils.observe(this, owner, observer)
+        ReactLiveData.observe(this, owner, observer)
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: (T) -> Unit) =
-        LiveDataUtils.observe(this, owner, observer)
+        ReactLiveData.observe(this, owner, observer)
 
 fun <T> LiveData<T>.observeForever() =
-        LiveDataUtils.observeForever(this)
+        ReactLiveData.observeForever(this)
 
 fun <T> LiveData<T>.observeForever(observer: Observer<T>) =
-        LiveDataUtils.observeForever(this, observer)
+        ReactLiveData.observeForever(this, observer)
 
 fun <T> LiveData<T>.observeForever(observer: MutableLiveData<T>) =
-        LiveDataUtils.observeForever(this, observer)
+        ReactLiveData.observeForever(this, observer)
 
 fun <T> LiveData<T>.observeForever(observer: Function<T, Unit>) =
-        LiveDataUtils.observeForever(this, observer)
+        ReactLiveData.observeForever(this, observer)
 
 fun <T> LiveData<T>.observeForever(observer: (T) -> Unit) =
-        LiveDataUtils.observeForever(this, observer)
+        ReactLiveData.observeForever(this, observer)
 
 fun <T> T.toLiveData(): LiveData<T> =
-        LiveDataUtils.just(this)
+        ReactLiveData.just(this)
 
 fun <T, R> LiveData<T>.map(func: Function<T, R>): LiveData<R> =
-        LiveDataUtils.map(this, func)
+        ReactLiveData.map(this, func)
 
 fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> =
-        LiveDataUtils.map(this, func)
+        ReactLiveData.map(this, func)
 
 fun <T, R> LiveData<T>.switchMap(func: Function<T, LiveData<R>>): LiveData<R> =
-        LiveDataUtils.switchMap(this, func)
+        ReactLiveData.switchMap(this, func)
 
 fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> =
-        LiveDataUtils.switchMap(this, func)
+        ReactLiveData.switchMap(this, func)
 
 fun <T> LiveData<T>.filter(func: Function<T, Boolean>): LiveData<T> =
-        LiveDataUtils.filter(this, func)
+        ReactLiveData.filter(this, func)
 
 fun <T> LiveData<T>.filter(func: (T) -> Boolean): LiveData<T> =
-        LiveDataUtils.filter(this, func)
+        ReactLiveData.filter(this, func)
 
 fun <T> LiveData<T?>.filterNotNull(): LiveData<T> =
-        LiveDataUtils.filterNotNull(this)
+        ReactLiveData.filterNotNull(this)
 
 fun <T, K> LiveData<T>.distinct(func: Function<T, K>): LiveData<T> =
-        LiveDataUtils.distinct(this, func)
+        ReactLiveData.distinct(this, func)
 
 fun <T, K> LiveData<T>.distinct(func: (T) -> K): LiveData<T> =
-        LiveDataUtils.distinct(this, func)
+        ReactLiveData.distinct(this, func)
 
 fun <T> LiveData<T>.distinct(): LiveData<T> =
-        LiveDataUtils.distinct(this)
+        ReactLiveData.distinct(this)
 
 fun <T, K> LiveData<T>.distinctUntilChanged(func: Function<T, K>): LiveData<T> =
-        LiveDataUtils.distinctUntilChanged(this, func)
+        ReactLiveData.distinctUntilChanged(this, func)
 
 fun <T, K> LiveData<T>.distinctUntilChanged(func: (T) -> K): LiveData<T> =
-        LiveDataUtils.distinctUntilChanged(this, func)
+        ReactLiveData.distinctUntilChanged(this, func)
 
 fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> =
-        LiveDataUtils.distinctUntilChanged(this)
+        ReactLiveData.distinctUntilChanged(this)
 
 fun <T> Array<LiveData<T>>.merge(): LiveData<T> =
-        LiveDataUtils.merge(*this)
+        ReactLiveData.merge(*this)
 
 fun <T> List<LiveData<T>>.merge(): LiveData<T> =
-        LiveDataUtils.merge(*this.toTypedArray())
+        ReactLiveData.merge(*this.toTypedArray())
 
 fun <T> LiveData<T>.mergeWith(other: LiveData<T>):
-        LiveData<T> = LiveDataUtils.merge(this, other)
+        LiveData<T> = ReactLiveData.merge(this, other)
 
 fun <T, R> Array<LiveData<T>>.combineLatest(combiner: Function<Array<T>, R>): LiveData<R> =
-        LiveDataUtils.combineLatest(this, combiner)
+        ReactLiveData.combineLatest(this, combiner)
 
 fun <T, R> List<LiveData<out T>>.combineLatest(combiner: Function<Array<T>, R>): LiveData<R> =
-        LiveDataUtils.combineLatest(this.toTypedArray(), combiner)
+        ReactLiveData.combineLatest(this.toTypedArray(), combiner)
 
 fun <T1, T2, R> LiveData<T1>.combineLatestWith(other: LiveData<T2>, combiner: Function2<T1, T2, R>): LiveData<R> =
-        LiveDataUtils.combineLatest(this, other, combiner)
+        ReactLiveData.combineLatest(this, other, combiner)
 
 fun <T1, T2, R> LiveData<T1>.combineLatestWith(other: LiveData<T2>, combiner: (T1, T2) -> R): LiveData<R> =
-        LiveDataUtils.combineLatest(this, other, combiner)
+        ReactLiveData.combineLatest(this, other, combiner)
 
 fun <T1, T2> LiveData<T1>.combineLatestWith(other: LiveData<T2>): LiveData<Pair<T1, T2>> =
-        LiveDataUtils.combineLatest(this, other) { t1, t2 -> t1 to t2 }
+        ReactLiveData.combineLatest(this, other) { t1, t2 -> t1 to t2 }
 
 fun <T> LiveData<T>.doOnValue(func: Function<T, Unit>): LiveData<T> =
-        LiveDataUtils.doOnValue(this, func)
+        ReactLiveData.doOnValue(this, func)
 
 fun <T> LiveData<T>.doOnValue(func: (T) -> Unit): LiveData<T> =
-        LiveDataUtils.doOnValue(this, func)
+        ReactLiveData.doOnValue(this, func)
 
 fun <T> LiveData<T>.doOnActive(func: Function<Unit, Unit>): LiveData<T> =
-        LiveDataUtils.doOnActive(this, func)
+        ReactLiveData.doOnActive(this, func)
 
 fun <T> LiveData<T>.doOnActive(func: (Unit) -> Unit): LiveData<T> =
-        LiveDataUtils.doOnActive(this, func)
+        ReactLiveData.doOnActive(this, func)
 
 fun <T> LiveData<T>.doOnInactive(func: Function<Unit, Unit>): LiveData<T> =
-        LiveDataUtils.doOnInactive(this, func)
+        ReactLiveData.doOnInactive(this, func)
 
 fun <T> LiveData<T>.doOnInactive(func: (Unit) -> Unit): LiveData<T> =
-        LiveDataUtils.doOnInactive(this, func)
+        ReactLiveData.doOnInactive(this, func)

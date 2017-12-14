@@ -1,4 +1,4 @@
-package com.github.musichin.livedatautils
+package com.github.musichin.reactlivedata
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
-class LiveDataUtilsTest {
+class ReactLiveDataTest {
     @Rule
     @JvmField
     val rule = InstantTaskExecutorRule()
@@ -16,7 +16,7 @@ class LiveDataUtilsTest {
     @Test
     fun testEmpty() {
         val observer = TestObserver<String>()
-        LiveDataUtils.never<String>().observeForever(observer)
+        ReactLiveData.never<String>().observeForever(observer)
 
         observer.assertEmpty()
     }
@@ -24,7 +24,7 @@ class LiveDataUtilsTest {
     @Test
     fun testJust() {
         val observer = TestObserver<String>()
-        LiveDataUtils.just("test").observeForever(observer)
+        ReactLiveData.just("test").observeForever(observer)
 
         observer.assertSize(1)
         observer.assertEquals("test")
@@ -33,7 +33,7 @@ class LiveDataUtilsTest {
     @Test
     fun testMap() {
         val observer = TestObserver<Int>()
-        LiveDataUtils.just("test").map { it.length }.observeForever(observer)
+        ReactLiveData.just("test").map { it.length }.observeForever(observer)
 
         observer.assertSize(1)
         observer.assertEquals(4)
@@ -95,7 +95,7 @@ class LiveDataUtilsTest {
         val observer = TestObserver<Int>()
         val source1 = MutableLiveData<Int>()
         val source2 = MutableLiveData<Int>()
-        LiveDataUtils.merge(source1, source2).observeForever(observer)
+        ReactLiveData.merge(source1, source2).observeForever(observer)
         source1.value = 1
         source2.value = 2
         source2.value = 3
@@ -110,7 +110,7 @@ class LiveDataUtilsTest {
         val observer = TestObserver<String>()
         val s1 = MutableLiveData<Int>()
         val s2 = MutableLiveData<String>()
-        LiveDataUtils.combineLatest(s1, s2) { t1, t2 -> "$t1$t2" }.observeForever(observer)
+        ReactLiveData.combineLatest(s1, s2) { t1, t2 -> "$t1$t2" }.observeForever(observer)
         s1.value = 1
         s2.value = "a"
         s2.value = "b"
@@ -126,7 +126,7 @@ class LiveDataUtilsTest {
         val s1 = MutableLiveData<Int>()
         val s2 = MutableLiveData<String>()
         val s3 = MutableLiveData<String>()
-        LiveDataUtils.combineLatest(s1, s2, s3) { t1, t2, t3 -> "$t1$t2$t3" }.observeForever(observer)
+        ReactLiveData.combineLatest(s1, s2, s3) { t1, t2, t3 -> "$t1$t2$t3" }.observeForever(observer)
         s2.value = "#"
         s1.value = 1
         s3.value = "a"

@@ -1,4 +1,4 @@
-# LiveData Utils [ ![Download](https://api.bintray.com/packages/musichin/maven/livedatautils/images/download.svg)](https://bintray.com/musichin/maven/livedatautils/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.2.10-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/livedatautils.svg?branch=master)](https://travis-ci.org/musichin/livedatautils)
+# ReactLiveData [ ![Download](https://api.bintray.com/packages/musichin/maven/reactlivedata/images/download.svg)](https://bintray.com/musichin/maven/reactlivedata/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.2.10-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/reactlivedata.svg?branch=master)](https://travis-ci.org/musichin/reactlivedata)
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects
 
 ## Functions
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.musichin.livedatautils:livedatautils:x.y.z'
+    implementation 'com.github.musichin.reactlivedata:reactlivedata:x.y.z'
 }
 ```
 
