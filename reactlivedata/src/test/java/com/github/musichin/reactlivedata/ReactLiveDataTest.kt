@@ -4,6 +4,7 @@ import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.MutableLiveData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -26,8 +27,38 @@ class ReactLiveDataTest {
         val observer = TestObserver<String>()
         ReactLiveData.just("test").observeForever(observer)
 
-        observer.assertSize(1)
         observer.assertEquals("test")
+    }
+
+    @Test
+    fun testCreate() {
+        val source = ReactLiveData.create { "test" }
+        assertNull(source.value)
+
+        val observer = TestObserver<String>()
+        source.observeForever(observer)
+        observer.assertEquals("test")
+    }
+
+    @Test
+    fun testStartWithFunction() {
+        val source = ReactLiveData.just(2).startWith<Int> { 1 }
+        assertNull(source.value)
+
+        val observer = TestObserver<Int>()
+        source.observeForever(observer)
+        observer.assertEquals(listOf(1, 2))
+    }
+
+    @Test
+    fun testStartWithLiveData() {
+        val startWith = ReactLiveData.create { 1 }
+        val source = ReactLiveData.just(2).startWith(startWith)
+        assertNull(source.value)
+
+        val observer = TestObserver<Int>()
+        source.observeForever(observer)
+        observer.assertEquals(listOf(1, 2))
     }
 
     @Test
@@ -35,7 +66,6 @@ class ReactLiveDataTest {
         val observer = TestObserver<Int>()
         ReactLiveData.just("test").map { it.length }.observeForever(observer)
 
-        observer.assertSize(1)
         observer.assertEquals(4)
     }
 
@@ -46,7 +76,6 @@ class ReactLiveDataTest {
         data.filter { it % 2 == 0 }.observeForever(observer)
         (1..10).forEach { data.value = it }
 
-        observer.assertSize(5)
         observer.assertEquals(2, 4, 6, 8, 10)
     }
 

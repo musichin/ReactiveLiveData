@@ -75,15 +75,13 @@ object ReactLiveData {
     @JvmStatic
     @Suppress("UNCHECKED_CAST")
     fun <T> observeForever(source: LiveData<T>, observer: (T) -> Unit) {
-        source.observeForever({ observer(it as T) })
+        source.observeForever { observer(it as T) }
     }
 
     @MainThread
     @JvmStatic
     fun <T> never(): LiveData<T> {
-        return object : LiveData<T>() {
-
-        }
+        return object : LiveData<T>() {}
     }
 
     @MainThread
@@ -91,9 +89,58 @@ object ReactLiveData {
     fun <T> just(value: T): LiveData<T> {
         return object : LiveData<T>() {
             init {
-                setValue(value)
+                this.value = value
             }
         }
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> create(value: Function<Unit, T>): LiveData<T> {
+        return create { value.apply(null) }
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> create(value: () -> T): LiveData<T> {
+        return object : LiveData<T>() {
+            private var initialized = false
+            override fun onActive() {
+                if (initialized) return
+                this.value = value()
+                initialized = true
+            }
+        }
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> startWith(source: LiveData<T>, value: T): LiveData<T> {
+        return startWith(source, just(value))
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> startWith(source: LiveData<T>, value: Function<Unit, T>): LiveData<T> {
+        return startWith(source, create(value))
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> startWith(source: LiveData<T>, value: () -> T): LiveData<T> {
+        return startWith(source, create(value))
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> startWith(source: LiveData<T>, value: LiveData<T>): LiveData<T> {
+        val result = MediatorLiveData<T>()
+        result.addSource(value) {
+            result.removeSource(value)
+            result.value = it
+            result.addSource(source) { result.value = it }
+        }
+        return result
     }
 
     @MainThread
@@ -692,6 +739,18 @@ fun <T> LiveData<T>.observeForever(observer: (T) -> Unit) =
 
 fun <T> T.toLiveData(): LiveData<T> =
         ReactLiveData.just(this)
+
+fun <T> LiveData<T>.startWith(value: T) =
+        ReactLiveData.startWith(this, value)
+
+fun <T> LiveData<T>.startWith(value: () -> T) =
+        ReactLiveData.startWith(this, value)
+
+fun <T> LiveData<T>.startWith(value: Function<Unit, T>) =
+        ReactLiveData.startWith(this, value)
+
+fun <T> LiveData<T>.startWith(value: LiveData<T>) =
+        ReactLiveData.startWith(this, value)
 
 fun <T, R> LiveData<T>.map(func: Function<T, R>): LiveData<R> =
         ReactLiveData.map(this, func)
