@@ -145,6 +145,61 @@ object ReactiveLiveData {
 
     @MainThread
     @JvmStatic
+    fun <T> take(source: LiveData<T>, count: Int): LiveData<T> {
+        if (count <= 0) return never()
+        val result = MediatorLiveData<T>()
+        var counter = 0
+        result.addSource(source) {
+            if (++counter >= count) result.removeSource(source)
+            result.value = it
+        }
+        return result
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> takeWhile(source: LiveData<T>, predicate: Function<T, Boolean>): LiveData<T> {
+        return takeWhile(source, predicate::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T> takeWhile(source: LiveData<T>, predicate: (T) -> Boolean): LiveData<T> {
+        val result = MediatorLiveData<T>()
+        result.addSource(source) {
+            if (predicate(it as T)) result.value = it
+            else result.removeSource(source)
+        }
+        return result
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> takeUntil(source: LiveData<T>, predicate: Function<T, Boolean>): LiveData<T> {
+        return takeUntil(source, predicate::apply)
+    }
+
+    @MainThread
+    @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T> takeUntil(source: LiveData<T>, predicate: (T) -> Boolean): LiveData<T> {
+        val result = MediatorLiveData<T>()
+        result.addSource(source) {
+            if (predicate(it as T)) result.removeSource(source)
+            result.value = it
+        }
+        return result
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> first(source: LiveData<T>): LiveData<T> {
+        return take(source, 1)
+    }
+
+    @MainThread
+    @JvmStatic
     fun <T, R> map(source: LiveData<T>, func: Function<T, R>): LiveData<R> {
         return Transformations.map(source, func)
     }
@@ -218,7 +273,6 @@ object ReactiveLiveData {
 
     @MainThread
     @JvmStatic
-    @Suppress("UNCHECKED_CAST")
     fun <T, K> distinct(source: LiveData<T>, func: (T) -> K): LiveData<T> {
         val keys = HashSet<Any?>()
         return filter(source) { keys.add(func(it)) }
@@ -234,7 +288,6 @@ object ReactiveLiveData {
     @JvmStatic
     fun <T> distinctUntilChanged(source: LiveData<T>): LiveData<T> {
         val func = Function<T, Any> { input -> input }
-
         return distinctUntilChanged(source, func)
     }
 
@@ -751,6 +804,24 @@ fun <T> LiveData<T>.startWith(value: Function<Unit, T>) =
 
 fun <T> LiveData<T>.startWith(value: LiveData<T>) =
         ReactiveLiveData.startWith(this, value)
+
+fun <T> LiveData<T>.take(count: Int) =
+        ReactiveLiveData.take(this, count)
+
+fun <T> LiveData<T>.first() =
+        ReactiveLiveData.first(this)
+
+fun <T> LiveData<T>.takeUntil(predicate: (T) -> Boolean) =
+        ReactiveLiveData.takeUntil(this, predicate)
+
+fun <T> LiveData<T>.takeUntil(predicate: Function<T, Boolean>) =
+        ReactiveLiveData.takeUntil(this, predicate)
+
+fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean) =
+        ReactiveLiveData.takeWhile(this, predicate)
+
+fun <T> LiveData<T>.takeWhile(predicate: Function<T, Boolean>) =
+        ReactiveLiveData.takeWhile(this, predicate)
 
 fun <T, R> LiveData<T>.map(func: Function<T, R>): LiveData<R> =
         ReactiveLiveData.map(this, func)
