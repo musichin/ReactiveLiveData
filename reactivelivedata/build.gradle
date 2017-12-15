@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.novoda:bintray-release:0.7.0'
+        classpath 'com.novoda:bintray-release:0.8.0'
     }
 }
 
@@ -44,6 +44,7 @@ tasks.withType(Javadoc).all {
 publish {
     publishVersion = rootProject.version
     groupId = rootProject.group
+    desc = rootProject.description
     artifactId = name
     uploadName = rootProject.name
     website = rootProject.website

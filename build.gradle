@@ -28,6 +28,7 @@ task clean(type: Delete) {
 
 version = System.getenv("TRAVIS_TAG") ?: 'snapshot'
 group = 'com.github.musichin.reactivelivedata'
+description = 'Transformation functions for LiveData'
 
 ext {
     compileSdkVersion = 27
