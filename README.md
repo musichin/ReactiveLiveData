@@ -15,6 +15,8 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `take`
 * `takeUntil`
 * `takeWhile`
+* `buffer`
+* `cast`
 * and more...
 
 ## Examples

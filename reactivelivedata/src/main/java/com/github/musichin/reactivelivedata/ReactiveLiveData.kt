@@ -121,6 +121,32 @@ object ReactiveLiveData {
 
     @MainThread
     @JvmStatic
+    @Suppress("UNCHECKED_CAST")
+    fun <T> buffer(source: LiveData<T>, count: Int, skip: Int): LiveData<List<T>> {
+        val buffer: Array<Any?> = arrayOfNulls(if (count > skip) skip else count)
+        val result = MediatorLiveData<List<T>>()
+        var counter = 0
+        result.addSource(source) {
+            if (counter < count) {
+                buffer[counter] = it
+            }
+            counter++
+            if (counter == skip) {
+                counter = 0
+                result.value = buffer.toList() as List<T>
+            }
+        }
+        return result
+    }
+
+    @MainThread
+    @JvmStatic
+    fun <T> buffer(source: LiveData<T>, count: Int): LiveData<List<T>> {
+        return buffer(source, count, count)
+    }
+
+    @MainThread
+    @JvmStatic
     fun <T> startWith(source: LiveData<T>, value: T): LiveData<T> {
         return startWith(source, just(value))
     }
@@ -295,13 +321,11 @@ object ReactiveLiveData {
     @MainThread
     @JvmStatic
     fun <T> merge(vararg sources: LiveData<T>): LiveData<T> {
-        if (sources.size <= 0) {
-            return ReactiveLiveData.never()
-        }
+        if (sources.size <= 0) return ReactiveLiveData.never()
 
         val result = MediatorLiveData<T>()
 
-        val observer = Observer<T> { t -> result.value = t }
+        val observer = Observer<T> { result.value = it }
 
         for (source in sources) {
             result.addSource(source, observer)
@@ -313,9 +337,7 @@ object ReactiveLiveData {
     @JvmStatic
     @Suppress("UNCHECKED_CAST")
     fun <T, R> combineLatest(sources: Array<out LiveData<out T>>, combiner: Function<Array<T>, R>): LiveData<R> {
-        if (sources.size <= 0) {
-            return ReactiveLiveData.never()
-        }
+        if (sources.size <= 0) return ReactiveLiveData.never()
 
         val size = sources.size
         val result = MediatorLiveData<Any>()
@@ -796,6 +818,12 @@ fun <T> T.toLiveData(): LiveData<T> =
 
 fun <T, U> LiveData<T>.cast(clazz: Class<U>) =
         ReactiveLiveData.cast(this, clazz)
+
+fun <T> LiveData<T>.buffer(count: Int) =
+        ReactiveLiveData.buffer(this, count)
+
+fun <T> LiveData<T>.buffer(count: Int, skip: Int) =
+        ReactiveLiveData.buffer(this, count, skip)
 
 fun <T> LiveData<T>.startWith(value: T) =
         ReactiveLiveData.startWith(this, value)
