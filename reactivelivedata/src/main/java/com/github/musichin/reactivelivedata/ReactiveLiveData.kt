@@ -116,7 +116,7 @@ object ReactiveLiveData {
     @MainThread
     @JvmStatic
     fun <T, U> cast(source: LiveData<T>, clazz: Class<U>): LiveData<U> {
-        return map(source) { clazz.cast(it) }
+        return map(source, clazz::cast)
     }
 
     @MainThread
@@ -314,8 +314,7 @@ object ReactiveLiveData {
     @MainThread
     @JvmStatic
     fun <T> distinctUntilChanged(source: LiveData<T>): LiveData<T> {
-        val func = Function<T, Any> { input -> input }
-        return distinctUntilChanged(source, func)
+        return distinctUntilChanged(source) { it }
     }
 
     @MainThread
