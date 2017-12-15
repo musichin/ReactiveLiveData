@@ -41,6 +41,14 @@ class ReactiveLiveDataTest {
     }
 
     @Test
+    fun testCast() {
+        val source = ReactiveLiveData.create<Any> { "test" }
+        val observer = TestObserver<String>()
+        source.cast(String::class.java).observeForever(observer)
+        observer.assertEquals("test")
+    }
+
+    @Test
     fun testFirst() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()

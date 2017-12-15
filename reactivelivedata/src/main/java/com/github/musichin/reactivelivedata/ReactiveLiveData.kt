@@ -115,6 +115,12 @@ object ReactiveLiveData {
 
     @MainThread
     @JvmStatic
+    fun <T, U> cast(source: LiveData<T>, clazz: Class<U>): LiveData<U> {
+        return map(source) { clazz.cast(it) }
+    }
+
+    @MainThread
+    @JvmStatic
     fun <T> startWith(source: LiveData<T>, value: T): LiveData<T> {
         return startWith(source, just(value))
     }
@@ -147,13 +153,8 @@ object ReactiveLiveData {
     @JvmStatic
     fun <T> take(source: LiveData<T>, count: Int): LiveData<T> {
         if (count <= 0) return never()
-        val result = MediatorLiveData<T>()
         var counter = 0
-        result.addSource(source) {
-            if (++counter >= count) result.removeSource(source)
-            result.value = it
-        }
-        return result
+        return takeUntil(source) { ++counter >= count }
     }
 
     @MainThread
@@ -792,6 +793,9 @@ fun <T> LiveData<T>.observeForever(observer: (T) -> Unit) =
 
 fun <T> T.toLiveData(): LiveData<T> =
         ReactiveLiveData.just(this)
+
+fun <T, U> LiveData<T>.cast(clazz: Class<U>) =
+        ReactiveLiveData.cast(this, clazz)
 
 fun <T> LiveData<T>.startWith(value: T) =
         ReactiveLiveData.startWith(this, value)
