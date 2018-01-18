@@ -251,6 +251,12 @@ object ReactiveLiveData {
 
     @MainThread
     @JvmStatic
+    fun <T> switchLatest(source: LiveData<LiveData<T>>): LiveData<T> {
+        return switchMap(source) { it }
+    }
+
+    @MainThread
+    @JvmStatic
     fun <T> filter(source: LiveData<T>, func: Function<T, Boolean>): LiveData<T> {
         return filter(source, func::apply)
     }
@@ -865,6 +871,9 @@ fun <T, R> LiveData<T>.switchMap(func: Function<T, LiveData<R>>): LiveData<R> =
 
 fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> =
         ReactiveLiveData.switchMap(this, func)
+
+fun <T> LiveData<LiveData<T>>.switchLatest(): LiveData<T> =
+        ReactiveLiveData.switchLatest(this)
 
 fun <T> LiveData<T>.filter(func: Function<T, Boolean>): LiveData<T> =
         ReactiveLiveData.filter(this, func)

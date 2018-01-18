@@ -1,6 +1,7 @@
 package com.github.musichin.reactivelivedata
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -143,6 +144,16 @@ class ReactiveLiveDataTest {
         ReactiveLiveData.just("test").map { it.length }.observeForever(observer)
 
         observer.assertEquals(4)
+    }
+
+    @Test
+    fun testSwitchLatest() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<LiveData<Int>>()
+        source.switchLatest().observeForever(observer)
+        (1..10).forEach { source.value = it.toLiveData() }
+
+        observer.assertEquals(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
     }
 
     @Test
