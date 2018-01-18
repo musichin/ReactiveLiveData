@@ -1,9 +1,10 @@
-# Reactive LiveData [ ![Download](https://api.bintray.com/packages/musichin/maven/reactivelivedata/images/download.svg)](https://bintray.com/musichin/maven/reactivelivedata/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.2.10-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/reactivelivedata.svg?branch=master)](https://travis-ci.org/musichin/reactivelivedata)
+# Reactive LiveData [ ![Download](https://api.bintray.com/packages/musichin/maven/reactivelivedata/images/download.svg)](https://bintray.com/musichin/maven/reactivelivedata/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.2.20-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/reactivelivedata.svg?branch=master)](https://travis-ci.org/musichin/reactivelivedata)
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects
 
 ## Functions
 * `map`
 * `switchMap`
+* `switchLatest`
 * `filter`
 * `filterNotNull`
 * `distinct`
