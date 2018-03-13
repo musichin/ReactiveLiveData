@@ -15,7 +15,7 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T> of(source: LiveData<T>) = ReactiveLiveData(source)
+        fun <T> of(source: LiveData<T>): ReactiveLiveData<T> = ReactiveLiveData(source)
 
         @MainThread
         @JvmStatic
@@ -57,7 +57,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        @Suppress("UNCHECKED_CAST")
         fun <T> observeForever(source: LiveData<T>) {
             source.observeForever { }
         }
@@ -66,13 +65,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
         @JvmStatic
         fun <T> observeForever(source: LiveData<T>, observer: Observer<T>) {
             source.observeForever(observer)
-        }
-
-        @MainThread
-        @JvmStatic
-        @Suppress("UNCHECKED_CAST")
-        fun <T> observeForever(source: LiveData<T>, observer: Function<T, Unit>) {
-            observeForever(source, observer::apply)
         }
 
         @MainThread
@@ -96,12 +88,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
                     this.value = value
                 }
             }
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T> create(value: Function<Unit, T>): LiveData<T> {
-            return create { value.apply(null) }
         }
 
         @MainThread
@@ -153,12 +139,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
         @JvmStatic
         fun <T> startWith(source: LiveData<T>, value: T): LiveData<T> {
             return startWith(source, just(value))
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T> startWith(source: LiveData<T>, value: Function<Unit, T>): LiveData<T> {
-            return startWith(source, create(value))
         }
 
         @MainThread
@@ -227,12 +207,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
         @JvmStatic
         fun <T> first(source: LiveData<T>): LiveData<T> {
             return take(source, 1)
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T, R> map(source: LiveData<T>, func: Function<T, R>): LiveData<R> {
-            return Transformations.map(source, func)
         }
 
         @MainThread
@@ -381,14 +355,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T1, T2, R> combineLatest(source1: LiveData<T1>,
-                                      source2: LiveData<T2>,
-                                      combiner: Function2<T1, T2, R>): LiveData<R> {
-            return combineLatest(source1, source2, combiner::apply)
-        }
-
-        @MainThread
-        @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun <T1, T2, R> combineLatest(source1: LiveData<T1>,
                                       source2: LiveData<T2>,
@@ -402,15 +368,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
         @JvmStatic
         fun <T1, T2> combineLatest(source1: LiveData<T1>, source2: LiveData<T2>): LiveData<Pair<T1, T2>> {
             return combineLatest(source1, source2) { t1, t2 -> t1 to t2 }
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T1, T2, T3, R> combineLatest(source1: LiveData<T1>,
-                                          source2: LiveData<T2>,
-                                          source3: LiveData<T3>,
-                                          combiner: Function3<T1, T2, T3, R>): LiveData<R> {
-            return combineLatest(source1, source2, source3, combiner::apply)
         }
 
         @MainThread
@@ -446,16 +403,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T1, T2, T3, T4, R> combineLatest(source1: LiveData<T1>,
-                                              source2: LiveData<T2>,
-                                              source3: LiveData<T3>,
-                                              source4: LiveData<T4>,
-                                              combiner: Function4<T1, T2, T3, T4, R>): LiveData<R> {
-            return combineLatest(source1, source2, source3, source4, combiner::apply)
-        }
-
-        @MainThread
-        @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun <T1, T2, T3, T4, T5, R> combineLatest(source1: LiveData<T1>,
                                                   source2: LiveData<T2>,
@@ -472,31 +419,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
                     source3 as LiveData<Any>,
                     source4 as LiveData<Any>,
                     source5 as LiveData<Any>)
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5, R> combineLatest(source1: LiveData<T1>,
-                                                  source2: LiveData<T2>,
-                                                  source3: LiveData<T3>,
-                                                  source4: LiveData<T4>,
-                                                  source5: LiveData<T5>,
-                                                  combiner: Function5<T1, T2, T3, T4, T5, R>): LiveData<R> {
-            return combineLatest(source1, source2, source3, source4, source5, combiner::apply)
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
-                source1: LiveData<T1>,
-                source2: LiveData<T2>,
-                source3: LiveData<T3>,
-                source4: LiveData<T4>,
-                source5: LiveData<T5>,
-                source6: LiveData<T6>,
-                source7: LiveData<T7>,
-                combiner: Function7<T1, T2, T3, T4, T5, T6, T7, R>): LiveData<R> {
-            return combineLatest(source1, source2, source3, source4, source5, source6, source7, combiner::apply)
         }
 
         @MainThread
@@ -559,21 +481,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
-                source1: LiveData<T1>,
-                source2: LiveData<T2>,
-                source3: LiveData<T3>,
-                source4: LiveData<T4>,
-                source5: LiveData<T5>,
-                source6: LiveData<T6>,
-                source7: LiveData<T7>,
-                source8: LiveData<T8>,
-                combiner: Function8<T1, T2, T3, T4, T5, T6, T7, T8, R>): LiveData<R> {
-            return combineLatest(source1, source2, source3, source4, source5, source6, source7, source8, combiner::apply)
-        }
-
-        @MainThread
-        @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun <T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
                 source1: LiveData<T1>,
@@ -607,23 +514,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
                     source7 as LiveData<Any>,
                     source8 as LiveData<Any>
             )
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, R> combineLatest(
-                source1: LiveData<T1>,
-                source2: LiveData<T2>,
-                source3: LiveData<T3>,
-                source4: LiveData<T4>,
-                source5: LiveData<T5>,
-                source6: LiveData<T6>,
-                source7: LiveData<T7>,
-                source8: LiveData<T8>,
-                source9: LiveData<T9>,
-                combiner: Function9<T1, T2, T3, T4, T5, T6, T7, T8, T9, R>): LiveData<R> {
-            return combineLatest(source1, source2, source3, source4, source5, source6, source7, source8, source9,
-                    combiner::apply)
         }
 
         @MainThread
@@ -664,24 +554,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
                     source8 as LiveData<Any>,
                     source9 as LiveData<Any>
             )
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R> combineLatest(
-                source1: LiveData<T1>,
-                source2: LiveData<T2>,
-                source3: LiveData<T3>,
-                source4: LiveData<T4>,
-                source5: LiveData<T5>,
-                source6: LiveData<T6>,
-                source7: LiveData<T7>,
-                source8: LiveData<T8>,
-                source9: LiveData<T9>,
-                source10: LiveData<T10>,
-                combiner: Function10<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, R>): LiveData<R> {
-            return combineLatest(source1, source2, source3, source4, source5, source6, source7, source8, source9, source10,
-                    combiner::apply)
         }
 
         @MainThread
@@ -737,12 +609,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T> doOnValue(source: LiveData<T>, func: Function<T, Unit>): LiveData<T> {
-            return doOnValue(source, func::apply)
-        }
-
-        @MainThread
-        @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun <T> doOnValue(source: LiveData<T>, func: (T) -> Unit): LiveData<T> {
             val result = MediatorLiveData<T>()
@@ -755,15 +621,9 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T> doOnActive(source: LiveData<T>, func: Function<Unit, Unit>): LiveData<T> {
-            return doOnActive(source, func::apply)
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T> doOnActive(source: LiveData<T>, func: (Unit) -> Unit): LiveData<T> {
+        fun <T> doOnActive(source: LiveData<T>, func: () -> Unit): LiveData<T> {
             val hook = object : LiveData<T>() {
-                override fun onActive() = func(Unit)
+                override fun onActive() = func()
             }
 
             val result = MediatorLiveData<T>()
@@ -774,15 +634,9 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T> doOnInactive(source: LiveData<T>, func: Function<Unit, Unit>): LiveData<T> {
-            return doOnInactive(source, func::apply)
-        }
-
-        @MainThread
-        @JvmStatic
-        fun <T> doOnInactive(source: LiveData<T>, func: (Unit) -> Unit): LiveData<T> {
+        fun <T> doOnInactive(source: LiveData<T>, func: () -> Unit): LiveData<T> {
             val hook = object : LiveData<T>() {
-                override fun onInactive() = func(Unit)
+                override fun onInactive() = func()
             }
 
             val result = MediatorLiveData<T>()
@@ -803,12 +657,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun observe(owner: LifecycleOwner, observer: Observer<T>) =
             ReactiveLiveData.observe(source, owner, observer)
 
-    fun observe(owner: LifecycleOwner, observer: Function<T, Unit>) =
-            ReactiveLiveData.observe(source, owner, observer)
-
-    fun observe(owner: LifecycleOwner, observer: (T) -> Unit) =
-            ReactiveLiveData.observe(source, owner, observer)
-
     fun observeForever() =
             ReactiveLiveData.observeForever(source)
 
@@ -816,9 +664,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
             ReactiveLiveData.observeForever(source, observer)
 
     fun observeForever(observer: MutableLiveData<T>) =
-            ReactiveLiveData.observeForever(source, observer)
-
-    fun observeForever(observer: Function<T, Unit>) =
             ReactiveLiveData.observeForever(source, observer)
 
     fun observeForever(observer: (T) -> Unit) =
@@ -841,9 +686,6 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun startWith(value: () -> T): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.startWith(source, value))
 
-    fun startWith(value: Function<Unit, T>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.startWith(source, value))
-
     fun startWith(value: LiveData<T>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.startWith(source, value))
 
@@ -853,34 +695,16 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun first(): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.first(source))
 
-    fun takeUntil(predicate: (T) -> Boolean): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.takeUntil(source, predicate))
-
     fun takeUntil(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.takeUntil(source, predicate))
-
-    fun takeWhile(predicate: (T) -> Boolean): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.takeWhile(source, predicate))
 
     fun takeWhile(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.takeWhile(source, predicate))
 
-    fun <R> map(func: Function<T, R>): ReactiveLiveData<R> =
-            ReactiveLiveData(ReactiveLiveData.map(source, func))
-
-    fun <R> map(func: (T) -> R): ReactiveLiveData<R> =
-            ReactiveLiveData(ReactiveLiveData.map(source, func))
-
     fun <R> switchMap(func: Function<T, LiveData<R>>): ReactiveLiveData<R> =
             ReactiveLiveData(ReactiveLiveData.switchMap(source, func))
 
-    fun <R> switchMap(func: (T) -> LiveData<R>): ReactiveLiveData<R> =
-            ReactiveLiveData(ReactiveLiveData.switchMap(source, func))
-
     fun filter(func: Function<T, Boolean>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.filter(source, func))
-
-    fun filter(func: (T) -> Boolean): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.filter(source, func))
 
     fun filterNotNull(): ReactiveLiveData<T> =
@@ -889,16 +713,10 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun <K> distinct(func: Function<T, K>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.distinct(source, func))
 
-    fun <K> distinct(func: (T) -> K): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.distinct(source, func))
-
     fun distinct(): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.distinct(source))
 
     fun <K> distinctUntilChanged(func: Function<T, K>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.distinctUntilChanged(source, func))
-
-    fun <K> distinctUntilChanged(func: (T) -> K): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.distinctUntilChanged(source, func))
 
     fun distinctUntilChanged(): ReactiveLiveData<T> =
@@ -907,22 +725,13 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun mergeWith(other: LiveData<T>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.merge(source, other))
 
-    fun doOnValue(func: Function<T, Unit>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.doOnValue(source, func))
-
     fun doOnValue(func: (T) -> Unit): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.doOnValue(source, func))
 
-    fun doOnActive(func: Function<Unit, Unit>): ReactiveLiveData<T> =
+    fun doOnActive(func: () -> Unit): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.doOnActive(source, func))
 
-    fun doOnActive(func: (Unit) -> Unit): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.doOnActive(source, func))
-
-    fun doOnInactive(func: Function<Unit, Unit>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.doOnInactive(source, func))
-
-    fun doOnInactive(func: (Unit) -> Unit): ReactiveLiveData<T> =
+    fun doOnInactive(func: () -> Unit): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.doOnInactive(source, func))
 }
 
@@ -950,9 +759,6 @@ fun <T> LiveData<T>.observeForever(observer: Observer<T>) =
 fun <T> LiveData<T>.observeForever(observer: MutableLiveData<T>) =
         ReactiveLiveData.observeForever(this, observer)
 
-fun <T> LiveData<T>.observeForever(observer: Function<T, Unit>) =
-        ReactiveLiveData.observeForever(this, observer)
-
 fun <T> LiveData<T>.observeForever(observer: (T) -> Unit) =
         ReactiveLiveData.observeForever(this, observer)
 
@@ -972,10 +778,7 @@ fun <T> LiveData<T>.startWith(value: T): LiveData<T> =
         ReactiveLiveData.startWith(this, value)
 
 fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> =
-        ReactiveLiveData.startWith(this, value)
-
-fun <T> LiveData<T>.startWith(value: Function<Unit, T>): LiveData<T> =
-        ReactiveLiveData.startWith(this, value)
+        ReactiveLiveData.startWith(this, value())
 
 fun <T> LiveData<T>.startWith(value: LiveData<T>): LiveData<T> =
         ReactiveLiveData.startWith(this, value)
@@ -997,9 +800,6 @@ fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> =
 
 fun <T> LiveData<T>.takeWhile(predicate: Function<T, Boolean>): LiveData<T> =
         ReactiveLiveData.takeWhile(this, predicate)
-
-fun <T, R> LiveData<T>.map(func: Function<T, R>): LiveData<R> =
-        ReactiveLiveData.map(this, func)
 
 fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> =
         ReactiveLiveData.map(this, func)
@@ -1055,29 +855,17 @@ fun <T, R> Array<LiveData<T>>.combineLatest(combiner: Function<Array<T>, R>): Li
 fun <T, R> Collection<LiveData<out T>>.combineLatest(combiner: Function<Array<T>, R>): LiveData<R> =
         ReactiveLiveData.combineLatest(this.toTypedArray(), combiner)
 
-fun <T1, T2, R> LiveData<T1>.combineLatestWith(other: LiveData<T2>, combiner: Function2<T1, T2, R>): LiveData<R> =
-        ReactiveLiveData.combineLatest(this, other, combiner)
-
 fun <T1, T2, R> LiveData<T1>.combineLatestWith(other: LiveData<T2>, combiner: (T1, T2) -> R): LiveData<R> =
         ReactiveLiveData.combineLatest(this, other, combiner)
 
 fun <T1, T2> LiveData<T1>.combineLatestWith(other: LiveData<T2>): LiveData<Pair<T1, T2>> =
         ReactiveLiveData.combineLatest(this, other) { t1, t2 -> t1 to t2 }
 
-fun <T> LiveData<T>.doOnValue(func: Function<T, Unit>): LiveData<T> =
-        ReactiveLiveData.doOnValue(this, func)
-
 fun <T> LiveData<T>.doOnValue(func: (T) -> Unit): LiveData<T> =
         ReactiveLiveData.doOnValue(this, func)
 
-fun <T> LiveData<T>.doOnActive(func: Function<Unit, Unit>): LiveData<T> =
+fun <T> LiveData<T>.doOnActive(func: () -> Unit): LiveData<T> =
         ReactiveLiveData.doOnActive(this, func)
 
-fun <T> LiveData<T>.doOnActive(func: (Unit) -> Unit): LiveData<T> =
-        ReactiveLiveData.doOnActive(this, func)
-
-fun <T> LiveData<T>.doOnInactive(func: Function<Unit, Unit>): LiveData<T> =
-        ReactiveLiveData.doOnInactive(this, func)
-
-fun <T> LiveData<T>.doOnInactive(func: (Unit) -> Unit): LiveData<T> =
+fun <T> LiveData<T>.doOnInactive(func: () -> Unit): LiveData<T> =
         ReactiveLiveData.doOnInactive(this, func)

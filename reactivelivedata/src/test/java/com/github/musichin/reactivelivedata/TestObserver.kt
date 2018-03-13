@@ -14,8 +14,8 @@ class TestObserver<T> : Observer<T?> {
     fun assertNotEmpty() = Assert.assertFalse(values.isEmpty())
     fun assertEmpty() = Assert.assertTrue(values.isEmpty())
     fun assertSize(size: Int) = Assert.assertEquals(size, values.size)
-    fun assertEquals(vararg values: T?) = assertEquals(values.toList())
-    fun assertEquals(values: List<T?>) = Assert.assertEquals(values, this.values)
+    fun assertEquals(vararg values: Any?) = assertEquals(values.toList())
+    fun assertEquals(values: List<Any?>) = Assert.assertEquals(values, this.values)
 
     val first: T? get() = values.firstOrNull()
     val last: T? get() = values.lastOrNull()

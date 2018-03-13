@@ -46,6 +46,29 @@ source.distinctUntilChanged().observe(this) {
 }
 ```
 
+## Java
+Reactive LiveData is fully written in Kotlin but can be also used in pure Java projects without any Kotlin (runtime) dependencies.
+There are two ways how you can do that. It's recommended to wrap your LiveData in `ReactiveLiveData`:
+```java
+LiveData<Object> source = // 1, 2, 3, 4
+ReactiveLiveData.of(source)
+        .cast(Integer.class)
+        .map(i -> i * i)
+        .observe(this, v -> {
+            System.out.println(v);
+        });
+```
+
+The second possibility is to use functions directly:
+```java
+LiveData<Object> source = // 1, 2, 3, 4
+LiveData<Integer> sourceCasted = ReactiveLiveData.cast(source, Integer.class);
+LiveData<Integer> sourceMapped = ReactiveLiveData.map(sourceCasted, i -> i * i);
+sourceMapped.observe(this, v -> {
+    System.out.println(v);
+});
+```
+
 ## Binaries
 ```groovy
 repositories {
