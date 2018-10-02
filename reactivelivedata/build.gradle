@@ -33,12 +33,12 @@ android {
 }
 
 dependencies {
-    api 'android.arch.lifecycle:livedata:1.1.0'
+    api 'android.arch.lifecycle:livedata:1.1.1'
     compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.12'
-    testImplementation "android.arch.core:core-testing:1.1.0"
+    testImplementation 'android.arch.core:core-testing:1.1.1'
 }
 
 tasks.withType(Javadoc).all {

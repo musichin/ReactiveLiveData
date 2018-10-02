@@ -1,4 +1,4 @@
-# Reactive LiveData [ ![Download](https://api.bintray.com/packages/musichin/maven/reactivelivedata/images/download.svg)](https://bintray.com/musichin/maven/reactivelivedata/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.2.30-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/reactivelivedata.svg?branch=master)](https://travis-ci.org/musichin/reactivelivedata)
+# Reactive LiveData [ ![Download](https://api.bintray.com/packages/musichin/maven/reactivelivedata/images/download.svg)](https://bintray.com/musichin/maven/reactivelivedata/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.2.71-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/reactivelivedata.svg?branch=master)](https://travis-ci.org/musichin/reactivelivedata)
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects
 
 ## Functions
@@ -79,6 +79,12 @@ dependencies {
     implementation 'com.github.musichin.reactivelivedata:reactivelivedata:x.y.z'
 }
 ```
+
+## Contributing
+Contributors are more than welcome. Just upload a PR with a description of your changes.
+
+## Issues or feature requests?
+File github issues for anything that is unexpectedly broken.
 
 ## License
 

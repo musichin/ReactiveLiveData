@@ -217,13 +217,13 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T, R> switchMap(source: LiveData<T>, func: Function<T, LiveData<R>>): LiveData<R> {
+        fun <T, R> switchMap(source: LiveData<T>, func: Function<T, LiveData<R>?>): LiveData<R> {
             return Transformations.switchMap(source, func)
         }
 
         @MainThread
         @JvmStatic
-        fun <T, R> switchMap(source: LiveData<T>, func: (T) -> LiveData<R>): LiveData<R> {
+        fun <T, R> switchMap(source: LiveData<T>, func: (T) -> LiveData<R>?): LiveData<R> {
             return Transformations.switchMap(source, func)
         }
 
@@ -701,12 +701,13 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun takeWhile(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.takeWhile(source, predicate))
 
-    fun <R> switchMap(func: Function<T, LiveData<R>>): ReactiveLiveData<R> =
+    fun <R> switchMap(func: Function<T, LiveData<R>?>): ReactiveLiveData<R> =
             ReactiveLiveData(ReactiveLiveData.switchMap(source, func))
 
     fun filter(func: Function<T, Boolean>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.filter(source, func))
 
+    @Suppress("UNCHECKED_CAST")
     fun filterNotNull(): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.filterNotNull(source as LiveData<T?>))
 
@@ -804,10 +805,10 @@ fun <T> LiveData<T>.takeWhile(predicate: Function<T, Boolean>): LiveData<T> =
 fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> =
         ReactiveLiveData.map(this, func)
 
-fun <T, R> LiveData<T>.switchMap(func: Function<T, LiveData<R>>): LiveData<R> =
+fun <T, R> LiveData<T>.switchMap(func: Function<T, LiveData<R>?>): LiveData<R> =
         ReactiveLiveData.switchMap(this, func)
 
-fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>): LiveData<R> =
+fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>?): LiveData<R> =
         ReactiveLiveData.switchMap(this, func)
 
 fun <T> LiveData<LiveData<T>>.switchLatest(): LiveData<T> =
