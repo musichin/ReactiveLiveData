@@ -11,10 +11,13 @@ script:
     - |
       if [ -z "$TRAVIS_TAG" ]
       then
-        ./gradlew assembleRelease bintrayUpload -PdryRun=true -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY
+        ./gradlew assembleRelease bintrayUpload -PdryRun=true
       else
-        ./gradlew assembleRelease bintrayUpload -PdryRun=false -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY
+        ./gradlew assembleRelease bintrayUpload -PdryRun=false
       fi
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
