@@ -15,6 +15,10 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
+        fun <T> hide(source: MutableLiveData<T>): LiveData<T> = source
+
+        @MainThread
+        @JvmStatic
         fun <T> of(source: LiveData<T>): ReactiveLiveData<T> = ReactiveLiveData(source)
 
         @MainThread
@@ -735,6 +739,9 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun doOnInactive(func: () -> Unit): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.doOnInactive(source, func))
 }
+
+fun <T> MutableLiveData<T>.hide() =
+        ReactiveLiveData.hide(this)
 
 fun <T> LiveData<T>.observe(owner: LifecycleOwner, observer: MutableLiveData<T>) =
         ReactiveLiveData.observe(this, owner, observer)
