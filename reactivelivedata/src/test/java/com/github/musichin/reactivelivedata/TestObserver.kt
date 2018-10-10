@@ -1,6 +1,6 @@
 package com.github.musichin.reactivelivedata
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import org.junit.Assert
 
 class TestObserver<T> : Observer<T?> {

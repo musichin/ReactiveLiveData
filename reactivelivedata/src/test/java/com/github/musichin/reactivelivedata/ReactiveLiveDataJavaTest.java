@@ -1,7 +1,7 @@
 package com.github.musichin.reactivelivedata;
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule;
-import android.arch.lifecycle.LiveData;
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
 
 import org.junit.Rule;
 import org.junit.Test;
