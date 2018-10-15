@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.novoda.bintray-release'
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.novoda:bintray-release:0.8.0'
     }
 }
 
@@ -45,23 +45,12 @@ tasks.withType(Javadoc).all {
     enabled = false
 }
 
-bintray {
-    user = rootProject.user
-    key = rootProject.key
-    dryRun = rootProject.dryRun
-    publish = true
-    pkg {
-        repo = 'maven'
-        name = rootProject.name
-        desc = rootProject.description
-        userOrg = rootProject.user
-        licenses = rootProject.licences
-        vcsUrl = rootProject.vcsUrl
-        websiteUrl = rootProject.websiteUrl
-        issueTrackerUrl = rootProject.issueTrackerUrl
-        version {
-            name = rootProject.version
-            vcsTag = rootProject.version
-        }
-    }
+publish {
+    publishVersion = rootProject.version
+    groupId = rootProject.group
+    desc = rootProject.description
+    artifactId = name
+    uploadName = rootProject.name
+    website = rootProject.website
+    licences = rootProject.licences
 }

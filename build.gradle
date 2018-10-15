@@ -35,11 +35,6 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 28
     buildToolsVersion = '28.0.3'
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    dryRun = findProperty('dryRun')?.toBoolean() ?: false
-    websiteUrl = 'https://github.com/musichin/reactivelivedata'
-    vcsUrl = 'https://github.com/musichin/reactivelivedata.git'
-    issueTrackerUrl = 'https://github.com/musichin/reactivelivedata/issues'
+    website = 'https://github.com/musichin/reactivelivedata'
     licences = ['MIT']
 }
