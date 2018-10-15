@@ -11,9 +11,9 @@ script:
     - |
       if [ -z "$TRAVIS_TAG" ]
       then
-        ./gradlew assembleRelease bintrayUpload -PdryRun=true
+        ./gradlew clean build bintrayUpload -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY -PdryRun=false
       else
-        ./gradlew assembleRelease bintrayUpload -PdryRun=false
+        ./gradlew clean build bintrayUpload -PbintrayUser=$BINTRAY_USER -PbintrayKey=$BINTRAY_KEY -PdryRun=false
       fi
 
 after_success:

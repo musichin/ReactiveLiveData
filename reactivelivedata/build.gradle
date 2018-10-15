@@ -1,15 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'com.novoda.bintray-release'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.8.0'
-    }
-}
+apply plugin: 'guru.stefma.bintrayrelease'
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -41,13 +32,11 @@ dependencies {
     testImplementation 'android.arch.core:core-testing:1.1.1'
 }
 
-tasks.withType(Javadoc).all {
-    enabled = false
-}
+version = rootProject.version
+group = rootProject.group
 
 publish {
-    publishVersion = rootProject.version
-    groupId = rootProject.group
+    userOrg = rootProject.userOrg
     desc = rootProject.description
     artifactId = name
     uploadName = rootProject.name
