@@ -233,7 +233,7 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
-        fun <T> switchLatest(source: LiveData<LiveData<T>?>): LiveData<T> {
+        fun <T> switchLatest(source: LiveData<out LiveData<T>?>): LiveData<T> {
             return switchMap(source) { it }
         }
 
@@ -818,7 +818,7 @@ fun <T, R> LiveData<T>.switchMap(func: Function<T, LiveData<R>?>): LiveData<R> =
 fun <T, R> LiveData<T>.switchMap(func: (T) -> LiveData<R>?): LiveData<R> =
         ReactiveLiveData.switchMap(this, func)
 
-fun <T> LiveData<LiveData<T>?>.switchLatest(): LiveData<T> =
+fun <T> LiveData<out LiveData<T>?>.switchLatest(): LiveData<T> =
         ReactiveLiveData.switchLatest(this)
 
 fun <T> LiveData<T>.filter(func: Function<T, Boolean>): LiveData<T> =
