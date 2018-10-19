@@ -1,5 +1,6 @@
 package com.github.musichin.reactivelivedata
 
+import androidx.annotation.MainThread
 import androidx.arch.core.util.Function
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -7,7 +8,6 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
-import androidx.annotation.MainThread
 
 class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     companion object {
@@ -841,7 +841,7 @@ fun <T> LiveData<T?>.filterNotNull(): LiveData<T> =
         ReactiveLiveData.filterNotNull(this)
 
 fun <T> LiveData<*>.filterIsInstance(clazz: Class<T>): LiveData<T> =
-        ReactiveLiveData.filterIsInstance(this,clazz)
+        ReactiveLiveData.filterIsInstance(this, clazz)
 
 inline fun <reified T> LiveData<*>.filterIsInstance(): LiveData<T> =
         ReactiveLiveData.filterIsInstance(this, T::class.java)
@@ -866,6 +866,9 @@ fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> =
 
 fun <T> Array<LiveData<T>>.merge(): LiveData<T> =
         ReactiveLiveData.merge(*this)
+
+operator fun <T> LiveData<T>.plus(other: LiveData<T>): LiveData<T> =
+        mergeWith(other)
 
 fun <T> Collection<LiveData<T>>.merge(): LiveData<T> =
         ReactiveLiveData.merge(*this.toTypedArray())
