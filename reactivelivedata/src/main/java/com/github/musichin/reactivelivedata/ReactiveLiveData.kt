@@ -261,6 +261,13 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
+        @Suppress("UNCHECKED_CAST")
+        fun <T> filterIsInstance(source: LiveData<*>, clazz: Class<T>): LiveData<T> {
+            return filter(source) { clazz.isInstance(it) } as LiveData<T>
+        }
+
+        @MainThread
+        @JvmStatic
         fun <T, K> distinctUntilChanged(source: LiveData<T>, func: Function<T, K>): LiveData<T> {
             return distinctUntilChanged(source, func::apply)
         }
@@ -337,7 +344,7 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
                 val observer = Observer<Any> { t ->
                     var combine = emits == size
                     if (!combine) {
-                        if (values[index] == NOT_SET) emits++
+                        if (values[index] === NOT_SET) emits++
                         combine = emits == size
                     }
                     values[index] = t
@@ -715,6 +722,9 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun filterNotNull(): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.filterNotNull(source as LiveData<T?>))
 
+    fun <T> filterIsInstance(clazz: Class<T>): ReactiveLiveData<T> =
+            ReactiveLiveData(ReactiveLiveData.filterIsInstance(source, clazz))
+
     fun <K> distinct(func: Function<T, K>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.distinct(source, func))
 
@@ -829,6 +839,12 @@ fun <T> LiveData<T>.filter(func: (T) -> Boolean): LiveData<T> =
 
 fun <T> LiveData<T?>.filterNotNull(): LiveData<T> =
         ReactiveLiveData.filterNotNull(this)
+
+fun <T> LiveData<*>.filterIsInstance(clazz: Class<T>): LiveData<T> =
+        ReactiveLiveData.filterIsInstance(this,clazz)
+
+inline fun <reified T> LiveData<*>.filterIsInstance(): LiveData<T> =
+        ReactiveLiveData.filterIsInstance(this, T::class.java)
 
 fun <T, K> LiveData<T>.distinct(func: Function<T, K>): LiveData<T> =
         ReactiveLiveData.distinct(this, func)
