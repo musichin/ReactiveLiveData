@@ -254,6 +254,18 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
+        fun <T> filterNot(source: LiveData<T>, func: Function<T, Boolean>): LiveData<T> {
+            return filterNot(source, func::apply)
+        }
+
+        @MainThread
+        @JvmStatic
+        fun <T> filterNot(source: LiveData<T>, func: (T) -> Boolean): LiveData<T> {
+            return filter(source) { !func(it) }
+        }
+
+        @MainThread
+        @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun <T> filterNotNull(source: LiveData<T?>): LiveData<T> {
             return filter(source) { it != null } as LiveData<T>
@@ -718,6 +730,9 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun filter(func: Function<T, Boolean>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.filter(source, func))
 
+    fun filterNot(func: Function<T, Boolean>): ReactiveLiveData<T> =
+            ReactiveLiveData(ReactiveLiveData.filterNot(source, func))
+
     @Suppress("UNCHECKED_CAST")
     fun filterNotNull(): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.filterNotNull(source as LiveData<T?>))
@@ -836,6 +851,12 @@ fun <T> LiveData<T>.filter(func: Function<T, Boolean>): LiveData<T> =
 
 fun <T> LiveData<T>.filter(func: (T) -> Boolean): LiveData<T> =
         ReactiveLiveData.filter(this, func)
+
+fun <T> LiveData<T>.filterNot(func: Function<T, Boolean>): LiveData<T> =
+        ReactiveLiveData.filterNot(this, func)
+
+fun <T> LiveData<T>.filterNot(func: (T) -> Boolean): LiveData<T> =
+        ReactiveLiveData.filterNot(this, func)
 
 fun <T> LiveData<T?>.filterNotNull(): LiveData<T> =
         ReactiveLiveData.filterNotNull(this)

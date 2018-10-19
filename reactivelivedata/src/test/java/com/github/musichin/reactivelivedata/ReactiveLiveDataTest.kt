@@ -167,6 +167,16 @@ class ReactiveLiveDataTest {
     }
 
     @Test
+    fun testFilterNot() {
+        val observer = TestObserver<Int>()
+        val data = MutableLiveData<Int>()
+        data.filterNot { it % 2 == 0 }.observeForever(observer)
+        (1..10).forEach { data.value = it }
+
+        observer.assertEquals(1, 3, 5, 7, 9)
+    }
+
+    @Test
     fun testFilterNotNull() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int?>()
@@ -285,5 +295,33 @@ class ReactiveLiveDataTest {
         assertFalse(active)
         monitoredSource.observeForever(observer)
         assertTrue(active)
+    }
+
+    @Test
+    fun testFilterIsInstanceReified() {
+        val observer = TestObserver<String>()
+        val s = MutableLiveData<Any>()
+        s.filterIsInstance<String>().observeForever(observer)
+        s.value = "1"
+        s.value = 2
+        s.value = "3"
+        s.value = 4L
+        s.value = "5"
+
+        observer.assertEquals("1", "3", "5")
+    }
+
+    @Test
+    fun testFilterIsInstance() {
+        val observer = TestObserver<String>()
+        val s = MutableLiveData<Any>()
+        s.filterIsInstance(String::class.java).observeForever(observer)
+        s.value = "1"
+        s.value = 2
+        s.value = "3"
+        s.value = 4L
+        s.value = "5"
+
+        observer.assertEquals("1", "3", "5")
     }
 }
