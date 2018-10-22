@@ -215,6 +215,28 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
+        @Suppress("UNCHECKED_CAST")
+        fun <T> skipWhile(source: LiveData<T>, predicate: Function<T, Boolean>): LiveData<T> {
+            return skipWhile(source, predicate::apply)
+        }
+
+        @MainThread
+        @JvmStatic
+        @Suppress("UNCHECKED_CAST")
+        fun <T> skipWhile(source: LiveData<T>, predicate: (T) -> Boolean): LiveData<T> {
+            val result = MediatorLiveData<T>()
+            var drop = true
+            result.addSource(source) {
+                if (!drop || predicate(it)) {
+                    drop = false
+                    result.value = it
+                }
+            }
+            return result
+        }
+
+        @MainThread
+        @JvmStatic
         fun <T, R> map(source: LiveData<T>, func: (T) -> R): LiveData<R> {
             return Transformations.map(source, func)
         }
@@ -724,6 +746,9 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun takeWhile(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
             ReactiveLiveData(ReactiveLiveData.takeWhile(source, predicate))
 
+    fun skipWhile(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
+            ReactiveLiveData(ReactiveLiveData.skipWhile(source, predicate))
+
     fun <R> switchMap(func: Function<T, LiveData<R>?>): ReactiveLiveData<R> =
             ReactiveLiveData(ReactiveLiveData.switchMap(source, func))
 
@@ -833,6 +858,12 @@ fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> =
 
 fun <T> LiveData<T>.takeWhile(predicate: Function<T, Boolean>): LiveData<T> =
         ReactiveLiveData.takeWhile(this, predicate)
+
+fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> =
+        ReactiveLiveData.skipWhile(this, predicate)
+
+fun <T> LiveData<T>.skipWhile(predicate: Function<T, Boolean>): LiveData<T> =
+        ReactiveLiveData.skipWhile(this, predicate)
 
 fun <T, R> LiveData<T>.map(func: (T) -> R): LiveData<R> =
         ReactiveLiveData.map(this, func)
