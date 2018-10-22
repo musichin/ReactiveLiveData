@@ -338,4 +338,18 @@ class ReactiveLiveDataTest {
 
         observer.assertEquals(3, 4 ,5)
     }
+
+    @Test
+    fun testSkip() {
+        val observer = TestObserver<Int>()
+        val s = MutableLiveData<Int>()
+        s.skip(2).observeForever(observer)
+        s.value = 1
+        s.value = 2
+        s.value = 3
+        s.value = 4
+        s.value = 5
+
+        observer.assertEquals(3, 4 ,5)
+    }
 }
