@@ -1,6 +1,6 @@
 workflow "New workflow" {
-  on = "check_run"
   resolves = ["musichin/action-gradle-android"]
+  on = "pull_request"
 }
 
 action "musichin/action-gradle-android" {
