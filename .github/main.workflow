@@ -5,5 +5,5 @@ workflow "New workflow" {
 
 action "musichin/action-gradle-android" {
   uses = "musichin/action-gradle-android@master"
-  args = "assembleDebug"
+  args = "test assembleDebug"
 }
