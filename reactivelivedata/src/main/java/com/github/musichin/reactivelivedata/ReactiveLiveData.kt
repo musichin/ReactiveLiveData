@@ -461,7 +461,7 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
                                                   source5: LiveData<T5>,
                                                   combiner: (T1, T2, T3, T4, T5) -> R): LiveData<R> {
             val func = Function<Array<Any>, R> { input ->
-                combiner(input[0] as T1, input[1] as T2, input[2] as T3, input[3] as T4, input[3] as T5)
+                combiner(input[0] as T1, input[1] as T2, input[2] as T3, input[3] as T4, input[4] as T5)
             }
             return combineLatest(func,
                     source1 as LiveData<Any>,
