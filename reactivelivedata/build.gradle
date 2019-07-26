@@ -25,11 +25,11 @@ android {
 
 dependencies {
     api 'androidx.lifecycle:lifecycle-livedata:2.0.0'
-    compileOnly "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.12'
-    testImplementation 'androidx.arch.core:core-testing:2.0.0'
+    testImplementation 'androidx.arch.core:core-testing:2.0.1'
 }
 
 version = rootProject.version

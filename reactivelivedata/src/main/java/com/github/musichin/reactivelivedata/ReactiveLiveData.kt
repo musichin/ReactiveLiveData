@@ -109,8 +109,9 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
 
         @MainThread
         @JvmStatic
+        @Suppress("UNCHECKED_CAST")
         fun <T, U> cast(source: LiveData<T>, clazz: Class<U>): LiveData<U> {
-            return map(source, clazz::cast)
+            return map(source) { clazz.cast(it) as U }
         }
 
         @MainThread
@@ -335,7 +336,7 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
         @MainThread
         @JvmStatic
         fun <T, K> distinct(source: LiveData<T>, func: (T) -> K): LiveData<T> {
-            val keys = HashSet<Any?>()
+            val keys = hashSetOf<Any?>()
             return filter(source) { keys.add(func(it)) }
         }
 
@@ -354,7 +355,7 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
         @MainThread
         @JvmStatic
         fun <T> merge(vararg sources: LiveData<T>): LiveData<T> {
-            if (sources.size <= 0) return ReactiveLiveData.never()
+            if (sources.isEmpty()) return never()
 
             val result = MediatorLiveData<T>()
 
@@ -370,16 +371,16 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
         @JvmStatic
         @Suppress("UNCHECKED_CAST")
         fun <T, R> combineLatest(sources: Array<out LiveData<out T>>, combiner: Function<Array<T>, R>): LiveData<R> {
-            if (sources.size <= 0) return ReactiveLiveData.never()
+            if (sources.isEmpty()) return never()
 
             val size = sources.size
             val result = MediatorLiveData<Any>()
 
             val values = arrayOfNulls<Any?>(size)
-            for (index in 0..size - 1) values[index] = NOT_SET
+            for (index in 0 until size) values[index] = NOT_SET
 
             var emits = 0
-            for (index in 0..size - 1) {
+            for (index in 0 until size) {
                 val observer = Observer<Any> { t ->
                     var combine = emits == size
                     if (!combine) {
@@ -699,106 +700,106 @@ class ReactiveLiveData<T : Any?>(private val source: LiveData<T>) {
     fun liveData(): LiveData<T> = source
 
     fun observe(owner: LifecycleOwner, observer: MutableLiveData<T>) =
-            ReactiveLiveData.observe(source, owner, observer)
+            observe(source, owner, observer)
 
     fun observe(owner: LifecycleOwner) =
-            ReactiveLiveData.observe(source, owner)
+            observe(source, owner)
 
     fun observe(owner: LifecycleOwner, observer: Observer<T>) =
-            ReactiveLiveData.observe(source, owner, observer)
+            observe(source, owner, observer)
 
     fun observeForever() =
-            ReactiveLiveData.observeForever(source)
+            observeForever(source)
 
     fun observeForever(observer: Observer<T>) =
-            ReactiveLiveData.observeForever(source, observer)
+            observeForever(source, observer)
 
     fun observeForever(observer: MutableLiveData<T>) =
-            ReactiveLiveData.observeForever(source, observer)
+            observeForever(source, observer)
 
     fun observeForever(observer: (T) -> Unit) =
-            ReactiveLiveData.observeForever(source, observer)
+            observeForever(source, observer)
 
     fun toLiveData(): LiveData<T> = source
 
     fun <U> cast(clazz: Class<U>): ReactiveLiveData<U> =
-            ReactiveLiveData(ReactiveLiveData.cast(source, clazz))
+            ReactiveLiveData(cast(source, clazz))
 
     fun buffer(count: Int): ReactiveLiveData<List<T>> =
-            ReactiveLiveData(ReactiveLiveData.buffer(source, count))
+            ReactiveLiveData(buffer(source, count))
 
     fun buffer(count: Int, skip: Int): ReactiveLiveData<List<T>> =
-            ReactiveLiveData(ReactiveLiveData.buffer(source, count, skip))
+            ReactiveLiveData(buffer(source, count, skip))
 
     fun startWith(value: T): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.startWith(source, value))
+            ReactiveLiveData(startWith(source, value))
 
     fun startWith(value: () -> T): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.startWith(source, value))
+            ReactiveLiveData(startWith(source, value))
 
     fun startWith(value: LiveData<T>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.startWith(source, value))
+            ReactiveLiveData(startWith(source, value))
 
     fun take(count: Int): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.take(source, count))
+            ReactiveLiveData(take(source, count))
 
     fun first(): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.first(source))
+            ReactiveLiveData(first(source))
 
     fun takeUntil(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.takeUntil(source, predicate))
+            ReactiveLiveData(takeUntil(source, predicate))
 
     fun takeWhile(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.takeWhile(source, predicate))
+            ReactiveLiveData(takeWhile(source, predicate))
 
     fun skipWhile(predicate: Function<T, Boolean>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.skipWhile(source, predicate))
+            ReactiveLiveData(skipWhile(source, predicate))
 
     fun skip(count: Int): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.skip(source, count))
+            ReactiveLiveData(skip(source, count))
 
     fun <R> map(func: Function<T, R>): ReactiveLiveData<R> =
-            ReactiveLiveData(ReactiveLiveData.map(source, func::apply))
+            ReactiveLiveData(map(source, func::apply))
 
     fun <R> switchMap(func: Function<T, LiveData<R>?>): ReactiveLiveData<R> =
-            ReactiveLiveData(ReactiveLiveData.switchMap(source, func))
+            ReactiveLiveData(switchMap(source, func))
 
     fun filter(func: Function<T, Boolean>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.filter(source, func))
+            ReactiveLiveData(filter(source, func))
 
     fun filterNot(func: Function<T, Boolean>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.filterNot(source, func))
+            ReactiveLiveData(filterNot(source, func))
 
     @Suppress("UNCHECKED_CAST")
     fun filterNotNull(): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.filterNotNull(source as LiveData<T?>))
+            ReactiveLiveData(filterNotNull(source as LiveData<T?>))
 
     fun <T> filterIsInstance(clazz: Class<T>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.filterIsInstance(source, clazz))
+            ReactiveLiveData(filterIsInstance(source, clazz))
 
     fun <K> distinct(func: Function<T, K>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.distinct(source, func))
+            ReactiveLiveData(distinct(source, func))
 
     fun distinct(): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.distinct(source))
+            ReactiveLiveData(distinct(source))
 
     fun <K> distinctUntilChanged(func: Function<T, K>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.distinctUntilChanged(source, func))
+            ReactiveLiveData(distinctUntilChanged(source, func))
 
     fun distinctUntilChanged(): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.distinctUntilChanged(source))
+            ReactiveLiveData(distinctUntilChanged(source))
 
     fun mergeWith(other: LiveData<T>): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.merge(source, other))
+            ReactiveLiveData(merge(source, other))
 
     fun doOnValue(func: (T) -> Unit): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.doOnValue(source, func))
+            ReactiveLiveData(doOnValue(source, func))
 
     fun doOnActive(func: () -> Unit): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.doOnActive(source, func))
+            ReactiveLiveData(doOnActive(source, func))
 
     fun doOnInactive(func: () -> Unit): ReactiveLiveData<T> =
-            ReactiveLiveData(ReactiveLiveData.doOnInactive(source, func))
+            ReactiveLiveData(doOnInactive(source, func))
 }
 
 fun <T> MutableLiveData<T>.hide() =
@@ -836,6 +837,9 @@ fun <T> T.toLiveData(): LiveData<T> =
 
 fun <T, U> LiveData<T>.cast(clazz: Class<U>): LiveData<U> =
         ReactiveLiveData.cast(this, clazz)
+
+inline fun <T, reified U> LiveData<T>.cast(): LiveData<U> =
+        ReactiveLiveData.cast(this, U::class.java)
 
 fun <T> LiveData<T>.buffer(count: Int): LiveData<List<T>> =
         ReactiveLiveData.buffer(this, count)
