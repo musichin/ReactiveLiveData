@@ -24,12 +24,12 @@ android {
 }
 
 dependencies {
-    api 'androidx.lifecycle:lifecycle-livedata:2.0.0'
+    api 'androidx.lifecycle:lifecycle-livedata:2.2.0'
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     testImplementation 'junit:junit:4.12'
-    testImplementation 'androidx.arch.core:core-testing:2.0.1'
+    testImplementation 'androidx.arch.core:core-testing:2.1.0'
 }
 
 version = rootProject.version
