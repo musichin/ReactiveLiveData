@@ -24,7 +24,7 @@ android {
 }
 
 dependencies {
-    api 'androidx.lifecycle:lifecycle-livedata:2.2.0'
+    api 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
     api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

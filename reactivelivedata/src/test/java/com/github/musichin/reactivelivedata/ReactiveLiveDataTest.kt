@@ -18,7 +18,7 @@ class ReactiveLiveDataTest {
     @Test
     fun testEmpty() {
         val observer = TestObserver<String>()
-        ReactiveLiveData.never<String>().observeForever(observer)
+        liveData<String>().observeForever(observer)
 
         observer.assertEmpty()
     }
@@ -26,14 +26,14 @@ class ReactiveLiveDataTest {
     @Test
     fun testJust() {
         val observer = TestObserver<String>()
-        ReactiveLiveData.just("test").observeForever(observer)
+        liveData("test").observeForever(observer)
 
         observer.assertEquals("test")
     }
 
     @Test
     fun testCreate() {
-        val source = ReactiveLiveData.create { "test" }
+        val source = liveData { "test" }
         assertNull(source.value)
 
         val observer = TestObserver<String>()
@@ -61,7 +61,7 @@ class ReactiveLiveDataTest {
 
     @Test
     fun testCast() {
-        val source = ReactiveLiveData.create<Any> { "test" }
+        val source = liveData<Any> { "test" }
         val observer = TestObserver<String>()
         source.cast(String::class.java).observeForever(observer)
         observer.assertEquals("test")
@@ -119,7 +119,7 @@ class ReactiveLiveDataTest {
 
     @Test
     fun testStartWithFunction() {
-        val source = ReactiveLiveData.just(2).startWith<Int> { 1 }
+        val source = liveData(2).startWith<Int> { 1 }
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
@@ -129,8 +129,8 @@ class ReactiveLiveDataTest {
 
     @Test
     fun testStartWithLiveData() {
-        val startWith = ReactiveLiveData.create { 1 }
-        val source = ReactiveLiveData.just(2).startWith(startWith)
+        val startWith = liveData { 1 }
+        val source = liveData(2).startWith(startWith)
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
@@ -141,7 +141,7 @@ class ReactiveLiveDataTest {
     @Test
     fun testMap() {
         val observer = TestObserver<Int>()
-        ReactiveLiveData.just("test").map { it.length }.observeForever(observer)
+        liveData("test").map { it.length }.observeForever(observer)
 
         observer.assertEquals(4)
     }
