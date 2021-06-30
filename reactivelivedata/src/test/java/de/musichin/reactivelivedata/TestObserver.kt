@@ -1,4 +1,4 @@
-package com.github.musichin.reactivelivedata
+package de.musichin.reactivelivedata
 
 import androidx.lifecycle.Observer
 import org.junit.Assert

@@ -1,4 +1,4 @@
-package com.github.musichin.reactivelivedata
+package de.musichin.reactivelivedata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
@@ -47,7 +47,15 @@ class ReactiveLiveDataTest {
         val observer = TestObserver<List<Int>>()
         source.buffer(2).observeForever(observer)
         for (i in 0..9) source.value = i
-        observer.assertEquals(listOf(listOf(0, 1), listOf(2, 3), listOf(4, 5), listOf(6, 7), listOf(8, 9)))
+        observer.assertEquals(
+            listOf(
+                listOf(0, 1),
+                listOf(2, 3),
+                listOf(4, 5),
+                listOf(6, 7),
+                listOf(8, 9)
+            )
+        )
     }
 
     @Test
@@ -221,7 +229,7 @@ class ReactiveLiveDataTest {
         val observer = TestObserver<Int>()
         val source1 = MutableLiveData<Int>()
         val source2 = MutableLiveData<Int>()
-        ReactiveLiveData.merge(source1, source2).observeForever(observer)
+        merge(source1, source2).observeForever(observer)
         source1.value = 1
         source2.value = 2
         source2.value = 3
@@ -236,7 +244,7 @@ class ReactiveLiveDataTest {
         val observer = TestObserver<String>()
         val s1 = MutableLiveData<Int>()
         val s2 = MutableLiveData<String>()
-        ReactiveLiveData.combineLatest(s1, s2) { t1, t2 -> "$t1$t2" }.observeForever(observer)
+        combineLatest(s1, s2) { t1, t2 -> "$t1$t2" }.observeForever(observer)
         s1.value = 1
         s2.value = "a"
         s2.value = "b"
@@ -252,7 +260,7 @@ class ReactiveLiveDataTest {
         val s1 = MutableLiveData<Int>()
         val s2 = MutableLiveData<String>()
         val s3 = MutableLiveData<String>()
-        ReactiveLiveData.combineLatest(s1, s2, s3) { t1, t2, t3 -> "$t1$t2$t3" }.observeForever(observer)
+        combineLatest(s1, s2, s3) { t1, t2, t3 -> "$t1$t2$t3" }.observeForever(observer)
         s2.value = "#"
         s1.value = 1
         s3.value = "a"
@@ -336,7 +344,7 @@ class ReactiveLiveDataTest {
         s.value = 4
         s.value = 5
 
-        observer.assertEquals(3, 4 ,5)
+        observer.assertEquals(3, 4, 5)
     }
 
     @Test
@@ -350,6 +358,6 @@ class ReactiveLiveDataTest {
         s.value = 4
         s.value = 5
 
-        observer.assertEquals(3, 4 ,5)
+        observer.assertEquals(3, 4, 5)
     }
 }
