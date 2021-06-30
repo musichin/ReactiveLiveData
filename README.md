@@ -1,5 +1,8 @@
-# Reactive LiveData [ ![Download](https://api.bintray.com/packages/musichin/maven/ReactiveLiveData/images/download.svg)](https://bintray.com/musichin/maven/ReactiveLiveData/_latestVersion) [![Kotlin](https://img.shields.io/badge/Kotlin-1.3.61-blue.svg)](http://kotlinlang.org) [![Build Status](https://travis-ci.org/musichin/reactivelivedata.svg?branch=master)](https://travis-ci.org/musichin/reactivelivedata)
-This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects
+# Reactive LiveData
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.5.21-blue.svg)](http://kotlinlang.org)
+[![CI](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yaml/badge.svg)](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yaml)
+
+This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects.
 
 ## Functions
 * `map`
@@ -20,7 +23,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `cast`
 * and more...
 
-## Examples
+## Usage
 
 ### `filter`
 ```kotlin
@@ -46,37 +49,14 @@ source.distinctUntilChanged().observe(this) {
 }
 ```
 
-## Java
-Reactive LiveData is fully written in Kotlin but can be also used in pure Java projects.
-There are two ways how you can do that. It's recommended to wrap your LiveData in `ReactiveLiveData`:
-```java
-LiveData<Object> source = // 1, 2, 3, 4
-ReactiveLiveData.of(source)
-        .cast(Integer.class)
-        .map(i -> i * i)
-        .observe(this, v -> {
-            System.out.println(v);
-        });
-```
-
-The second possibility is to use functions directly:
-```java
-LiveData<Object> source = // 1, 2, 3, 4
-LiveData<Integer> sourceCasted = ReactiveLiveData.cast(source, Integer.class);
-LiveData<Integer> sourceMapped = ReactiveLiveData.map(sourceCasted, i -> i * i);
-sourceMapped.observe(this, v -> {
-    System.out.println(v);
-});
-```
-
 ## Binaries
 ```groovy
 repositories {
-    maven { url 'https://dl.bintray.com/musichin/maven' }
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.github.musichin.reactivelivedata:reactivelivedata:x.y.z'
+    implementation 'de.musichin.reactivelivedata:reactivelivedata:x.y.z'
 }
 ```
 
