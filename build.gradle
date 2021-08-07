@@ -30,10 +30,10 @@ task clean(type: Delete) {
 }
 
 ext {
-    compileSdkVersion = 30
+    compileSdkVersion = 31
     minSdkVersion = 14
-    targetSdkVersion = 30
-    buildToolsVersion = '30.0.3'
+    targetSdkVersion = 31
+    buildToolsVersion = '31.0.0'
 }
 
 subprojects {
