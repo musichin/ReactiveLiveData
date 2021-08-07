@@ -41,7 +41,6 @@ private fun <T, R> Iterator<LiveData<out T>>.combineLatest(
     return result as LiveData<R>
 }
 
-
 private fun <T, R> combineLatest(
     combiner: (Array<T>) -> R,
     vararg sources: LiveData<T>
