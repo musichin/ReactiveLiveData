@@ -1,6 +1,6 @@
 # Reactive LiveData
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.5.21-blue.svg)](http://kotlinlang.org)
-[![CI](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yaml/badge.svg)](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yaml)
+[![CI](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml/badge.svg)](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml)
 
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects.
 
