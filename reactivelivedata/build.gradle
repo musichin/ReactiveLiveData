@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'jacoco'
     id 'com.vanniktech.maven.publish'
     id 'org.jlleitschuh.gradle.ktlint'
 }
@@ -15,6 +16,9 @@ android {
     }
 
     buildTypes {
+        debug {
+            testCoverageEnabled true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -37,4 +41,19 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
     testImplementation 'androidx.lifecycle:lifecycle-runtime-testing:2.3.1'
+}
+
+jacoco {
+    toolVersion = '0.8.7'
+    tasks.withType(Test) {
+        jacoco.includeNoLocationClasses = true
+        jacoco.excludes = ['jdk.internal.*']
+    }
+}
+
+task jacocoTestReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
