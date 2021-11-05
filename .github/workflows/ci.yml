@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: set up JDK 11
         uses: actions/setup-java@v2
@@ -20,7 +22,9 @@ jobs:
 
       - uses: musichin/ktlint-check@v1
         with:
-          version: '0.42.1'
+          version: '0.43.0'
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build koverXmlReport
+
+      - uses: codecov/codecov-action@v2
