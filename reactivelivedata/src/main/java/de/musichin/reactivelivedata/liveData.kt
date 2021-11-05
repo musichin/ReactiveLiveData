@@ -27,7 +27,6 @@ fun <T> liveData(value: T): LiveData<T> = object : LiveData<T>() {
 fun <T> liveData(value: () -> T): LiveData<T> = object : LiveData<T>() {
     private var initialized = false
     override fun onActive() {
-        listOf<Int>().map { }
         if (initialized) return
         this.value = value()
         initialized = true
