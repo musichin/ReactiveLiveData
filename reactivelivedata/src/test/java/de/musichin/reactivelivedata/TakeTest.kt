@@ -35,6 +35,18 @@ class TakeTest {
     }
 
     @Test
+    fun testTakeNone() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Int>()
+        source.take(-1).observeForever(observer)
+        source.value = 1
+        source.value = 2
+        source.value = 3
+
+        observer.assertEmpty()
+    }
+
+    @Test
     fun testTakeUntil() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()

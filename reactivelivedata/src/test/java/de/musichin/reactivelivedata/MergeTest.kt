@@ -3,6 +3,7 @@ package de.musichin.reactivelivedata
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,6 +24,26 @@ class MergeTest {
         }
 
         observer.assertEquals((0 until size).toList() + (0 until size).map { -it })
+    }
+
+    @Test
+    fun testMergeEmpty() {
+        val source = emptyList<LiveData<Int>>().merge()
+        Assert.assertNull(source.value)
+
+        val observer = TestObserver<Int>()
+        source.observeForever(observer)
+        observer.assertEmpty()
+    }
+
+    @Test
+    fun testMergeSingle() {
+        val source = listOf(liveData { "test_value" }).merge()
+        Assert.assertNull(source.value)
+
+        val observer = TestObserver<String>()
+        source.observeForever(observer)
+        observer.assertEquals("test_value")
     }
 
     @Test
