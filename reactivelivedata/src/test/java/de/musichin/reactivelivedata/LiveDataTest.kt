@@ -45,4 +45,20 @@ class LiveDataTest {
         source.observeForever(observer)
         observer.assertEquals("test")
     }
+
+    @Test
+    fun testToLiveDataFunctionCalledOnce() {
+        var counter = 0
+        val source = liveData { counter++ }
+        assertNull(source.value)
+
+        val observer = TestObserver<Int>()
+        source.observeForever(observer)
+        observer.assertEquals(0)
+        observer.clean()
+
+        source.removeObserver(observer)
+        source.observeForever(observer)
+        observer.assertEquals(0)
+    }
 }

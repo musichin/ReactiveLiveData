@@ -12,17 +12,16 @@ private fun <T, R> Iterator<LiveData<out T>>.combineLatest(
 
     val result = MediatorLiveData<Any>()
 
-    val values = arrayOfNulls<Any?>(size)
-    for (index in 0 until size) values[index] = NOT_SET
+    val values = Array<Any?>(size) { NOT_SET }
 
     var emits = 0
+    var combine = false
     val combineFn: (Int, value: Any?) -> Unit = { index, value ->
-        var combine = emits == size
         if (!combine) {
             if (values[index] === NOT_SET) {
                 emits++
+                combine = emits == size
             }
-            combine = emits == size
         }
         values[index] = value
 

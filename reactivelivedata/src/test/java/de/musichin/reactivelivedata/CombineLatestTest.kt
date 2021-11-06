@@ -3,6 +3,7 @@ package de.musichin.reactivelivedata
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test
 
@@ -16,7 +17,6 @@ class CombineLatestTest {
         val sources = (0 until size).map { MutableLiveData<String>() }
 
         val combiner = { values: Iterable<String> ->
-            println(values)
             values.joinToString("")
         }
         func(sources, combiner).observeForever(observer)
@@ -38,6 +38,52 @@ class CombineLatestTest {
         }
 
         observer.assertEquals((0..size).map(seq).map(combiner))
+    }
+
+    @Test
+    fun testCombineSkipsValues() {
+        val source0 = MutableLiveData<String?>()
+        val source1 = MutableLiveData<Int>()
+        val source = listOf(source0, source1).combineLatest { it.joinToString("") }
+        Assert.assertNull(source.value)
+
+        val observer = TestObserver<String>()
+        source.observeForever(observer)
+
+        source0.value = "a"
+        source0.value = "b"
+        source0.value = "c"
+        Assert.assertNull(source.value)
+
+        source1.value = 4
+        observer.assertEquals("c4")
+    }
+
+    @Test
+    fun testCombineEmpty() {
+        val source = emptyList<LiveData<Int>>().combineLatest { it.sum() }
+        Assert.assertNull(source.value)
+
+        val observer = TestObserver<Int>()
+        source.observeForever(observer)
+        observer.assertEmpty()
+    }
+
+    @Test
+    fun testCombineSingle() {
+        val source = listOf(liveData { "test_value" }).combineLatest { it.joinToString() }
+        Assert.assertNull(source.value)
+
+        val observer = TestObserver<String>()
+        source.observeForever(observer)
+        observer.assertEquals("test_value")
+    }
+
+    @Test
+    fun testCombineArrayIterable() {
+        createTest(2) { sources, combiner ->
+            sources.toTypedArray().asIterable().combineLatest(combiner)
+        }
     }
 
     @Test
