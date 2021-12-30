@@ -5,8 +5,8 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.5.31"))
-        classpath("com.android.tools.build:gradle:7.0.3")
+        classpath(kotlin("gradle-plugin", version = "1.6.10"))
+        classpath("com.android.tools.build:gradle:7.0.4")
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
     }
 }
