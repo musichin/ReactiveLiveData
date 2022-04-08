@@ -6,7 +6,7 @@ buildscript {
     }
     dependencies {
         classpath(kotlin("gradle-plugin", version = "1.6.10"))
-        classpath("com.android.tools.build:gradle:7.0.4")
+        classpath("com.android.tools.build:gradle:7.1.3")
         classpath("com.vanniktech:gradle-maven-publish-plugin:0.18.0")
     }
 }
