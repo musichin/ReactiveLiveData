@@ -20,7 +20,7 @@ fun <T> LiveData<T>.filter(predicate: (T) -> Boolean): LiveData<T> {
  * @return new [LiveData] instance.
  */
 fun <T> LiveData<T>.filterNot(predicate: (T) -> Boolean): LiveData<T> =
-    filter(predicate.not)
+    filter { value -> !predicate(value) }
 
 /**
  * Returns new [LiveData] instance that filters not `null` elements.
