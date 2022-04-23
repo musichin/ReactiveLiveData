@@ -7,6 +7,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+
     steps:
       - uses: actions/checkout@v2
 
@@ -24,6 +26,7 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.release.tag_name }}
+          JAVA_OPTS: '-Xmx2g -XX:MaxMetaspaceSize=512m'
 
       - name: Publish release
         run: ./gradlew closeAndReleaseRepository --no-daemon --no-parallel

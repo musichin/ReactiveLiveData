@@ -1,5 +1,5 @@
 # Reactive LiveData
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.6.10-blue.svg)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.6.21-blue.svg)](http://kotlinlang.org)
 [![CI](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml/badge.svg)](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/musichin/ReactiveLiveData/branch/main/graph/badge.svg?token=6M3tKXUbf3)](https://codecov.io/gh/musichin/ReactiveLiveData)
 [![Maven Central](https://img.shields.io/maven-central/v/de.musichin.reactivelivedata/reactivelivedata)](https://search.maven.org/artifact/de.musichin.reactivelivedata/reactivelivedata)
