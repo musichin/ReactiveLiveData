@@ -26,4 +26,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.release.tag_name }}
-          JAVA_OPTS: '-Xmx2g -XX:MaxMetaspaceSize=512m'
+          JAVA_OPTS: '-Xmx4g -XX:MaxMetaspaceSize=1g'
