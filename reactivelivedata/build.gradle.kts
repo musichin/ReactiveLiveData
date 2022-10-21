@@ -6,6 +6,8 @@ plugins {
 }
 
 android {
+    namespace = "com.github.musichin.reactivelivedata"
+
     buildToolsVersion = "33.0.0"
     compileSdk = 33
 
