@@ -1,5 +1,6 @@
 package de.musichin.reactivelivedata
 
+import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 
@@ -9,6 +10,7 @@ import androidx.lifecycle.Transformations
  * @param mapper function to apply to each element.
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T, R> LiveData<T>.switchMap(mapper: (T) -> LiveData<R>?): LiveData<R> =
     Transformations.switchMap(this, mapper)
 
@@ -16,5 +18,6 @@ fun <T, R> LiveData<T>.switchMap(mapper: (T) -> LiveData<R>?): LiveData<R> =
  * Returns new [LiveData] instance that switches to the last recent created [LiveData].
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T> LiveData<out LiveData<T>?>.switchLatest(): LiveData<T> =
     switchMap { it }
