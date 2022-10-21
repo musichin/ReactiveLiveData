@@ -19,7 +19,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Upload release
-        run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-daemon --no-parallel
+        run: ./gradlew publish
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}
@@ -27,9 +27,3 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
           ORG_GRADLE_PROJECT_VERSION_NAME: ${{ github.event.release.tag_name }}
           JAVA_OPTS: '-Xmx2g -XX:MaxMetaspaceSize=512m'
-
-      - name: Publish release
-        run: ./gradlew closeAndReleaseRepository --no-daemon --no-parallel
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_NEXUS_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_NEXUS_PASSWORD }}

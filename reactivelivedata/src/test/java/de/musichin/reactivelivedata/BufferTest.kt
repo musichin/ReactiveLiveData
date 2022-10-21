@@ -22,8 +22,8 @@ class BufferTest {
                 listOf(2, 3),
                 listOf(4, 5),
                 listOf(6, 7),
-                listOf(8, 9)
-            )
+                listOf(8, 9),
+            ),
         )
     }
 

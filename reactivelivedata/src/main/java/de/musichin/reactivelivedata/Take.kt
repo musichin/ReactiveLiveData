@@ -37,8 +37,11 @@ fun <T> LiveData<T>.takeUntil(predicate: (T) -> Boolean): LiveData<T> {
 fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value ->
-        if (predicate(value)) result.value = value
-        else result.removeSource(this)
+        if (predicate(value)) {
+            result.value = value
+        } else {
+            result.removeSource(this)
+        }
     }
     return result
 }

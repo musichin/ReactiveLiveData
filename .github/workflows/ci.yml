@@ -22,9 +22,9 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
-      - uses: musichin/ktlint-check@v1
+      - uses: musichin/ktlint-check@v2
         with:
-          version: '0.45.2'
+          ktlint-version: '0.47.1'
 
       - name: Build with Gradle
         run: ./gradlew build koverXmlReport --no-daemon
