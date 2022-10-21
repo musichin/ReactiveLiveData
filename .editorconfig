@@ -1,0 +1,11 @@
+# https://editorconfig.org
+root = true
+
+[*]
+indent_style = space
+end_of_line = lf
+charset = utf-8
+
+[*.{kt,kts}]
+ij_kotlin_allow_trailing_comma = true
+ij_kotlin_allow_trailing_comma_on_call_site = true

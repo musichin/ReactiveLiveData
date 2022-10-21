@@ -1,5 +1,5 @@
 # Reactive LiveData
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.6.21-blue.svg)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-1.7.20-blue.svg)](http://kotlinlang.org)
 [![CI](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml/badge.svg)](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/musichin/ReactiveLiveData/branch/main/graph/badge.svg?token=6M3tKXUbf3)](https://codecov.io/gh/musichin/ReactiveLiveData)
 [![Maven Central](https://img.shields.io/maven-central/v/de.musichin.reactivelivedata/reactivelivedata)](https://search.maven.org/artifact/de.musichin.reactivelivedata/reactivelivedata)
@@ -43,11 +43,12 @@ source.distinct().observe(this) {
 }
 ```
 
-### `distinctUntilChanged`
+### `merge`
 ```kotlin
-val source: LiveData<Int> = // 1, 2, 2, 3, 4, 4, 4, 5
-source.distinctUntilChanged().observe(this) {
-    println(it) // 1, 2, 3, 4, 5
+val source1: LiveData<String> = // 1,    2,    3,
+val source2: LiveData<Int> = // a,    b,    c,
+listOf(source1, source2).merge().observe(this) { value ->
+    println(value) // a, 1, b, 2, c, 3
 }
 ```
 
