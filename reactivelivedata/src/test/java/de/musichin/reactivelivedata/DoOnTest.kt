@@ -39,10 +39,18 @@ class DoOnTest {
         val source = MutableLiveData<Int>()
         val monitoredSource = source.doOnActive { active = true }.doOnInactive { active = false }
         monitoredSource.observeForever(observer)
+        source.value = 1
         assertTrue(active)
         monitoredSource.removeObserver(observer)
+        source.value = 2
         assertFalse(active)
         monitoredSource.observeForever(observer)
+        source.value = 3
         assertTrue(active)
+        monitoredSource.removeObserver(observer)
+        source.value = 4
+        assertFalse(active)
+
+        assertEquals(listOf(1, 2, 3), observer.values)
     }
 }
