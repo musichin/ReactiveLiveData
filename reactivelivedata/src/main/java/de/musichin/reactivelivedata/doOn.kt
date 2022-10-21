@@ -1,5 +1,6 @@
 package de.musichin.reactivelivedata
 
+import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
@@ -8,6 +9,7 @@ import androidx.lifecycle.MediatorLiveData
  * @param onValue function to invoke.
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T> LiveData<T>.doOnValue(onValue: (T) -> Unit): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value ->
@@ -22,6 +24,7 @@ fun <T> LiveData<T>.doOnValue(onValue: (T) -> Unit): LiveData<T> {
  * @param onActive function to invoke.
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T> LiveData<T>.doOnActive(onActive: () -> Unit): LiveData<T> {
     val hook = object : LiveData<T>() {
         override fun onActive() = onActive()
@@ -38,6 +41,7 @@ fun <T> LiveData<T>.doOnActive(onActive: () -> Unit): LiveData<T> {
  * @param onInactive function to invoke.
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T> LiveData<T>.doOnInactive(onInactive: () -> Unit): LiveData<T> {
     val hook = object : LiveData<T>() {
         override fun onInactive() = onInactive()

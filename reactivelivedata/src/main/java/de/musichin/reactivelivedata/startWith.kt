@@ -1,5 +1,6 @@
 package de.musichin.reactivelivedata
 
+import androidx.annotation.CheckResult
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
@@ -7,6 +8,7 @@ import androidx.lifecycle.MediatorLiveData
  * Returns new [LiveData] instance that starts with given element.
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T> LiveData<T>.startWith(value: T): LiveData<T> =
     startWith(liveData(value))
 
@@ -16,6 +18,7 @@ fun <T> LiveData<T>.startWith(value: T): LiveData<T> =
  * @param value function to invoke to obtain the value.
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> =
     startWith(liveData(value))
 
@@ -25,6 +28,7 @@ fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> =
  * @param value obtains first of this [LiveData].
  * @return new [LiveData] instance.
  */
+@CheckResult
 fun <T> LiveData<T>.startWith(value: LiveData<T>): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(value) { valueStart ->
