@@ -28,7 +28,5 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build koverXmlReport --no-daemon
-        env:
-          JAVA_OPTS: '-Xmx4g -XX:MaxMetaspaceSize=1g'
 
       - uses: codecov/codecov-action@v3
