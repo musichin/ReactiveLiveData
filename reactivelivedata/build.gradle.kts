@@ -36,5 +36,5 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.5.1")
+    testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.6.0")
 }
