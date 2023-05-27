@@ -7,8 +7,8 @@ class TestObserver<T> : Observer<T?> {
     var values: List<T?> = emptyList()
         private set
 
-    override fun onChanged(t: T?) {
-        values = values.plus(t)
+    override fun onChanged(value: T?) {
+        values = values.plus(value)
     }
 
     fun assertNotEmpty() = Assert.assertFalse(values.isEmpty())

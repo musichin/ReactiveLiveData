@@ -1,9 +1,11 @@
 package de.musichin.reactivelivedata
 
 import androidx.annotation.CheckResult
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 private fun <T, R> Iterator<LiveData<out T>>.combineLatest(
@@ -42,6 +44,7 @@ private fun <T, R> Iterator<LiveData<out T>>.combineLatest(
     return result as LiveData<out R>
 }
 
+@MainThread
 @CheckResult
 private fun <T, R> combineLatest(
     combiner: (Array<T>) -> R,
@@ -55,6 +58,7 @@ private fun <T, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T, R> Array<out LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): LiveData<out R> =
     iterator().combineLatest(size) { values -> combiner(values.toList()) }
@@ -65,6 +69,7 @@ fun <T, R> Array<out LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): L
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T, R> Iterable<LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): LiveData<out R> {
     val collection = (this as? Collection) ?: toList()
@@ -79,6 +84,7 @@ fun <T, R> Iterable<LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): Li
  * @param source1 second source to combine with `source0`.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T0, T1> combineLatest(
     source0: LiveData<out T0>,
@@ -94,6 +100,7 @@ fun <T0, T1> combineLatest(
  * @param source2 third source to combine with `source0` and `source1`.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T0, T1, T2> combineLatest(
     source0: LiveData<out T0>,
@@ -110,6 +117,7 @@ fun <T0, T1, T2> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T0, T1, R> LiveData<out T0>.combineLatestWith(
     other: LiveData<out T1>,
@@ -122,6 +130,7 @@ fun <T0, T1, R> LiveData<out T0>.combineLatestWith(
  * @param other second source to combine with current source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T0, T1> LiveData<out T0>.combineLatestWith(other: LiveData<out T1>): LiveData<out Pair<T0, T1>> =
     combineLatest(this, other) { T0, T1 -> T0 to T1 }
@@ -134,6 +143,7 @@ fun <T0, T1> LiveData<out T0>.combineLatestWith(other: LiveData<out T1>): LiveDa
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, R> combineLatest(
@@ -155,6 +165,7 @@ fun <T0, T1, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, R> combineLatest(
@@ -180,6 +191,7 @@ fun <T0, T1, T2, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, T3, R> combineLatest(
@@ -207,6 +219,7 @@ fun <T0, T1, T2, T3, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, T3, T4, R> combineLatest(
@@ -236,6 +249,7 @@ fun <T0, T1, T2, T3, T4, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, T3, T4, T5, R> combineLatest(
@@ -274,6 +288,7 @@ fun <T0, T1, T2, T3, T4, T5, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, T3, T4, T5, T6, R> combineLatest(
@@ -315,6 +330,7 @@ fun <T0, T1, T2, T3, T4, T5, T6, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
@@ -359,6 +375,7 @@ fun <T0, T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
@@ -406,6 +423,7 @@ fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
  * @param combiner transformation function for source elements to combine.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, R> combineLatest(
