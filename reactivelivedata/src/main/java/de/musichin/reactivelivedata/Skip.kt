@@ -1,6 +1,7 @@
 package de.musichin.reactivelivedata
 
 import androidx.annotation.CheckResult
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
@@ -8,6 +9,7 @@ import androidx.lifecycle.MediatorLiveData
  * Returns new [LiveData] instance that skips first elements until `predicate` returns `true`.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> {
     val result = MediatorLiveData<T>()
@@ -25,6 +27,7 @@ fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> {
  * Returns new [LiveData] instance that skips first `count` elements.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> LiveData<T>.skip(count: Int): LiveData<T> {
     var counter = 0

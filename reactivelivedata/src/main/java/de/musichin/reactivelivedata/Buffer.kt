@@ -1,6 +1,7 @@
 package de.musichin.reactivelivedata
 
 import androidx.annotation.CheckResult
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import kotlin.math.min
@@ -11,6 +12,7 @@ import kotlin.math.min
  * @param skip elements to skip before starting a new buffer.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T> LiveData<T>.buffer(count: Int, skip: Int): LiveData<List<T>> {
@@ -35,6 +37,7 @@ fun <T> LiveData<T>.buffer(count: Int, skip: Int): LiveData<List<T>> {
  * @param count buffer size.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> LiveData<T>.buffer(count: Int): LiveData<List<T>> =
     buffer(count, count)

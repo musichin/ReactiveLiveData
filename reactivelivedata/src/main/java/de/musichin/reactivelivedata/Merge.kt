@@ -1,9 +1,11 @@
 package de.musichin.reactivelivedata
 
 import androidx.annotation.CheckResult
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
+@MainThread
 @CheckResult
 private fun <T> LiveData<out T>.mergeWith(others: Iterator<LiveData<out T>>): LiveData<out T> {
     if (!others.hasNext()) return this
@@ -17,6 +19,7 @@ private fun <T> LiveData<out T>.mergeWith(others: Iterator<LiveData<out T>>): Li
     return result
 }
 
+@MainThread
 @CheckResult
 private fun <T> Iterator<LiveData<out T>>.mergeWith(): LiveData<out T> {
     if (!hasNext()) return liveData()
@@ -27,6 +30,7 @@ private fun <T> Iterator<LiveData<out T>>.mergeWith(): LiveData<out T> {
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> Iterable<LiveData<out T>>.merge(): LiveData<out T> =
     iterator().mergeWith()
@@ -35,6 +39,7 @@ fun <T> Iterable<LiveData<out T>>.merge(): LiveData<out T> =
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> Array<out LiveData<out T>>.merge(): LiveData<out T> =
     iterator().mergeWith()
@@ -44,6 +49,7 @@ fun <T> Array<out LiveData<out T>>.merge(): LiveData<out T> =
  * @param sources collection of source to merge with.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> mergeArray(vararg sources: LiveData<out T>): LiveData<out T> =
     sources.iterator().mergeWith()
@@ -52,6 +58,7 @@ fun <T> mergeArray(vararg sources: LiveData<out T>): LiveData<out T> =
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(source0: LiveData<out T>, source1: LiveData<out T>): LiveData<out T> =
     mergeArray(source0, source1)
@@ -60,6 +67,7 @@ fun <T> merge(source0: LiveData<out T>, source1: LiveData<out T>): LiveData<out 
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(source0: LiveData<out T>, source1: LiveData<out T>, source2: LiveData<out T>): LiveData<out T> =
     mergeArray(source0, source1, source2)
@@ -68,6 +76,7 @@ fun <T> merge(source0: LiveData<out T>, source1: LiveData<out T>, source2: LiveD
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(
     source0: LiveData<out T>,
@@ -81,6 +90,7 @@ fun <T> merge(
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(
     source0: LiveData<out T>,
@@ -95,6 +105,7 @@ fun <T> merge(
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(
     source0: LiveData<out T>,
@@ -110,6 +121,7 @@ fun <T> merge(
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(
     source0: LiveData<out T>,
@@ -126,6 +138,7 @@ fun <T> merge(
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(
     source0: LiveData<out T>,
@@ -143,6 +156,7 @@ fun <T> merge(
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(
     source0: LiveData<out T>,
@@ -161,6 +175,7 @@ fun <T> merge(
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> merge(
     source0: LiveData<out T>,
@@ -181,6 +196,7 @@ fun <T> merge(
  * @param other another source to merge with.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> LiveData<out T>.mergeWith(other: LiveData<out T>): LiveData<out T> =
     mergeArray(this, other)
@@ -190,6 +206,7 @@ fun <T> LiveData<out T>.mergeWith(other: LiveData<out T>): LiveData<out T> =
  * @param other another source to merge with.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 operator fun <T> LiveData<out T>.plus(other: LiveData<out T>): LiveData<out T> =
     mergeWith(other)
@@ -199,6 +216,7 @@ operator fun <T> LiveData<out T>.plus(other: LiveData<out T>): LiveData<out T> =
  * @param others another sources to merge with.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 operator fun <T> LiveData<out T>.plus(others: Iterable<LiveData<out T>>): LiveData<out T> =
     mergeWith(others.iterator())
@@ -208,6 +226,7 @@ operator fun <T> LiveData<out T>.plus(others: Iterable<LiveData<out T>>): LiveDa
  * @param others another sources to merge with.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 operator fun <T> LiveData<out T>.plus(others: Array<out LiveData<out T>>): LiveData<out T> =
     mergeWith(others.iterator())
@@ -217,6 +236,7 @@ operator fun <T> LiveData<out T>.plus(others: Array<out LiveData<out T>>): LiveD
  * @param other  another source to merge with.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 operator fun <T> Iterable<LiveData<out T>>.plus(other: LiveData<out T>): LiveData<out T> =
     other.mergeWith(iterator())
@@ -226,6 +246,7 @@ operator fun <T> Iterable<LiveData<out T>>.plus(other: LiveData<out T>): LiveDat
  * @param other  another source to merge with.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 operator fun <T> Array<out LiveData<out T>>.plus(other: LiveData<out T>): LiveData<out T> =
     other.mergeWith(iterator())

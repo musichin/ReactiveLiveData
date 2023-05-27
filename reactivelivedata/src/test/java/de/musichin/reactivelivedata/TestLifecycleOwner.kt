@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleRegistry
 
 class TestLifecycleOwner : LifecycleOwner {
     private val lifecycleRegistry = LifecycleRegistry.createUnsafe(this)
-    override fun getLifecycle(): Lifecycle = lifecycleRegistry
+    override val lifecycle: Lifecycle = lifecycleRegistry
 
     public fun handleLifecycleEvent(event: Lifecycle.Event) {
         lifecycleRegistry.handleLifecycleEvent(event)

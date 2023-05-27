@@ -1,9 +1,10 @@
 package de.musichin.reactivelivedata
 
 import androidx.annotation.CheckResult
+import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.distinctUntilChanged as distinctUntilChangedImpl
 
 /**
  * Returns new [LiveData] instance that emits only distinct elements
@@ -11,6 +12,7 @@ import androidx.lifecycle.Transformations
  * @param keySelector is applied to each element to determine the key.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T, K> LiveData<T>.distinct(keySelector: (T) -> K): LiveData<T> {
     val keys = hashSetOf<Any?>()
@@ -21,6 +23,7 @@ fun <T, K> LiveData<T>.distinct(keySelector: (T) -> K): LiveData<T> {
  * Returns new [LiveData] instance that emits only distinct elements using [Any.equals] for comparison.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> LiveData<T>.distinct(): LiveData<T> =
     distinct { value -> value }
@@ -31,6 +34,7 @@ fun <T> LiveData<T>.distinct(): LiveData<T> =
  * @param keySelector is applied to each element to determine the key.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T, K> LiveData<T>.distinctUntilChanged(keySelector: (T) -> K): LiveData<T> {
     var prev: Any? = NOT_SET
@@ -51,6 +55,7 @@ fun <T, K> LiveData<T>.distinctUntilChanged(keySelector: (T) -> K): LiveData<T> 
  * @param comparer function to use for equality comparison.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
 fun <T> LiveData<T>.distinctUntilChanged(comparer: (T, T) -> Boolean): LiveData<T> {
@@ -71,6 +76,7 @@ fun <T> LiveData<T>.distinctUntilChanged(comparer: (T, T) -> Boolean): LiveData<
  * using [Any.equals] for comparison.
  * @return new [LiveData] instance.
  */
+@MainThread
 @CheckResult
 fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> =
-    Transformations.distinctUntilChanged(this)
+    this.distinctUntilChangedImpl()
