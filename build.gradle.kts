@@ -5,9 +5,9 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.8.21"))
-        classpath("com.android.tools.build:gradle:8.0.2")
-        classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.2")
+        classpath(kotlin("gradle-plugin", version = "1.9.10"))
+        classpath("com.android.tools.build:gradle:8.1.1")
+        classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.3")
     }
 }
 
@@ -19,5 +19,5 @@ allprojects {
 }
 
 tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+    delete(rootProject.layout.buildDirectory)
 }
