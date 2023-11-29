@@ -2,7 +2,7 @@ plugins {
     kotlin("android")
     id("com.android.library")
     id("com.vanniktech.maven.publish")
-    id("org.jetbrains.kotlinx.kover") version "0.7.3"
+    id("org.jetbrains.kotlinx.kover") version "0.7.5"
 }
 
 android {
