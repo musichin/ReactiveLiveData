@@ -244,4 +244,46 @@ class CombineLatestTest {
             }
         }
     }
+
+    @Test
+    fun testWithLatestFrom() {
+        val source = MutableLiveData<String>()
+        val other = MutableLiveData<Int?>()
+        val observer = TestObserver<String>()
+        source.withLatestFrom(other) { v0, v1 -> v0 + v1 }.observeForever(observer)
+
+        source.value = "a"
+        other.value = null
+        other.value = 1
+        observer.assertEmpty()
+
+        source.value = "b"
+        other.value = 2
+        other.value = null
+        source.value = "c"
+        observer.assertEquals("b1", "cnull")
+    }
+
+    @Test
+    fun testWithLatestFromPair() {
+        val source = MutableLiveData("a")
+        val other = MutableLiveData(1)
+        val observer = TestObserver<Pair<String, Int>>()
+        source.withLatestFrom(other).observeForever(observer)
+        observer.assertEquals("a" to 1)
+
+        source.value = "b"
+        observer.assertEquals("a" to 1, "b" to 1)
+    }
+
+    @Test
+    fun testWithLatestFromSameSource() {
+        val source = MutableLiveData<String>()
+        val observer = TestObserver<String>()
+        source.withLatestFrom(source) { v0, v1 -> v0 + v1 }.observeForever(observer)
+
+        source.value = "a"
+        source.value = "b"
+        observer.assertEquals("aa", "bb")
+    }
 }

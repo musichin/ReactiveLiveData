@@ -143,6 +143,50 @@ fun <T0, T1> LiveData<out T0>.combineLatestWith(other: LiveData<out T1>): LiveDa
     combineLatest(this, other) { T0, T1 -> T0 to T1 }
 
 /**
+ * Returns new [LiveData] instance that combines each element of current source with the latest
+ * element of [other] by calling the provided [combiner] function.
+ * Emits only when current source emits; elements emitted before [other] has emitted are dropped.
+ * If [other] already holds a value when the returned [LiveData] becomes active, an element already held by
+ * current source is combined with it right away.
+ * @param other source whose latest element is combined with each element of current source.
+ * @param combiner transformation function for source elements to combine.
+ * @return new [LiveData] instance.
+ */
+@MainThread
+@CheckResult
+@Suppress("UNCHECKED_CAST")
+fun <T0, T1, R> LiveData<out T0>.withLatestFrom(
+    other: LiveData<out T1>,
+    combiner: (T0, T1) -> R,
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (other === this) {
+        result.addSource(this) { value -> result.value = combiner(value as T0, value as T1) }
+        return result
+    }
+
+    var latest: Any? = NOT_SET
+    result.addSource(other) { value -> latest = value }
+    result.addSource(this) { value ->
+        if (latest !== NOT_SET) result.value = combiner(value, latest as T1)
+    }
+    return result
+}
+
+/**
+ * Returns new [LiveData] instance that combines each element of current source with the latest
+ * element of [other] to a [Pair].
+ * Emits only when current source emits; elements emitted before [other] has emitted are dropped.
+ * If [other] already holds a value when the returned [LiveData] becomes active, an element already held by
+ * current source is combined with it right away.
+ * @param other source whose latest element is combined with each element of current source.
+ * @return new [LiveData] instance.
+ */
+@MainThread
+@CheckResult
+fun <T0, T1> LiveData<out T0>.withLatestFrom(other: LiveData<out T1>): LiveData<Pair<T0, T1>> = withLatestFrom(other) { T0, T1 -> T0 to T1 }
+
+/**
  * Returns new [LiveData] instance that combines latest emitted elements of each source by calling
  * the provided [combiner] function.
  * Emits only after every source has emitted at least once.
