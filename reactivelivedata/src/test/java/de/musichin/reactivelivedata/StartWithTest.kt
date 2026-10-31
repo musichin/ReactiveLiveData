@@ -1,6 +1,7 @@
 package de.musichin.reactivelivedata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import org.junit.Assert.assertNotSame
 import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
@@ -18,6 +19,32 @@ class StartWithTest {
         val observer = TestObserver<Int>()
         source.observeForever(observer)
         observer.assertEquals(1, 2)
+    }
+
+    @Test
+    fun testStartWithValues() {
+        val source = liveData(4).startWith(1, 2, 3)
+        assertNull(source.value)
+
+        val observer = TestObserver<Int>()
+        source.observeForever(observer)
+        observer.assertEquals(1, 2, 3, 4)
+
+        val late = TestObserver<Int>()
+        source.observeForever(late)
+        late.assertEquals(4)
+    }
+
+    @Test
+    fun testStartWithNoValues() {
+        val origin = liveData(4)
+        val source = origin.startWith()
+        assertNotSame(origin, source)
+        assertNull(source.value)
+
+        val observer = TestObserver<Int>()
+        source.observeForever(observer)
+        observer.assertEquals(4)
     }
 
     @Test

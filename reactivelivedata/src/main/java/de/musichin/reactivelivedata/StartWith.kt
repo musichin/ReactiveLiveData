@@ -15,6 +15,25 @@ import androidx.lifecycle.MediatorLiveData
 fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveData(value))
 
 /**
+ * Returns new [LiveData] instance that starts with given elements.
+ * Only the observer that activates the returned [LiveData] receives every element;
+ * observers added later receive only the latest one.
+ * Without elements, it emits the same elements as given [LiveData].
+ * @param values elements to start with, in emission order.
+ * @return new [LiveData] instance.
+ */
+@MainThread
+@CheckResult
+fun <T> LiveData<T>.startWith(vararg values: T): LiveData<T> {
+    if (values.isEmpty()) {
+        val result = MediatorLiveData<T>()
+        result.addSource(this) { value -> result.value = value }
+        return result
+    }
+    return values.foldRight(this) { value, source -> source.startWith(value) }
+}
+
+/**
  * Returns new [LiveData] instance that starts with an element
  * obtained by calling given function when it first becomes active.
  * @param value function to invoke to obtain the element.
