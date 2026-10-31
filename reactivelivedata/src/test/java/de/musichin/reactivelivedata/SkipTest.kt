@@ -26,6 +26,30 @@ class SkipTest {
     }
 
     @Test
+    fun testSkipUntilOther() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Int>()
+        val other = MutableLiveData<String?>()
+        source.skipUntil(other).observeForever(observer)
+        source.value = 1
+        source.value = 2
+        other.value = null
+        source.value = 3
+        other.value = "x"
+        source.value = 4
+        observer.assertEquals(3, 4)
+
+        val sticky = TestObserver<Int>()
+        source.skipUntil(other).observeForever(sticky)
+        sticky.assertEquals(4)
+
+        val self = TestObserver<Int>()
+        source.skipUntil(source).observeForever(self)
+        source.value = 5
+        self.assertEquals(4, 5)
+    }
+
+    @Test
     fun testSkipWhile() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()
