@@ -40,6 +40,20 @@ fun <T> LiveData<T?>.filterNotNull(): LiveData<T> {
 }
 
 /**
+ * Returns new [LiveData] instance that emits only the non-`null` results of applying [transform]
+ * to each element.
+ * @param transform function to apply to each element.
+ * @return new [LiveData] instance.
+ */
+@MainThread
+@CheckResult
+fun <T, R : Any> LiveData<T>.mapNotNull(transform: (T) -> R?): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) { value -> transform(value)?.let { result.value = it } }
+    return result
+}
+
+/**
  * Returns new [LiveData] instance that emits only elements that are instances of given class.
  * @param clazz class of elements to emit.
  * @return new [LiveData] instance.
