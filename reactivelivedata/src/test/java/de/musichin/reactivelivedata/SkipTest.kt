@@ -83,4 +83,26 @@ class SkipTest {
             MutableLiveData<Int>().skip(-1)
         }
     }
+
+    @Test
+    fun testSkipLast() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Int>()
+        source.skipLast(2).observeForever(observer)
+        source.value = 1
+        source.value = 2
+        observer.assertEmpty()
+
+        source.value = 3
+        source.value = 4
+        source.value = 5
+        observer.assertEquals(1, 2, 3)
+    }
+
+    @Test
+    fun testSkipLastRejectsNegativeCount() {
+        assertThrows(IllegalArgumentException::class.java) {
+            MutableLiveData<Int>().skipLast(-1)
+        }
+    }
 }
