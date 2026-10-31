@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
 /**
- * Invokes specified function when new value is emitted.
- * @param onValue function to invoke.
+ * Returns new [LiveData] instance that invokes [onValue] for each element, before the element is passed to observers.
+ * @param onValue function to invoke with each element.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -15,23 +15,24 @@ import androidx.lifecycle.MediatorLiveData
 fun <T> LiveData<T>.doOnValue(onValue: (T) -> Unit): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value ->
-        result.value = value
         onValue(value)
+        result.value = value
     }
     return result
 }
 
 /**
- * Invokes specified function when [LiveData] gets active.
+ * Returns new [LiveData] instance that invokes [onActive] whenever it becomes active.
  * @param onActive function to invoke.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
 fun <T> LiveData<T>.doOnActive(onActive: () -> Unit): LiveData<T> {
-    val hook = object : LiveData<T>() {
-        override fun onActive() = onActive()
-    }
+    val hook =
+        object : LiveData<T>() {
+            override fun onActive() = onActive()
+        }
 
     val result = MediatorLiveData<T>()
     result.addSource(this) { result.value = it }
@@ -40,16 +41,17 @@ fun <T> LiveData<T>.doOnActive(onActive: () -> Unit): LiveData<T> {
 }
 
 /**
- * Invokes specified function when [LiveData] gets inactive.
+ * Returns new [LiveData] instance that invokes [onInactive] whenever it becomes inactive.
  * @param onInactive function to invoke.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
 fun <T> LiveData<T>.doOnInactive(onInactive: () -> Unit): LiveData<T> {
-    val hook = object : LiveData<T>() {
-        override fun onInactive() = onInactive()
-    }
+    val hook =
+        object : LiveData<T>() {
+            override fun onInactive() = onInactive()
+        }
 
     val result = MediatorLiveData<T>()
     result.addSource(this) { value -> result.value = value }

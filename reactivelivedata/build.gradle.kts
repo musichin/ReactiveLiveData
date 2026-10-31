@@ -1,21 +1,22 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
-    kotlin("android")
     id("com.android.library")
     id("com.vanniktech.maven.publish")
-    id("org.jetbrains.kotlinx.kover") version "0.7.3"
+    id("org.jetbrains.kotlinx.kover")
 }
 
 android {
     namespace = "com.github.musichin.reactivelivedata"
 
-    compileSdk = 33
+    compileSdk = 36
 
     defaultConfig {
-        minSdk = 14
+        minSdk = 23
     }
 
     buildTypes {
-        getByName("release") {
+        release {
             isMinifyEnabled = false
         }
     }
@@ -24,16 +25,32 @@ android {
         resValues = false
     }
     compileOptions {
-        targetCompatibility(17)
-        sourceCompatibility(17)
+        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+kotlin {
+    coreLibrariesVersion = "2.2.21"
+    compilerOptions {
+        apiVersion.set(KotlinVersion.KOTLIN_2_2)
+        languageVersion.set(KotlinVersion.KOTLIN_2_2)
     }
 }
 
 dependencies {
-    implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
+    api("androidx.lifecycle:lifecycle-livedata:2.11.0")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("androidx.lifecycle:lifecycle-runtime-testing:2.6.2")
+    testImplementation("androidx.lifecycle:lifecycle-runtime:2.11.0")
+}
+
+kover {
+    useJacoco("0.8.15")
+    reports {
+        total {
+            xml { onCheck = true }
+        }
+    }
 }

@@ -1,8 +1,8 @@
 # Reactive LiveData
-[![Kotlin](https://img.shields.io/badge/Kotlin-1.9.10-blue.svg)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.21-blue.svg)](http://kotlinlang.org)
 [![CI](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml/badge.svg)](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/musichin/ReactiveLiveData/branch/main/graph/badge.svg?token=6M3tKXUbf3)](https://codecov.io/gh/musichin/ReactiveLiveData)
-[![Maven Central](https://img.shields.io/maven-central/v/de.musichin.reactivelivedata/reactivelivedata)](https://search.maven.org/artifact/de.musichin.reactivelivedata/reactivelivedata)
+[![Maven Central](https://img.shields.io/maven-central/v/de.musichin.reactivelivedata/reactivelivedata)](https://central.sonatype.com/artifact/de.musichin.reactivelivedata/reactivelivedata)
 
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects.
 
@@ -11,18 +11,27 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `switchMap`
 * `switchLatest`
 * `filter`
+* `filterNot`
 * `filterNotNull`
+* `filterIsInstance`
 * `distinct`
 * `distinctUntilChanged`
 * `merge`
+* `mergeWith`
 * `combineLatest`
+* `combineLatestWith`
 * `startWith`
 * `first`
 * `take`
 * `takeUntil`
 * `takeWhile`
+* `skip`
+* `skipWhile`
 * `buffer`
 * `cast`
+* `doOnValue`
+* `doOnActive`
+* `doOnInactive`
 * and more...
 
 ## Usage
@@ -45,8 +54,8 @@ source.distinct().observe(this) {
 
 ### `merge`
 ```kotlin
-val source1: LiveData<String> = // 1,    2,    3,
-val source2: LiveData<Int> = // a,    b,    c,
+val source1: LiveData<Int> =    //    1,    2,    3
+val source2: LiveData<String> = // a,    b,    c
 listOf(source1, source2).merge().observe(this) { value ->
     println(value) // a, 1, b, 2, c, 3
 }
@@ -62,6 +71,12 @@ dependencies {
     implementation 'de.musichin.reactivelivedata:reactivelivedata:x.y.z'
 }
 ```
+
+## Requirements
+| ReactiveLiveData | minSdk | Kotlin | AndroidX Lifecycle |
+|------------------|--------|--------|--------------------|
+| 2.x              | 23     | ≥ 2.1  | ≥ 2.11.0           |
+| 1.2.x            | 14     | ≥ 1.8  | ≥ 2.6.2            |
 
 ## Contributing
 Contributors are more than welcome. Just upload a PR with a description of your changes.

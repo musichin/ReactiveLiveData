@@ -9,7 +9,7 @@ import androidx.lifecycle.distinctUntilChanged as distinctUntilChangedImpl
 /**
  * Returns new [LiveData] instance that emits only distinct elements
  * using given key selector result for comparison.
- * @param keySelector is applied to each element to determine the key.
+ * @param keySelector function that determines the key of each element.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -25,13 +25,12 @@ fun <T, K> LiveData<T>.distinct(keySelector: (T) -> K): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.distinct(): LiveData<T> =
-    distinct { value -> value }
+fun <T> LiveData<T>.distinct(): LiveData<T> = distinct { value -> value }
 
 /**
- * Returns new [LiveData] instance that ensures emitted element not equals to previous element
+ * Returns new [LiveData] instance that ensures emitted element is not equal to previous element
  * using given key selector result for comparison.
- * @param keySelector is applied to each element to determine the key.
+ * @param keySelector function that determines the key of each element.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -51,8 +50,8 @@ fun <T, K> LiveData<T>.distinctUntilChanged(keySelector: (T) -> K): LiveData<T> 
 
 /**
  * Returns new [LiveData] instance that ensures emitted element is not equal to previous element
- * using `comparer` for comparison.
- * @param comparer function to use for equality comparison.
+ * using [comparer] for comparison.
+ * @param comparer called with the previous and the new element; returns `true` if they are equal.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -78,5 +77,4 @@ fun <T> LiveData<T>.distinctUntilChanged(comparer: (T, T) -> Boolean): LiveData<
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> =
-    this.distinctUntilChangedImpl()
+fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> = distinctUntilChangedImpl()

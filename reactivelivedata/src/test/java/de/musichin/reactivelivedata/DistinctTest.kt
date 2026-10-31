@@ -2,7 +2,6 @@ package de.musichin.reactivelivedata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import kotlin.math.abs
@@ -35,9 +34,9 @@ class DistinctTest {
     @Test
     fun testDistinctUntilChanged() {
         val observer = TestObserver<Int>()
-        val data = MutableLiveData<Int>()
-        data.distinctUntilChanged().observeForever(observer)
-        listOf(1, 1, 2, 3, 3, 3, 4, 5, 5, 6).forEach { data.value = it }
+        val source = MutableLiveData<Int>()
+        source.distinctUntilChanged().observeForever(observer)
+        listOf(1, 1, 2, 3, 3, 3, 4, 5, 5, 6).forEach { source.value = it }
 
         observer.assertEquals(1, 2, 3, 4, 5, 6)
     }

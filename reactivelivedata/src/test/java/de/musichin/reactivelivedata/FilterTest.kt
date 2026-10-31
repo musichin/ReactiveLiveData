@@ -2,7 +2,6 @@ package de.musichin.reactivelivedata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -14,9 +13,9 @@ class FilterTest {
     @Test
     fun testFilter() {
         val observer = TestObserver<Int>()
-        val data = MutableLiveData<Int>()
-        data.filter { it % 2 == 0 }.observeForever(observer)
-        (1..10).forEach { data.value = it }
+        val source = MutableLiveData<Int>()
+        source.filter { it % 2 == 0 }.observeForever(observer)
+        (1..10).forEach { source.value = it }
 
         observer.assertEquals(2, 4, 6, 8, 10)
     }
@@ -24,9 +23,9 @@ class FilterTest {
     @Test
     fun testFilterNot() {
         val observer = TestObserver<Int>()
-        val data = MutableLiveData<Int>()
-        data.filterNot { it % 2 == 0 }.observeForever(observer)
-        (1..10).forEach { data.value = it }
+        val source = MutableLiveData<Int>()
+        source.filterNot { it % 2 == 0 }.observeForever(observer)
+        (1..10).forEach { source.value = it }
 
         observer.assertEquals(1, 3, 5, 7, 9)
     }
@@ -44,13 +43,13 @@ class FilterTest {
     @Test
     fun testFilterIsInstanceReified() {
         val observer = TestObserver<String>()
-        val s = MutableLiveData<Any>()
-        s.filterIsInstance<String>().observeForever(observer)
-        s.value = "1"
-        s.value = 2
-        s.value = "3"
-        s.value = 4L
-        s.value = "5"
+        val source = MutableLiveData<Any>()
+        source.filterIsInstance<String>().observeForever(observer)
+        source.value = "1"
+        source.value = 2
+        source.value = "3"
+        source.value = 4L
+        source.value = "5"
 
         observer.assertEquals("1", "3", "5")
     }
@@ -58,14 +57,28 @@ class FilterTest {
     @Test
     fun testFilterIsInstance() {
         val observer = TestObserver<String>()
-        val s = MutableLiveData<Any>()
-        s.filterIsInstance(String::class.java).observeForever(observer)
-        s.value = "1"
-        s.value = 2
-        s.value = "3"
-        s.value = 4L
-        s.value = "5"
+        val source = MutableLiveData<Any>()
+        source.filterIsInstance(String::class.java).observeForever(observer)
+        source.value = "1"
+        source.value = 2
+        source.value = "3"
+        source.value = 4L
+        source.value = "5"
 
         observer.assertEquals("1", "3", "5")
+    }
+
+    @Test
+    fun testFilterIsInstancePrimitiveClass() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Any>()
+        source.filterIsInstance(Int::class.java).observeForever(observer)
+        source.value = "1"
+        source.value = 2
+        source.value = "3"
+        source.value = 4L
+        source.value = 5
+
+        observer.assertEquals(2, 5)
     }
 }

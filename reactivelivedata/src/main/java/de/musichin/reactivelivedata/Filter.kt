@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
 /**
- * Returns new [LiveData] instance that filters emitted elements matching given `predicate`.
+ * Returns new [LiveData] instance that emits only elements for which [predicate] returns `true`.
  * @param predicate element filter.
  * @return new [LiveData] instance.
  */
@@ -19,41 +19,43 @@ fun <T> LiveData<T>.filter(predicate: (T) -> Boolean): LiveData<T> {
 }
 
 /**
- * Returns new [LiveData] instance that filters emitted elements not matching given `predicate`.
+ * Returns new [LiveData] instance that emits only elements for which [predicate] returns `false`.
  * @param predicate element filter.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.filterNot(predicate: (T) -> Boolean): LiveData<T> =
-    filter { value -> !predicate(value) }
+fun <T> LiveData<T>.filterNot(predicate: (T) -> Boolean): LiveData<T> = filter { value -> !predicate(value) }
 
 /**
- * Returns new [LiveData] instance that filters not `null` elements.
+ * Returns new [LiveData] instance that emits only elements that are not `null`.
+ * @return new [LiveData] instance.
+ */
+@MainThread
+@CheckResult
+fun <T> LiveData<T?>.filterNotNull(): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    result.addSource(this) { value -> if (value != null) result.value = value }
+    return result
+}
+
+/**
+ * Returns new [LiveData] instance that emits only elements that are instances of given class.
+ * @param clazz class of elements to emit.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T> LiveData<T?>.filterNotNull(): LiveData<T> =
-    filter { it != null } as LiveData<T>
+fun <T> LiveData<*>.filterIsInstance(clazz: Class<T>): LiveData<T> {
+    val objectType = (clazz as Class<*>).kotlin.javaObjectType
+    return filter { objectType.isInstance(it) } as LiveData<T>
+}
 
 /**
- * Returns new [LiveData] instance that filters elements of given class.
- * @param clazz emits only elements that are instances of it.
+ * Returns new [LiveData] instance that emits only elements that are instances of given class.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-@Suppress("UNCHECKED_CAST")
-fun <T> LiveData<*>.filterIsInstance(clazz: Class<T>): LiveData<T> =
-    filter { clazz.isInstance(it) } as LiveData<T>
-
-/**
- * Returns new [LiveData] instance that filters elements of given class.
- * @return new [LiveData] instance.
- */
-@MainThread
-@CheckResult
-inline fun <reified T> LiveData<*>.filterIsInstance(): LiveData<T> =
-    filterIsInstance(T::class.java)
+inline fun <reified T> LiveData<*>.filterIsInstance(): LiveData<T> = filterIsInstance(T::class.java)

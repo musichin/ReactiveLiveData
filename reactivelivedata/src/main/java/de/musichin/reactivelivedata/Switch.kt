@@ -7,21 +7,19 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.switchMap as switchMapImpl
 
 /**
- * Returns new [LiveData] instance that switches to the last recent created [LiveData] by applying
- * given `mapper` function to each element emitted.
+ * Returns new [LiveData] instance that switches to the most recently created [LiveData] by applying
+ * given [mapper] function to each element emitted.
  * @param mapper function to apply to each element.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T, R> LiveData<T>.switchMap(mapper: (T) -> LiveData<R>?): LiveData<R> =
-    switchMapImpl(mapper)
+fun <T, R> LiveData<T>.switchMap(mapper: (T) -> LiveData<R>?): LiveData<R> = switchMapImpl(mapper)
 
 /**
- * Returns new [LiveData] instance that switches to the last recent created [LiveData].
+ * Returns new [LiveData] instance that switches to the most recently created [LiveData].
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<out LiveData<T>?>.switchLatest(): LiveData<T> =
-    switchMap { it }
+fun <T> LiveData<out LiveData<T>?>.switchLatest(): LiveData<T> = switchMap { it }

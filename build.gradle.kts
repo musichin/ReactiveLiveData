@@ -1,23 +1,6 @@
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-    dependencies {
-        classpath(kotlin("gradle-plugin", version = "1.9.10"))
-        classpath("com.android.tools.build:gradle:8.1.1")
-        classpath("com.vanniktech:gradle-maven-publish-plugin:0.25.3")
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-tasks.register("clean", Delete::class) {
-    delete(rootProject.layout.buildDirectory)
+plugins {
+    id("com.android.library") version "9.5.0" apply false
+    kotlin("android") version "2.4.21" apply false
+    id("org.jetbrains.kotlinx.kover") version "0.9.11" apply false
+    id("com.vanniktech.maven.publish") version "0.37.0" apply false
 }

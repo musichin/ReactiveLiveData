@@ -6,11 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map as mapImpl
 
 /**
- * Returns new [LiveData] instance that emits elements after applying given `transform`
+ * Returns new [LiveData] instance that emits elements after applying given [transform]
  * function to each element in the original [LiveData].
+ * @param transform function to apply to each element.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T, R> LiveData<T>.map(transform: (T) -> R): LiveData<R> =
-    mapImpl(transform)
+fun <T, R> LiveData<T>.map(transform: (T) -> R): LiveData<R> = mapImpl(transform)

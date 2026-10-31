@@ -18,6 +18,14 @@ class CastTest {
     }
 
     @Test
+    fun testCastPrimitiveClass() {
+        val source = liveData<Any> { 42 }
+        val observer = TestObserver<Int>()
+        source.cast(Int::class.java).observeForever(observer)
+        observer.assertEquals(42)
+    }
+
+    @Test
     fun testCastReified() {
         val source = liveData<Any> { "test" }
         val observer = TestObserver<String>()
