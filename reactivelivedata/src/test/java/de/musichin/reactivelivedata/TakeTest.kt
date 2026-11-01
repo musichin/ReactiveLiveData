@@ -24,6 +24,25 @@ class TakeTest {
     }
 
     @Test
+    fun testElementAt() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Int>()
+        source.elementAt(1).observeForever(observer)
+        source.value = 1
+        source.value = 2
+        source.value = 3
+
+        observer.assertEquals(2)
+    }
+
+    @Test
+    fun testElementAtRejectsNegativeIndex() {
+        assertThrows(IllegalArgumentException::class.java) {
+            MutableLiveData<Int>().elementAt(-1)
+        }
+    }
+
+    @Test
     fun testTake() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()

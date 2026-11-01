@@ -23,6 +23,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `withLatestFrom`
 * `startWith`
 * `first`
+* `elementAt`
 * `take`
 * `takeUntil`
 * `takeWhile`

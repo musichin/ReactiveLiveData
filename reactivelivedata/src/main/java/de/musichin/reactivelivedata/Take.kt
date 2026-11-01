@@ -82,3 +82,16 @@ fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> {
 @MainThread
 @CheckResult
 fun <T> LiveData<T>.first(): LiveData<T> = take(1)
+
+/**
+ * Returns new [LiveData] instance that takes only the element at given [index].
+ * @param index zero-based index of the element to take, must not be negative.
+ * @return new [LiveData] instance.
+ * @throws IllegalArgumentException if [index] is negative.
+ */
+@MainThread
+@CheckResult
+fun <T> LiveData<T>.elementAt(index: Int): LiveData<T> {
+    require(index >= 0) { "index $index must not be negative." }
+    return skip(index).first()
+}
