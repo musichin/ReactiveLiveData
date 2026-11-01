@@ -18,7 +18,7 @@ class ObserveTest {
     @Test
     fun testObserveMutableLiveData() {
         val owner = TestLifecycleOwner()
-        val source = liveData { "test" }
+        val source = lazyLiveData { "test" }
         val observer = MutableLiveData<String>()
 
         assertFalse(source.hasActiveObservers())
@@ -33,7 +33,7 @@ class ObserveTest {
     @Test
     fun testObserve() {
         val owner = TestLifecycleOwner()
-        val source = liveData<Any> { "test" }
+        val source = lazyLiveData<Any> { "test" }
 
         assertFalse(source.hasActiveObservers())
 
@@ -44,7 +44,7 @@ class ObserveTest {
 
     @Test
     fun testObserveForever() {
-        val source = liveData<Any> { "test" }
+        val source = lazyLiveData<Any> { "test" }
 
         source.observeForever()
 
@@ -53,7 +53,7 @@ class ObserveTest {
 
     @Test
     fun testObserveForeverMutableLiveData() {
-        val source = liveData { "test" }
+        val source = lazyLiveData { "test" }
         val observer = MutableLiveData<String>()
 
         source.observeForever(observer)

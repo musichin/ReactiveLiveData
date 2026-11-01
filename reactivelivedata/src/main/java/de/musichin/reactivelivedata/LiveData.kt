@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData
  */
 @MainThread
 @CheckResult
-fun <T> liveData(): LiveData<T> = object : LiveData<T>() {}
+fun <T> emptyLiveData(): LiveData<T> = object : LiveData<T>() {}
 
 /**
  * Returns new [LiveData] instance that holds given element.
@@ -19,22 +19,22 @@ fun <T> liveData(): LiveData<T> = object : LiveData<T>() {}
  */
 @MainThread
 @CheckResult
-fun <T> liveData(value: T): LiveData<T> = object : LiveData<T>(value) {}
+fun <T> liveDataOf(value: T): LiveData<T> = object : LiveData<T>(value) {}
 
 /**
  * Returns new [LiveData] instance with an element obtained by calling given function when it first becomes active.
- * @param value function to invoke to obtain the element.
+ * @param initializer function to invoke to obtain the element.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> liveData(value: () -> T): LiveData<T> =
+fun <T> lazyLiveData(initializer: () -> T): LiveData<T> =
     object : LiveData<T>() {
         private var initialized = false
 
         override fun onActive() {
             if (initialized) return
-            this.value = value()
+            this.value = initializer()
             initialized = true
         }
     }
@@ -45,7 +45,7 @@ fun <T> liveData(value: () -> T): LiveData<T> =
  */
 @MainThread
 @CheckResult
-fun <T> T.toLiveData(): LiveData<T> = liveData(this)
+fun <T> T.toLiveData(): LiveData<T> = liveDataOf(this)
 
 /**
  * Returns new [LiveData] instance that obtains its element from given function when it first becomes active.
@@ -53,4 +53,4 @@ fun <T> T.toLiveData(): LiveData<T> = liveData(this)
  */
 @MainThread
 @CheckResult
-fun <T> (() -> T).toLiveData(): LiveData<T> = liveData(this)
+fun <T> (() -> T).toLiveData(): LiveData<T> = lazyLiveData(this)

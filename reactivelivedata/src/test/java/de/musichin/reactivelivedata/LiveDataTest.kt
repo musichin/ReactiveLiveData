@@ -11,17 +11,17 @@ class LiveDataTest {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun testEmpty() {
+    fun testEmptyLiveData() {
         val observer = TestObserver<String>()
-        liveData<String>().observeForever(observer)
+        emptyLiveData<String>().observeForever(observer)
 
         observer.assertEmpty()
     }
 
     @Test
-    fun testJust() {
+    fun testLiveDataOf() {
         val observer = TestObserver<String>()
-        liveData("test").observeForever(observer)
+        liveDataOf("test").observeForever(observer)
 
         observer.assertEquals("test")
     }
@@ -35,8 +35,8 @@ class LiveDataTest {
     }
 
     @Test
-    fun testLiveDataFunction() {
-        val source = liveData { "test" }
+    fun testLazyLiveData() {
+        val source = lazyLiveData { "test" }
         assertNull(source.value)
 
         val observer = TestObserver<String>()
@@ -55,9 +55,9 @@ class LiveDataTest {
     }
 
     @Test
-    fun testLiveDataFunctionCalledOnce() {
+    fun testLazyLiveDataCalledOnce() {
         var counter = 0
-        val source = liveData { counter++ }
+        val source = lazyLiveData { counter++ }
         assertNull(source.value)
 
         val observer = TestObserver<Int>()

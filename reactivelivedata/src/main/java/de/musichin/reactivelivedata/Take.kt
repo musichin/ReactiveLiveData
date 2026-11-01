@@ -16,7 +16,7 @@ import androidx.lifecycle.MediatorLiveData
 @CheckResult
 fun <T> LiveData<T>.take(count: Int): LiveData<T> {
     require(count >= 0) { "count $count must not be negative." }
-    if (count == 0) return liveData()
+    if (count == 0) return emptyLiveData()
     var counter = 0
     return takeUntil { ++counter >= count }
 }
@@ -47,7 +47,7 @@ fun <T> LiveData<T>.takeUntil(predicate: (T) -> Boolean): LiveData<T> {
 @MainThread
 @CheckResult
 fun <T> LiveData<T>.takeUntil(other: LiveData<*>): LiveData<T> {
-    if (other === this) return liveData()
+    if (other === this) return emptyLiveData()
     val result = MediatorLiveData<T>()
     result.addSource(other) {
         result.removeSource(other)

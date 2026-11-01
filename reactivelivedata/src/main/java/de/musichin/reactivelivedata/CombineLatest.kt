@@ -12,7 +12,7 @@ private fun <T, R> Iterator<LiveData<out T>>.combineLatest(
     size: Int,
     combiner: (Array<T>) -> R,
 ): LiveData<R> {
-    if (size <= 0) return liveData()
+    if (size <= 0) return emptyLiveData()
 
     val result = MediatorLiveData<R>()
 

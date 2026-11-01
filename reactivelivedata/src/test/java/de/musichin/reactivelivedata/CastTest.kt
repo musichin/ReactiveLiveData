@@ -11,7 +11,7 @@ class CastTest {
 
     @Test
     fun testCast() {
-        val source = liveData<Any> { "test" }
+        val source = lazyLiveData<Any> { "test" }
         val observer = TestObserver<String>()
         source.cast(String::class.java).observeForever(observer)
         observer.assertEquals("test")
@@ -19,7 +19,7 @@ class CastTest {
 
     @Test
     fun testCastPrimitiveClass() {
-        val source = liveData<Any> { 42 }
+        val source = lazyLiveData<Any> { 42 }
         val observer = TestObserver<Int>()
         source.cast(Int::class.java).observeForever(observer)
         observer.assertEquals(42)
@@ -27,7 +27,7 @@ class CastTest {
 
     @Test
     fun testCastReified() {
-        val source = liveData<Any> { "test" }
+        val source = lazyLiveData<Any> { "test" }
         val observer = TestObserver<String>()
         source.cast<String>().observeForever(observer)
         observer.assertEquals("test")

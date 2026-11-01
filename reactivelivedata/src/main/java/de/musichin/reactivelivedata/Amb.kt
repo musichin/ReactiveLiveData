@@ -10,7 +10,7 @@ import androidx.lifecycle.MediatorLiveData
 private fun <T> Iterator<LiveData<out T>>.amb(): LiveData<T> {
     val sources = linkedSetOf<LiveData<out T>>()
     forEach { source -> sources.add(source) }
-    if (sources.isEmpty()) return liveData()
+    if (sources.isEmpty()) return emptyLiveData()
 
     val result = MediatorLiveData<T>()
     sources.forEach { source ->

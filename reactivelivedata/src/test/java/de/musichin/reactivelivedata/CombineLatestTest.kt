@@ -75,7 +75,7 @@ class CombineLatestTest {
 
     @Test
     fun testCombineLatestSingle() {
-        val source = listOf(liveData { "test_value" }).combineLatest { it.joinToString() }
+        val source = listOf(lazyLiveData { "test_value" }).combineLatest { it.joinToString() }
         assertNull(source.value)
 
         val observer = TestObserver<String>()

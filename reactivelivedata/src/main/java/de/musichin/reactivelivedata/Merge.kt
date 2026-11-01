@@ -22,7 +22,7 @@ private fun <T> LiveData<out T>.mergeWith(others: Iterator<LiveData<out T>>): Li
 @MainThread
 @CheckResult
 private fun <T> Iterator<LiveData<out T>>.mergeWith(): LiveData<T> {
-    if (!hasNext()) return liveData()
+    if (!hasNext()) return emptyLiveData()
     return next().mergeWith(this)
 }
 
