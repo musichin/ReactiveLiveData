@@ -12,6 +12,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `filterNot`
 * `filterNotNull`
 * `filterIsInstance`
+* `mapNotNull`
 * `distinct`
 * `distinctUntilChanged`
 * `merge`

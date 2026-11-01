@@ -41,6 +41,16 @@ class FilterTest {
     }
 
     @Test
+    fun testMapNotNull() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<String>()
+        source.mapNotNull { it.toIntOrNull() }.observeForever(observer)
+        listOf("1", "a", "2", "", "3").forEach { source.value = it }
+
+        observer.assertEquals(1, 2, 3)
+    }
+
+    @Test
     fun testFilterIsInstanceReified() {
         val observer = TestObserver<String>()
         val source = MutableLiveData<Any>()
