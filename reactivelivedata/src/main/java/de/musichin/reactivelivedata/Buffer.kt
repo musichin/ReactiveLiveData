@@ -6,10 +6,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
 /**
- * Returns new [LiveData] instance that emits buffer of elements emitted by given [LiveData].
+ * Returns new [LiveData] instance that emits buffer of elements emitted by current source.
  * A new buffer starts every [skip] elements and is emitted as soon as it holds [count] elements.
  * If [skip] is less than [count], buffers overlap; if it is greater, elements in between are dropped.
  * A partially filled buffer is never emitted.
+ * Only elements received while the returned [LiveData] is active are buffered.
  * @param count buffer size, must be greater than zero.
  * @param skip elements to skip before starting a new buffer, must be greater than zero.
  * @return new [LiveData] instance.
@@ -40,7 +41,8 @@ fun <T> LiveData<T>.buffer(
 }
 
 /**
- * Returns new [LiveData] instance that emits buffer of elements emitted by given [LiveData].
+ * Returns new [LiveData] instance that emits buffer of elements emitted by current source.
+ * Only elements received while the returned [LiveData] is active are buffered.
  * @param count buffer size, must be greater than zero.
  * @return new [LiveData] instance.
  * @throws IllegalArgumentException if [count] is not greater than zero.

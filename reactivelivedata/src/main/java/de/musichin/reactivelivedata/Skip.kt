@@ -59,6 +59,7 @@ fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> = skipUnti
 
 /**
  * Returns new [LiveData] instance that skips first [count] elements.
+ * Only elements received while the returned [LiveData] is active are counted.
  * @param count number of elements to skip, must not be negative.
  * @return new [LiveData] instance.
  * @throws IllegalArgumentException if [count] is negative.

@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData
 
 /**
  * Returns new [LiveData] instance that takes only first [count] elements.
+ * Only elements received while the returned [LiveData] is active are counted.
  * @param count number of elements to take, must not be negative.
  * @return new [LiveData] instance.
  * @throws IllegalArgumentException if [count] is negative.
@@ -85,6 +86,7 @@ fun <T> LiveData<T>.first(): LiveData<T> = take(1)
 
 /**
  * Returns new [LiveData] instance that takes only the element at given [index].
+ * Only elements received while the returned [LiveData] is active are counted.
  * @param index zero-based index of the element to take, must not be negative.
  * @return new [LiveData] instance.
  * @throws IllegalArgumentException if [index] is negative.

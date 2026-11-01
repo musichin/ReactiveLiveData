@@ -18,7 +18,7 @@ fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveData(value)
  * Returns new [LiveData] instance that starts with given elements.
  * Only the observer that activates the returned [LiveData] receives every element;
  * observers added later receive only the latest one.
- * Without elements, it emits the same elements as given [LiveData].
+ * Without elements, it emits the same elements as current source.
  * @param values elements to start with, in emission order.
  * @return new [LiveData] instance.
  */

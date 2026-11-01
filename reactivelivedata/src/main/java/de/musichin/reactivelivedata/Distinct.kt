@@ -8,6 +8,7 @@ import androidx.lifecycle.MediatorLiveData
 /**
  * Returns new [LiveData] instance that emits only distinct elements
  * using given key selector result for comparison.
+ * Only elements received while the returned [LiveData] is active are considered.
  * @param keySelector function that determines the key of each element.
  * @return new [LiveData] instance.
  */
@@ -20,6 +21,7 @@ fun <T, K> LiveData<T>.distinct(keySelector: (T) -> K): LiveData<T> {
 
 /**
  * Returns new [LiveData] instance that emits only distinct elements using [Any.equals] for comparison.
+ * Only elements received while the returned [LiveData] is active are considered.
  * @return new [LiveData] instance.
  */
 @MainThread

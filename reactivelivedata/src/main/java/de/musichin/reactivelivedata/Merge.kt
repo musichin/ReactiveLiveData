@@ -244,7 +244,7 @@ fun <T> merge(
 ): LiveData<T> = mergeArray(source0, source1, source2, source3, source4, source5, source6, source7, source8, source9)
 
 /**
- * Returns new [LiveData] instance that emits elements that are emitted by this or [other].
+ * Returns new [LiveData] instance that emits elements that are emitted by current source or [other].
  * @param other another source to merge with.
  * @return new [LiveData] instance.
  */
@@ -253,7 +253,7 @@ fun <T> merge(
 fun <T> LiveData<out T>.mergeWith(other: LiveData<out T>): LiveData<T> = mergeArray(this, other)
 
 /**
- * Returns new [LiveData] instance that emits elements that are emitted by this or [other].
+ * Returns new [LiveData] instance that emits elements that are emitted by current source or [other].
  * @param other another source to merge with.
  * @return new [LiveData] instance.
  */
@@ -262,7 +262,7 @@ fun <T> LiveData<out T>.mergeWith(other: LiveData<out T>): LiveData<T> = mergeAr
 operator fun <T> LiveData<out T>.plus(other: LiveData<out T>): LiveData<T> = mergeWith(other)
 
 /**
- * Returns new [LiveData] instance that emits elements that are emitted by this or any of [others].
+ * Returns new [LiveData] instance that emits elements that are emitted by current source or any of [others].
  * @param others other sources to merge with.
  * @return new [LiveData] instance.
  */
@@ -271,7 +271,7 @@ operator fun <T> LiveData<out T>.plus(other: LiveData<out T>): LiveData<T> = mer
 operator fun <T> LiveData<out T>.plus(others: Iterable<LiveData<out T>>): LiveData<T> = mergeWith(others.iterator())
 
 /**
- * Returns new [LiveData] instance that emits elements that are emitted by this or any of [others].
+ * Returns new [LiveData] instance that emits elements that are emitted by current source or any of [others].
  * @param others other sources to merge with.
  * @return new [LiveData] instance.
  */
