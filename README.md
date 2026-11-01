@@ -28,6 +28,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `skipUntil`
 * `skipWhile`
 * `buffer`
+* `sample`
 * `scan`
 * `cast`
 * `doOnValue`
