@@ -78,6 +78,9 @@ dependencies {
 | 2.x              | 23     | ≥ 2.1  | ≥ 2.11.0           |
 | 1.2.x            | 14     | ≥ 1.8  | ≥ 2.6.2            |
 
+## Migrating from 1.x
+* `combineLatest` and `merge` return `LiveData<T>` instead of `LiveData<out T>`, so casts at call sites are no longer needed.
+
 ## Contributing
 Contributors are more than welcome. Just upload a PR with a description of your changes.
 

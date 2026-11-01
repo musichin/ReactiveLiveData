@@ -14,7 +14,7 @@ class MergeTest {
 
     private fun createTest(
         size: Int,
-        func: (List<LiveData<out Int>>) -> LiveData<out Int>,
+        func: (List<LiveData<out Int>>) -> LiveData<Int>,
     ) {
         val observer = TestObserver<Int>()
         val sources = (0 until size).map { MutableLiveData<Int>() }
