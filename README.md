@@ -18,6 +18,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `mergeWith`
 * `combineLatest`
 * `combineLatestWith`
+* `withLatestFrom`
 * `startWith`
 * `first`
 * `take`
