@@ -14,7 +14,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T, K> LiveData<T>.distinct(keySelector: (T) -> K): LiveData<T> {
+public fun <T, K> LiveData<T>.distinct(keySelector: (T) -> K): LiveData<T> {
     val keys = hashSetOf<Any?>()
     return filter { keys.add(keySelector(it)) }
 }
@@ -26,7 +26,7 @@ fun <T, K> LiveData<T>.distinct(keySelector: (T) -> K): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.distinct(): LiveData<T> = distinct { value -> value }
+public fun <T> LiveData<T>.distinct(): LiveData<T> = distinct { value -> value }
 
 /**
  * Returns new [LiveData] instance that ensures emitted element is not equal to previous element
@@ -36,7 +36,7 @@ fun <T> LiveData<T>.distinct(): LiveData<T> = distinct { value -> value }
  */
 @MainThread
 @CheckResult
-fun <T, K> LiveData<T>.distinctUntilChanged(keySelector: (T) -> K): LiveData<T> {
+public fun <T, K> LiveData<T>.distinctUntilChanged(keySelector: (T) -> K): LiveData<T> {
     var prev: Any? = NOT_SET
     return filter {
         val key = keySelector(it)
@@ -58,7 +58,7 @@ fun <T, K> LiveData<T>.distinctUntilChanged(keySelector: (T) -> K): LiveData<T> 
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T> LiveData<T>.distinctUntilChanged(comparer: (T, T) -> Boolean): LiveData<T> {
+public fun <T> LiveData<T>.distinctUntilChanged(comparer: (T, T) -> Boolean): LiveData<T> {
     var first = true
     val result = MediatorLiveData<T>()
     result.addSource(this) { value ->

@@ -11,7 +11,7 @@ import androidx.lifecycle.MutableLiveData
  * @param observer calls [MutableLiveData.setValue] on each emitted element.
  */
 @MainThread
-fun <T> LiveData<T>.observe(
+public fun <T> LiveData<T>.observe(
     owner: LifecycleOwner,
     observer: MutableLiveData<T>,
 ): Unit = this.observe(owner, observer::setValue)
@@ -21,14 +21,14 @@ fun <T> LiveData<T>.observe(
  * @param owner [LifecycleOwner] that controls the observation.
  */
 @MainThread
-fun <T> LiveData<T>.observe(owner: LifecycleOwner): Unit = observe(owner) {}
+public fun <T> LiveData<T>.observe(owner: LifecycleOwner): Unit = observe(owner) {}
 
 /**
  * Observes forever current source.
  * Warning: the observer cannot be removed, so the source stays active forever.
  */
 @MainThread
-fun <T> LiveData<T>.observeForever(): Unit = this.observeForever {}
+public fun <T> LiveData<T>.observeForever(): Unit = this.observeForever {}
 
 /**
  * Observes forever current source and sets emitted elements to the observer.
@@ -36,4 +36,4 @@ fun <T> LiveData<T>.observeForever(): Unit = this.observeForever {}
  * @param observer calls [MutableLiveData.setValue] on each emitted element.
  */
 @MainThread
-fun <T> LiveData<T>.observeForever(observer: MutableLiveData<T>): Unit = this.observeForever(observer::setValue)
+public fun <T> LiveData<T>.observeForever(observer: MutableLiveData<T>): Unit = this.observeForever(observer::setValue)

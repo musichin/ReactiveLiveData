@@ -14,7 +14,7 @@ import androidx.lifecycle.map
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <U> LiveData<*>.cast(clazz: Class<U>): LiveData<U> {
+public fun <U> LiveData<*>.cast(clazz: Class<U>): LiveData<U> {
     val objectType = (clazz as Class<*>).kotlin.javaObjectType
     return map { objectType.cast(it) as U }
 }
@@ -26,4 +26,4 @@ fun <U> LiveData<*>.cast(clazz: Class<U>): LiveData<U> {
  */
 @MainThread
 @CheckResult
-inline fun <reified U> LiveData<*>.cast(): LiveData<U> = cast(U::class.java)
+public inline fun <reified U> LiveData<*>.cast(): LiveData<U> = cast(U::class.java)

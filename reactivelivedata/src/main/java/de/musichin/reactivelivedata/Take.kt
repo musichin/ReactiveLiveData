@@ -14,7 +14,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.take(count: Int): LiveData<T> {
+public fun <T> LiveData<T>.take(count: Int): LiveData<T> {
     require(count >= 0) { "count $count must not be negative." }
     if (count == 0) return emptyLiveData()
     var counter = 0
@@ -29,7 +29,7 @@ fun <T> LiveData<T>.take(count: Int): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.takeUntil(predicate: (T) -> Boolean): LiveData<T> {
+public fun <T> LiveData<T>.takeUntil(predicate: (T) -> Boolean): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value ->
         if (predicate(value)) result.removeSource(this)
@@ -46,7 +46,7 @@ fun <T> LiveData<T>.takeUntil(predicate: (T) -> Boolean): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.takeUntil(other: LiveData<*>): LiveData<T> {
+public fun <T> LiveData<T>.takeUntil(other: LiveData<*>): LiveData<T> {
     if (other === this) return emptyLiveData()
     val result = MediatorLiveData<T>()
     result.addSource(other) {
@@ -64,7 +64,7 @@ fun <T> LiveData<T>.takeUntil(other: LiveData<*>): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> {
+public fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value ->
         if (predicate(value)) {
@@ -82,7 +82,7 @@ fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.first(): LiveData<T> = take(1)
+public fun <T> LiveData<T>.first(): LiveData<T> = take(1)
 
 /**
  * Returns new [LiveData] instance that takes only the element at given [index].
@@ -93,7 +93,7 @@ fun <T> LiveData<T>.first(): LiveData<T> = take(1)
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.elementAt(index: Int): LiveData<T> {
+public fun <T> LiveData<T>.elementAt(index: Int): LiveData<T> {
     require(index >= 0) { "index $index must not be negative." }
     return skip(index).first()
 }

@@ -18,7 +18,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.buffer(
+public fun <T> LiveData<T>.buffer(
     count: Int,
     skip: Int,
 ): LiveData<List<T>> {
@@ -49,4 +49,4 @@ fun <T> LiveData<T>.buffer(
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.buffer(count: Int): LiveData<List<T>> = buffer(count, count)
+public fun <T> LiveData<T>.buffer(count: Int): LiveData<List<T>> = buffer(count, count)

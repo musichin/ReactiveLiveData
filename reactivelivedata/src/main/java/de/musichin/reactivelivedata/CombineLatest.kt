@@ -65,7 +65,7 @@ private fun <T, R> combineLatest(
  */
 @MainThread
 @CheckResult
-fun <T, R> Array<out LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): LiveData<R> =
+public fun <T, R> Array<out LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): LiveData<R> =
     iterator().combineLatest(size) { values -> combiner(values.toList()) }
 
 /**
@@ -78,7 +78,7 @@ fun <T, R> Array<out LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): L
  */
 @MainThread
 @CheckResult
-fun <T, R> Iterable<LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): LiveData<R> {
+public fun <T, R> Iterable<LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): LiveData<R> {
     val collection = (this as? Collection) ?: toList()
 
     return collection
@@ -95,10 +95,10 @@ fun <T, R> Iterable<LiveData<out T>>.combineLatest(combiner: (List<T>) -> R): Li
  */
 @MainThread
 @CheckResult
-fun <T0, T1> combineLatest(
+public fun <T0, T1> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
-): LiveData<Pair<T0, T1>> = combineLatest(source0, source1) { T0, T1 -> T0 to T1 }
+): LiveData<Pair<T0, T1>> = combineLatest(source0, source1) { v0, v1 -> v0 to v1 }
 
 /**
  * Returns new [LiveData] instance that combines latest emitted elements of each source to a [Triple].
@@ -110,11 +110,11 @@ fun <T0, T1> combineLatest(
  */
 @MainThread
 @CheckResult
-fun <T0, T1, T2> combineLatest(
+public fun <T0, T1, T2> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
-): LiveData<Triple<T0, T1, T2>> = combineLatest(source0, source1, source2) { T0, T1, T2 -> Triple(T0, T1, T2) }
+): LiveData<Triple<T0, T1, T2>> = combineLatest(source0, source1, source2) { v0, v1, v2 -> Triple(v0, v1, v2) }
 
 /**
  * Returns new [LiveData] instance that combines latest emitted elements of each source by calling
@@ -126,7 +126,7 @@ fun <T0, T1, T2> combineLatest(
  */
 @MainThread
 @CheckResult
-fun <T0, T1, R> LiveData<out T0>.combineLatestWith(
+public fun <T0, T1, R> LiveData<out T0>.combineLatestWith(
     other: LiveData<out T1>,
     combiner: (T0, T1) -> R,
 ): LiveData<R> = combineLatest(this, other, combiner)
@@ -139,8 +139,8 @@ fun <T0, T1, R> LiveData<out T0>.combineLatestWith(
  */
 @MainThread
 @CheckResult
-fun <T0, T1> LiveData<out T0>.combineLatestWith(other: LiveData<out T1>): LiveData<Pair<T0, T1>> =
-    combineLatest(this, other) { T0, T1 -> T0 to T1 }
+public fun <T0, T1> LiveData<out T0>.combineLatestWith(other: LiveData<out T1>): LiveData<Pair<T0, T1>> =
+    combineLatest(this, other) { v0, v1 -> v0 to v1 }
 
 /**
  * Returns new [LiveData] instance that combines each element of current source with the latest
@@ -155,7 +155,7 @@ fun <T0, T1> LiveData<out T0>.combineLatestWith(other: LiveData<out T1>): LiveDa
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, R> LiveData<out T0>.withLatestFrom(
+public fun <T0, T1, R> LiveData<out T0>.withLatestFrom(
     other: LiveData<out T1>,
     combiner: (T0, T1) -> R,
 ): LiveData<R> {
@@ -184,7 +184,8 @@ fun <T0, T1, R> LiveData<out T0>.withLatestFrom(
  */
 @MainThread
 @CheckResult
-fun <T0, T1> LiveData<out T0>.withLatestFrom(other: LiveData<out T1>): LiveData<Pair<T0, T1>> = withLatestFrom(other) { T0, T1 -> T0 to T1 }
+public fun <T0, T1> LiveData<out T0>.withLatestFrom(other: LiveData<out T1>): LiveData<Pair<T0, T1>> =
+    withLatestFrom(other) { v0, v1 -> v0 to v1 }
 
 /**
  * Returns new [LiveData] instance that combines latest emitted elements of each source by calling
@@ -198,7 +199,7 @@ fun <T0, T1> LiveData<out T0>.withLatestFrom(other: LiveData<out T1>): LiveData<
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, R> combineLatest(
+public fun <T0, T1, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     combiner: (T0, T1) -> R,
@@ -221,7 +222,7 @@ fun <T0, T1, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, R> combineLatest(
+public fun <T0, T1, T2, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
@@ -252,7 +253,7 @@ fun <T0, T1, T2, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, T3, R> combineLatest(
+public fun <T0, T1, T2, T3, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
@@ -286,7 +287,7 @@ fun <T0, T1, T2, T3, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, T3, T4, R> combineLatest(
+public fun <T0, T1, T2, T3, T4, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
@@ -323,7 +324,7 @@ fun <T0, T1, T2, T3, T4, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, T3, T4, T5, R> combineLatest(
+public fun <T0, T1, T2, T3, T4, T5, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
@@ -370,7 +371,7 @@ fun <T0, T1, T2, T3, T4, T5, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, T3, T4, T5, T6, R> combineLatest(
+public fun <T0, T1, T2, T3, T4, T5, T6, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
@@ -421,7 +422,7 @@ fun <T0, T1, T2, T3, T4, T5, T6, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
+public fun <T0, T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
@@ -476,7 +477,7 @@ fun <T0, T1, T2, T3, T4, T5, T6, T7, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
+public fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,
@@ -535,7 +536,7 @@ fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, R> combineLatest(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, R> combineLatest(
+public fun <T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, R> combineLatest(
     source0: LiveData<out T0>,
     source1: LiveData<out T1>,
     source2: LiveData<out T2>,

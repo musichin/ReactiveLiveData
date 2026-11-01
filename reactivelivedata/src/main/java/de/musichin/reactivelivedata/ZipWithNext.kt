@@ -16,7 +16,7 @@ import androidx.lifecycle.MediatorLiveData
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T, R> LiveData<T>.zipWithNext(transform: (previous: T, current: T) -> R): LiveData<R> {
+public fun <T, R> LiveData<T>.zipWithNext(transform: (previous: T, current: T) -> R): LiveData<R> {
     val result = MediatorLiveData<R>()
     var previous: Any? = NOT_SET
     result.addSource(this) { value ->
@@ -34,4 +34,4 @@ fun <T, R> LiveData<T>.zipWithNext(transform: (previous: T, current: T) -> R): L
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.zipWithNext(): LiveData<Pair<T, T>> = zipWithNext { previous, current -> previous to current }
+public fun <T> LiveData<T>.zipWithNext(): LiveData<Pair<T, T>> = zipWithNext { previous, current -> previous to current }
