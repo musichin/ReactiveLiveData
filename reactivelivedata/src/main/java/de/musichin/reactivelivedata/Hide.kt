@@ -6,7 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 /**
- * Returns same instance that is cast to [LiveData].
+ * Returns this instance typed as [LiveData].
+ * @return this instance.
  */
 @MainThread
 @CheckResult

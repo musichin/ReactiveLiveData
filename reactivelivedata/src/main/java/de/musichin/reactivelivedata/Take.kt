@@ -6,19 +6,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
 /**
- * Returns new [LiveData] instance that takes only first `count` elements.
+ * Returns new [LiveData] instance that takes only first [count] elements.
+ * @param count number of elements to take, must not be negative.
  * @return new [LiveData] instance.
+ * @throws IllegalArgumentException if [count] is negative.
  */
 @MainThread
 @CheckResult
 fun <T> LiveData<T>.take(count: Int): LiveData<T> {
-    if (count <= 0) return liveData()
+    require(count >= 0) { "count $count must not be negative." }
+    if (count == 0) return liveData()
     var counter = 0
     return takeUntil { ++counter >= count }
 }
 
 /**
- * Returns new [LiveData] instance that takes first elements until `predicate` returns `true`.
+ * Returns new [LiveData] instance that takes first elements until [predicate] returns `true`.
+ * The element for which [predicate] returns `true` is still emitted.
+ * @param predicate function to test each element.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -33,7 +38,8 @@ fun <T> LiveData<T>.takeUntil(predicate: (T) -> Boolean): LiveData<T> {
 }
 
 /**
- * Returns new [LiveData] instance that takes first elements as long as `predicate` returns `true`.
+ * Returns new [LiveData] instance that takes first elements as long as [predicate] returns `true`.
+ * @param predicate function to test each element.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -56,5 +62,4 @@ fun <T> LiveData<T>.takeWhile(predicate: (T) -> Boolean): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.first(): LiveData<T> =
-    take(1)
+fun <T> LiveData<T>.first(): LiveData<T> = take(1)

@@ -14,7 +14,7 @@ class DoOnTest {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun testOnValue() {
+    fun testDoOnValue() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()
 
@@ -33,7 +33,21 @@ class DoOnTest {
     }
 
     @Test
-    fun testOnActiveAndOnInactive() {
+    fun testDoOnValueRunsBeforeObservers() {
+        val events = mutableListOf<String>()
+        val source = MutableLiveData<Int>()
+        source
+            .doOnValue { events.add("onValue $it") }
+            .observeForever { events.add("observer $it") }
+
+        source.value = 1
+        source.value = 2
+
+        assertEquals(listOf("onValue 1", "observer 1", "onValue 2", "observer 2"), events)
+    }
+
+    @Test
+    fun testDoOnActiveAndDoOnInactive() {
         val observer = TestObserver<Int>()
         var active = false
         val source = MutableLiveData<Int>()
@@ -51,6 +65,6 @@ class DoOnTest {
         source.value = 4
         assertFalse(active)
 
-        assertEquals(listOf(1, 2, 3), observer.values)
+        observer.assertEquals(1, 2, 3)
     }
 }

@@ -2,7 +2,7 @@ package de.musichin.reactivelivedata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
-import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Rule
 import org.junit.Test
 
@@ -14,13 +14,13 @@ class SkipTest {
     @Test
     fun testSkipWhile() {
         val observer = TestObserver<Int>()
-        val s = MutableLiveData<Int>()
-        s.skipWhile { it >= 3 }.observeForever(observer)
-        s.value = 1
-        s.value = 2
-        s.value = 3
-        s.value = 4
-        s.value = 5
+        val source = MutableLiveData<Int>()
+        source.skipWhile { it >= 3 }.observeForever(observer)
+        source.value = 1
+        source.value = 2
+        source.value = 3
+        source.value = 4
+        source.value = 5
 
         observer.assertEquals(3, 4, 5)
     }
@@ -28,14 +28,21 @@ class SkipTest {
     @Test
     fun testSkip() {
         val observer = TestObserver<Int>()
-        val s = MutableLiveData<Int>()
-        s.skip(2).observeForever(observer)
-        s.value = 1
-        s.value = 2
-        s.value = 3
-        s.value = 4
-        s.value = 5
+        val source = MutableLiveData<Int>()
+        source.skip(2).observeForever(observer)
+        source.value = 1
+        source.value = 2
+        source.value = 3
+        source.value = 4
+        source.value = 5
 
         observer.assertEquals(3, 4, 5)
+    }
+
+    @Test
+    fun testSkipRejectsNegativeCount() {
+        assertThrows(IllegalArgumentException::class.java) {
+            MutableLiveData<Int>().skip(-1)
+        }
     }
 }

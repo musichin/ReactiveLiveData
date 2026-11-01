@@ -6,7 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 
 /**
- * Returns new [LiveData] instance that skips first elements until `predicate` returns `true`.
+ * Returns new [LiveData] instance that skips first elements until [predicate] returns `true`.
+ * The element for which [predicate] returns `true` is emitted.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -24,12 +25,15 @@ fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> {
 }
 
 /**
- * Returns new [LiveData] instance that skips first `count` elements.
+ * Returns new [LiveData] instance that skips first [count] elements.
+ * @param count number of elements to skip, must not be negative.
  * @return new [LiveData] instance.
+ * @throws IllegalArgumentException if [count] is negative.
  */
 @MainThread
 @CheckResult
 fun <T> LiveData<T>.skip(count: Int): LiveData<T> {
+    require(count >= 0) { "count $count must not be negative." }
     var counter = 0
     return skipWhile { ++counter > count }
 }

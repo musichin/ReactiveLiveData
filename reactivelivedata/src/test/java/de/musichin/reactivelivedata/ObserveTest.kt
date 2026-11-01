@@ -16,7 +16,7 @@ class ObserveTest {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun testObserve() {
+    fun testObserveMutableLiveData() {
         val owner = TestLifecycleOwner()
         val source = liveData { "test" }
         val observer = MutableLiveData<String>()
@@ -31,7 +31,7 @@ class ObserveTest {
     }
 
     @Test
-    fun testObserveMutableLiveData() {
+    fun testObserve() {
         val owner = TestLifecycleOwner()
         val source = liveData<Any> { "test" }
 

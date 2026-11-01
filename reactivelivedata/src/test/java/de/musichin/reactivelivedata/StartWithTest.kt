@@ -17,7 +17,7 @@ class StartWithTest {
 
         val observer = TestObserver<Int>()
         source.observeForever(observer)
-        observer.assertEquals(listOf(1, 2))
+        observer.assertEquals(1, 2)
     }
 
     @Test
@@ -27,7 +27,7 @@ class StartWithTest {
 
         val observer = TestObserver<Int>()
         source.observeForever(observer)
-        observer.assertEquals(listOf(1, 2))
+        observer.assertEquals(1, 2)
     }
 
     @Test
@@ -38,6 +38,6 @@ class StartWithTest {
 
         val observer = TestObserver<Int>()
         source.observeForever(observer)
-        observer.assertEquals(listOf(1, 2))
+        observer.assertEquals(1, 2)
     }
 }

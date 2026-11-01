@@ -2,6 +2,7 @@ package de.musichin.reactivelivedata
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
+import org.junit.Assert.assertThrows
 import org.junit.Rule
 import org.junit.Test
 
@@ -19,7 +20,7 @@ class TakeTest {
         source.value = 2
         source.value = 3
 
-        observer.assertEquals(listOf(1))
+        observer.assertEquals(1)
     }
 
     @Test
@@ -31,19 +32,26 @@ class TakeTest {
         source.value = 2
         source.value = 3
 
-        observer.assertEquals(listOf(1, 2))
+        observer.assertEquals(1, 2)
     }
 
     @Test
     fun testTakeNone() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()
-        source.take(-1).observeForever(observer)
+        source.take(0).observeForever(observer)
         source.value = 1
         source.value = 2
         source.value = 3
 
         observer.assertEmpty()
+    }
+
+    @Test
+    fun testTakeRejectsNegativeCount() {
+        assertThrows(IllegalArgumentException::class.java) {
+            MutableLiveData<Int>().take(-1)
+        }
     }
 
     @Test
@@ -56,7 +64,7 @@ class TakeTest {
         source.value = 3
         source.value = 4
 
-        observer.assertEquals(listOf(1, 2, 3))
+        observer.assertEquals(1, 2, 3)
     }
 
     @Test
@@ -69,6 +77,6 @@ class TakeTest {
         source.value = 3
         source.value = 4
 
-        observer.assertEquals(listOf(1, 2, 3))
+        observer.assertEquals(1, 2, 3)
     }
 }

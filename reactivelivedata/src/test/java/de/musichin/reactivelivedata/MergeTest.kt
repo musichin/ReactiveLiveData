@@ -3,7 +3,7 @@ package de.musichin.reactivelivedata
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.junit.Assert
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -12,7 +12,10 @@ class MergeTest {
     @JvmField
     val rule = InstantTaskExecutorRule()
 
-    private fun createTest(size: Int, func: (List<LiveData<out Int>>) -> LiveData<out Int>) {
+    private fun createTest(
+        size: Int,
+        func: (List<LiveData<out Int>>) -> LiveData<out Int>,
+    ) {
         val observer = TestObserver<Int>()
         val sources = (0 until size).map { MutableLiveData<Int>() }
         func(sources).observeForever(observer)
@@ -23,13 +26,13 @@ class MergeTest {
             source.value = -index
         }
 
-        observer.assertEquals((0 until size).toList() + (0 until size).map { -it })
+        observer.assertValues((0 until size).toList() + (0 until size).map { -it })
     }
 
     @Test
     fun testMergeEmpty() {
         val source = emptyList<LiveData<Int>>().merge()
-        Assert.assertNull(source.value)
+        assertNull(source.value)
 
         val observer = TestObserver<Int>()
         source.observeForever(observer)
@@ -39,11 +42,35 @@ class MergeTest {
     @Test
     fun testMergeSingle() {
         val source = listOf(liveData { "test_value" }).merge()
-        Assert.assertNull(source.value)
+        assertNull(source.value)
 
         val observer = TestObserver<String>()
         source.observeForever(observer)
         observer.assertEquals("test_value")
+    }
+
+    @Test
+    fun testMergeSameSource() {
+        val source = MutableLiveData<Int>()
+        val observer = TestObserver<Int>()
+        merge(source, source).observeForever(observer)
+
+        source.value = 1
+        source.value = 2
+        observer.assertEquals(1, 2)
+    }
+
+    @Test
+    fun testMergeListWithDuplicates() {
+        val source0 = MutableLiveData<Int>()
+        val source1 = MutableLiveData<Int>()
+        val observer = TestObserver<Int>()
+        listOf(source0, source1, source0).merge().observeForever(observer)
+
+        source0.value = 1
+        source1.value = 2
+        source0.value = 3
+        observer.assertEquals(1, 2, 3)
     }
 
     @Test
@@ -92,47 +119,47 @@ class MergeTest {
     }
 
     @Test
-    fun testMerge1() {
+    fun testMerge2() {
         createTest(2) { s -> merge(s[0], s[1]) }
     }
 
     @Test
-    fun testMerge2() {
+    fun testMerge3() {
         createTest(3) { s -> merge(s[0], s[1], s[2]) }
     }
 
     @Test
-    fun testMerge3() {
+    fun testMerge4() {
         createTest(4) { s -> merge(s[0], s[1], s[2], s[3]) }
     }
 
     @Test
-    fun testMerge4() {
+    fun testMerge5() {
         createTest(5) { s -> merge(s[0], s[1], s[2], s[3], s[4]) }
     }
 
     @Test
-    fun testMerge5() {
+    fun testMerge6() {
         createTest(6) { s -> merge(s[0], s[1], s[2], s[3], s[4], s[5]) }
     }
 
     @Test
-    fun testMerge6() {
+    fun testMerge7() {
         createTest(7) { s -> merge(s[0], s[1], s[2], s[3], s[4], s[5], s[6]) }
     }
 
     @Test
-    fun testMerge7() {
+    fun testMerge8() {
         createTest(8) { s -> merge(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]) }
     }
 
     @Test
-    fun testMerge8() {
+    fun testMerge9() {
         createTest(9) { s -> merge(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8]) }
     }
 
     @Test
-    fun testMerge9() {
+    fun testMerge10() {
         createTest(10) { s -> merge(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8], s[9]) }
     }
 }

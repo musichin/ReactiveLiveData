@@ -10,11 +10,11 @@ import androidx.lifecycle.LiveData
  */
 @MainThread
 @CheckResult
-@Suppress("UNCHECKED_CAST")
-fun <T> liveData(): LiveData<T> = NEVER as LiveData<T>
+fun <T> liveData(): LiveData<T> = object : LiveData<T>() {}
 
 /**
  * Returns new [LiveData] instance that holds given element.
+ * @param value element to hold.
  * @return new [LiveData] instance.
  */
 @MainThread
@@ -22,20 +22,22 @@ fun <T> liveData(): LiveData<T> = NEVER as LiveData<T>
 fun <T> liveData(value: T): LiveData<T> = object : LiveData<T>(value) {}
 
 /**
- * Returns new [LiveData] instance with an element obtained by calling given function when it gets active.
- * @param value function to invoke to obtain the value.
+ * Returns new [LiveData] instance with an element obtained by calling given function when it first becomes active.
+ * @param value function to invoke to obtain the element.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> liveData(value: () -> T): LiveData<T> = object : LiveData<T>() {
-    private var initialized = false
-    override fun onActive() {
-        if (initialized) return
-        this.value = value()
-        initialized = true
+fun <T> liveData(value: () -> T): LiveData<T> =
+    object : LiveData<T>() {
+        private var initialized = false
+
+        override fun onActive() {
+            if (initialized) return
+            this.value = value()
+            initialized = true
+        }
     }
-}
 
 /**
  * Returns new [LiveData] instance that holds given element.
@@ -43,14 +45,12 @@ fun <T> liveData(value: () -> T): LiveData<T> = object : LiveData<T>() {
  */
 @MainThread
 @CheckResult
-fun <T> T.toLiveData(): LiveData<T> =
-    liveData(this)
+fun <T> T.toLiveData(): LiveData<T> = liveData(this)
 
 /**
- * Returns new [LiveData] instance that obtains its value when it first gets active from given function.
+ * Returns new [LiveData] instance that obtains its element from given function when it first becomes active.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> (() -> T).toLiveData(): LiveData<T> =
-    liveData(this)
+fun <T> (() -> T).toLiveData(): LiveData<T> = liveData(this)

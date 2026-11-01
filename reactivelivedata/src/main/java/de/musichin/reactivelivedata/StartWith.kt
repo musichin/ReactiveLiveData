@@ -7,36 +7,34 @@ import androidx.lifecycle.MediatorLiveData
 
 /**
  * Returns new [LiveData] instance that starts with given element.
+ * @param value element to start with.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(value: T): LiveData<T> =
-    startWith(liveData(value))
+fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveData(value))
 
 /**
  * Returns new [LiveData] instance that starts with an element
- * obtained by calling given function when it gets active.
- * @param value function to invoke to obtain the value.
+ * obtained by calling given function when it first becomes active.
+ * @param value function to invoke to obtain the element.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> =
-    startWith(liveData(value))
+fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> = startWith(liveData(value))
 
 /**
- * Returns new [LiveData] instance that starts with an element
- * obtained by given [LiveData].
- * @param value obtains first of this [LiveData].
+ * Returns new [LiveData] instance that starts with the first element emitted by [other].
+ * @param other [LiveData] whose first element is emitted first.
  * @return new [LiveData] instance.
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(value: LiveData<T>): LiveData<T> {
+fun <T> LiveData<T>.startWith(other: LiveData<T>): LiveData<T> {
     val result = MediatorLiveData<T>()
-    result.addSource(value) { valueStart ->
-        result.removeSource(value)
+    result.addSource(other) { valueStart ->
+        result.removeSource(other)
         result.value = valueStart
         result.addSource(this) { valueMain ->
             result.value = valueMain

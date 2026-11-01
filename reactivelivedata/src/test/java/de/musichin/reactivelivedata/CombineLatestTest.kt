@@ -3,7 +3,8 @@ package de.musichin.reactivelivedata
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import org.junit.Assert
+import androidx.lifecycle.map
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -12,7 +13,10 @@ class CombineLatestTest {
     @JvmField
     val rule = InstantTaskExecutorRule()
 
-    private fun createTest(size: Int, func: (List<LiveData<out String>>, combiner: (Iterable<String>) -> String) -> LiveData<out String>) {
+    private fun createTest(
+        size: Int,
+        func: (List<LiveData<out String>>, combiner: (Iterable<String>) -> String) -> LiveData<out String>,
+    ) {
         val observer = TestObserver<String>()
         val sources = (0 until size).map { MutableLiveData<String>() }
 
@@ -37,15 +41,15 @@ class CombineLatestTest {
             }
         }
 
-        observer.assertEquals((0..size).map(seq).map(combiner))
+        observer.assertValues((0..size).map(seq).map(combiner))
     }
 
     @Test
-    fun testCombineSkipsValues() {
+    fun testCombineLatestSkipsValues() {
         val source0 = MutableLiveData<String?>()
         val source1 = MutableLiveData<Int>()
         val source = listOf(source0, source1).combineLatest { it.joinToString("") }
-        Assert.assertNull(source.value)
+        assertNull(source.value)
 
         val observer = TestObserver<String>()
         source.observeForever(observer)
@@ -53,16 +57,16 @@ class CombineLatestTest {
         source0.value = "a"
         source0.value = "b"
         source0.value = "c"
-        Assert.assertNull(source.value)
+        assertNull(source.value)
 
         source1.value = 4
         observer.assertEquals("c4")
     }
 
     @Test
-    fun testCombineEmpty() {
+    fun testCombineLatestEmpty() {
         val source = emptyList<LiveData<Int>>().combineLatest { it.sum() }
-        Assert.assertNull(source.value)
+        assertNull(source.value)
 
         val observer = TestObserver<Int>()
         source.observeForever(observer)
@@ -70,9 +74,9 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineSingle() {
+    fun testCombineLatestSingle() {
         val source = listOf(liveData { "test_value" }).combineLatest { it.joinToString() }
-        Assert.assertNull(source.value)
+        assertNull(source.value)
 
         val observer = TestObserver<String>()
         source.observeForever(observer)
@@ -80,14 +84,38 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineArrayIterable() {
+    fun testCombineLatestSameSource() {
+        val source = MutableLiveData<String>()
+        val observer = TestObserver<String>()
+        combineLatest(source, source) { v0, v1 -> v0 + v1 }.observeForever(observer)
+
+        source.value = "a"
+        source.value = "b"
+        observer.assertEquals("aa", "bb")
+    }
+
+    @Test
+    fun testCombineLatestListWithDuplicates() {
+        val source0 = MutableLiveData<String>()
+        val source1 = MutableLiveData<String>()
+        val observer = TestObserver<String>()
+        listOf(source0, source1, source0).combineLatest { it.joinToString("") }.observeForever(observer)
+
+        source0.value = "a"
+        source1.value = "1"
+        source0.value = "b"
+        observer.assertEquals("a1a", "b1b")
+    }
+
+    @Test
+    fun testCombineLatestArrayIterable() {
         createTest(2) { sources, combiner ->
             sources.toTypedArray().asIterable().combineLatest(combiner)
         }
     }
 
     @Test
-    fun testCombineList() {
+    fun testCombineLatestList() {
         createTest(2) { sources, combiner ->
             sources.combineLatest(combiner)
         }
@@ -137,7 +165,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest1() {
+    fun testCombineLatest2() {
         createTest(2) { s, combiner ->
             combineLatest(s[0], s[1]) { v0, v1 ->
                 combiner(listOf(v0, v1))
@@ -146,7 +174,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest2() {
+    fun testCombineLatest3() {
         createTest(3) { s, combiner ->
             combineLatest(s[0], s[1], s[2]) { v0, v1, v2 ->
                 combiner(listOf(v0, v1, v2))
@@ -155,7 +183,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest3() {
+    fun testCombineLatest4() {
         createTest(4) { s, combiner ->
             combineLatest(s[0], s[1], s[2], s[3]) { v0, v1, v2, v3 ->
                 combiner(listOf(v0, v1, v2, v3))
@@ -164,7 +192,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest4() {
+    fun testCombineLatest5() {
         createTest(5) { s, combiner ->
             combineLatest(s[0], s[1], s[2], s[3], s[4]) { v0, v1, v2, v3, v4 ->
                 combiner(listOf(v0, v1, v2, v3, v4))
@@ -173,7 +201,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest5() {
+    fun testCombineLatest6() {
         createTest(6) { s, combiner ->
             combineLatest(s[0], s[1], s[2], s[3], s[4], s[5]) { v0, v1, v2, v3, v4, v5 ->
                 combiner(listOf(v0, v1, v2, v3, v4, v5))
@@ -182,7 +210,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest6() {
+    fun testCombineLatest7() {
         createTest(7) { s, combiner ->
             combineLatest(s[0], s[1], s[2], s[3], s[4], s[5], s[6]) { v0, v1, v2, v3, v4, v5, v6 ->
                 combiner(listOf(v0, v1, v2, v3, v4, v5, v6))
@@ -191,7 +219,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest7() {
+    fun testCombineLatest8() {
         createTest(8) { s, combiner ->
             combineLatest(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7]) { v0, v1, v2, v3, v4, v5, v6, v7 ->
                 combiner(listOf(v0, v1, v2, v3, v4, v5, v6, v7))
@@ -200,7 +228,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest8() {
+    fun testCombineLatest9() {
         createTest(9) { s, combiner ->
             combineLatest(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8]) { v0, v1, v2, v3, v4, v5, v6, v7, v8 ->
                 combiner(listOf(v0, v1, v2, v3, v4, v5, v6, v7, v8))
@@ -209,7 +237,7 @@ class CombineLatestTest {
     }
 
     @Test
-    fun testCombineLatest9() {
+    fun testCombineLatest10() {
         createTest(10) { s, combiner ->
             combineLatest(s[0], s[1], s[2], s[3], s[4], s[5], s[6], s[7], s[8], s[9]) { v0, v1, v2, v3, v4, v5, v6, v7, v8, v9 ->
                 combiner(listOf(v0, v1, v2, v3, v4, v5, v6, v7, v8, v9))
