@@ -7,7 +7,6 @@
 This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects.
 
 ## Functions
-* `switchMap`
 * `switchLatest`
 * `filter`
 * `filterNot`
@@ -78,8 +77,8 @@ dependencies {
 | 1.2.x            | 14     | ≥ 1.8  | ≥ 2.6.2            |
 
 ## Migrating from 1.x
-* `map` was removed, because AndroidX Lifecycle provides the same function.
-  Import it from `androidx.lifecycle` instead; the call stays the same.
+* `map` and `switchMap` were removed, because AndroidX Lifecycle provides the same functions.
+  Import them from `androidx.lifecycle` instead; the calls stay the same.
 * `combineLatest` and `merge` return `LiveData<T>` instead of `LiveData<out T>`, so casts at call sites are no longer needed.
 
 ## Contributing
