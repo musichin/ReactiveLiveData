@@ -47,7 +47,6 @@ dependencies {
 }
 
 kover {
-    useJacoco("0.8.15")
     reports {
         total {
             xml { onCheck = true }
