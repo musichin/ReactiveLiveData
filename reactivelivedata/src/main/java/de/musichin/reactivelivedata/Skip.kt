@@ -26,6 +26,29 @@ fun <T> LiveData<T>.skipUntil(predicate: (T) -> Boolean): LiveData<T> {
 }
 
 /**
+ * Returns new [LiveData] instance that skips elements until [other] emits.
+ * If [other] already holds a value when the returned [LiveData] becomes active, no element is skipped.
+ * @param other source whose first emission stops skipping elements.
+ * @return new [LiveData] instance.
+ */
+@MainThread
+@CheckResult
+fun <T> LiveData<T>.skipUntil(other: LiveData<*>): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    var drop = other !== this
+    if (drop) {
+        result.addSource(other) {
+            drop = false
+            result.removeSource(other)
+        }
+    }
+    result.addSource(this) { value ->
+        if (!drop) result.value = value
+    }
+    return result
+}
+
+/**
  * Returns new [LiveData] instance that skips first elements as long as [predicate] returns `true`.
  * @param predicate function to test each element.
  * @return new [LiveData] instance.

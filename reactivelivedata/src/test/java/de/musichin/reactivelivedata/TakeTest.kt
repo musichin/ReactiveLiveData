@@ -68,6 +68,29 @@ class TakeTest {
     }
 
     @Test
+    fun testTakeUntilOther() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Int>()
+        val other = MutableLiveData<String?>()
+        source.takeUntil(other).observeForever(observer)
+        source.value = 1
+        source.value = 2
+        other.value = null
+        source.value = 3
+        observer.assertEquals(1, 2)
+
+        val sticky = TestObserver<Int>()
+        source.takeUntil(other).observeForever(sticky)
+        source.value = 4
+        sticky.assertEmpty()
+
+        val self = TestObserver<Int>()
+        source.takeUntil(source).observeForever(self)
+        source.value = 5
+        self.assertEmpty()
+    }
+
+    @Test
     fun testTakeWhile() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()
