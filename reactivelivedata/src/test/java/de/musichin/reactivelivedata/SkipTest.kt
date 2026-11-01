@@ -12,17 +12,31 @@ class SkipTest {
     val rule = InstantTaskExecutorRule()
 
     @Test
-    fun testSkipWhile() {
+    fun testSkipUntil() {
         val observer = TestObserver<Int>()
         val source = MutableLiveData<Int>()
-        source.skipWhile { it >= 3 }.observeForever(observer)
+        source.skipUntil { it >= 3 }.observeForever(observer)
         source.value = 1
         source.value = 2
         source.value = 3
-        source.value = 4
+        source.value = 1
         source.value = 5
 
-        observer.assertEquals(3, 4, 5)
+        observer.assertEquals(3, 1, 5)
+    }
+
+    @Test
+    fun testSkipWhile() {
+        val observer = TestObserver<Int>()
+        val source = MutableLiveData<Int>()
+        source.skipWhile { it < 3 }.observeForever(observer)
+        source.value = 1
+        source.value = 2
+        source.value = 3
+        source.value = 1
+        source.value = 5
+
+        observer.assertEquals(3, 1, 5)
     }
 
     @Test
