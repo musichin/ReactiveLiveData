@@ -1,46 +1,43 @@
 # Reactive LiveData
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.21-blue.svg)](http://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.4.21-blue.svg)](https://kotlinlang.org)
 [![CI](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml/badge.svg)](https://github.com/musichin/ReactiveLiveData/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/musichin/ReactiveLiveData/branch/main/graph/badge.svg?token=6M3tKXUbf3)](https://codecov.io/gh/musichin/ReactiveLiveData)
 [![Maven Central](https://img.shields.io/maven-central/v/de.musichin.reactivelivedata/reactivelivedata)](https://central.sonatype.com/artifact/de.musichin.reactivelivedata/reactivelivedata)
 
-This library provides basic transformation functions for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects.
+This library provides RxJava-style operators for your [`LiveData`](https://developer.android.com/topic/libraries/architecture/livedata.html) objects.
 
-## Functions
-* `switchLatest`
-* `filter`
-* `filterNot`
-* `filterNotNull`
-* `filterIsInstance`
-* `mapNotNull`
-* `distinct`
-* `distinctUntilChanged`
-* `merge`
-* `mergeWith`
-* `amb`
-* `ambWith`
-* `combineLatest`
-* `combineLatestWith`
-* `withLatestFrom`
-* `startWith`
-* `first`
-* `elementAt`
-* `take`
-* `takeUntil`
-* `takeWhile`
-* `skip`
-* `skipUntil`
-* `skipWhile`
-* `skipLast`
-* `buffer`
-* `zipWithNext`
-* `sample`
-* `scan`
-* `cast`
-* `doOnValue`
-* `doOnActive`
-* `doOnInactive`
-* and more...
+## Operators
+
+### Filtering
+* `filter`, `filterNot`: emit only elements that match, or don't match, a predicate
+* `filterNotNull`: drops `null` elements
+* `filterIsInstance`: emits only elements of a given type
+* `distinct`: emits each element only once
+* `distinctUntilChanged`: drops elements equal to the previous one, by key or comparer
+* `first`, `take`, `takeUntil`, `takeWhile`: emit the first elements, then stop
+* `elementAt`: emits only the element at a given index
+* `skip`, `skipUntil`, `skipWhile`, `skipLast`: skip the first or the last elements
+* `sample`: emits the latest element whenever another `LiveData` emits
+
+### Transforming
+* `mapNotNull`: transforms elements and drops `null` results
+* `cast`: casts elements to a given type
+* `scan`: emits running accumulations of the elements
+* `buffer`: emits elements in lists of a given size
+* `zipWithNext`: pairs each element with the one before it
+* `switchLatest`: follows the latest `LiveData` emitted by a `LiveData` of `LiveData`s
+
+### Combining
+* `merge`, `mergeArray`, `mergeWith`, `+`: emit the elements of all sources
+* `combineLatest`, `combineLatestWith`: combine the latest elements of all sources
+* `withLatestFrom`: combines each element with the latest element of another `LiveData`
+* `amb`, `ambWith`: follow whichever source emits first
+* `startWith`: emits given elements before the source's own
+
+### Side effects
+* `doOnValue`, `doOnActive`, `doOnInactive`: run code for each element, or when the result becomes active or inactive
+
+`map`, `switchMap` and `distinctUntilChanged()` without arguments come from AndroidX Lifecycle (`androidx.lifecycle`).
 
 ## Usage
 
@@ -62,21 +59,33 @@ source.distinct().observe(this) {
 
 ### `merge`
 ```kotlin
-val source1: LiveData<Int> =    //    1,    2,    3
-val source2: LiveData<String> = // a,    b,    c
-listOf(source1, source2).merge().observe(this) { value ->
-    println(value) // a, 1, b, 2, c, 3
+val source1: LiveData<Int> = //    1,     2,     3
+val source2: LiveData<Int> = // 10,    20,    30
+listOf(source1, source2).merge().observe(this) {
+    println(it) // 10, 1, 20, 2, 30, 3
 }
 ```
 
-## Binaries
-```groovy
-repositories {
-    mavenCentral()
+### `withLatestFrom`
+```kotlin
+val input: LiveData<String> =  // "a", "ab",       "abc"
+val submits: LiveData<Unit> =  //            Unit,        Unit
+submits.withLatestFrom(input) { _, text -> text }.observe(this) {
+    println(it) // "ab", "abc"
 }
+```
 
+## Good to know
+* Like `LiveData` itself, all operators must be called on the main thread.
+* `LiveData` keeps only its latest value, so operators see only the elements they receive while the returned
+  `LiveData` is active.
+
+## Installation
+Available on Maven Central.
+
+```kotlin
 dependencies {
-    implementation 'de.musichin.reactivelivedata:reactivelivedata:x.y.z'
+    implementation("de.musichin.reactivelivedata:reactivelivedata:2.0.0")
 }
 ```
 
@@ -93,32 +102,13 @@ dependencies {
 * `liveData()`, `liveData(value)` and `liveData { }` were renamed to `emptyLiveData()`, `liveDataOf(value)` and
   `lazyLiveData { }`, because `liveData { }` clashed with the coroutine builder of AndroidX Lifecycle.
 
+See the [2.0.0 release notes](https://github.com/musichin/ReactiveLiveData/releases/tag/2.0.0) for all changes.
+
 ## Contributing
-Contributors are more than welcome. Just upload a PR with a description of your changes.
+Contributions are welcome: open a pull request that describes your changes.
 
 ## Issues or feature requests?
-File github issues for anything that is unexpectedly broken.
+Open a [GitHub issue](https://github.com/musichin/ReactiveLiveData/issues) for bugs or feature requests.
 
 ## License
-
-    MIT License
-
-    Copyright (c) 2017 Anton Musichin
-
-    Permission is hereby granted, free of charge, to any person obtaining a copy
-    of this software and associated documentation files (the "Software"), to deal
-    in the Software without restriction, including without limitation the rights
-    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-    copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-
-    The above copyright notice and this permission notice shall be included in all
-    copies or substantial portions of the Software.
-
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-    SOFTWARE.
+MIT, see [LICENSE](LICENSE).
