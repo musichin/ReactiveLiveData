@@ -90,6 +90,8 @@ dependencies {
 * `map`, `switchMap` and `distinctUntilChanged()` were removed, because AndroidX Lifecycle provides the same functions.
   Import them from `androidx.lifecycle` instead; the calls stay the same.
 * `combineLatest` and `merge` return `LiveData<T>` instead of `LiveData<out T>`, so casts at call sites are no longer needed.
+* `liveData()`, `liveData(value)` and `liveData { }` were renamed to `emptyLiveData()`, `liveDataOf(value)` and
+  `lazyLiveData { }`, because `liveData { }` clashed with the coroutine builder of AndroidX Lifecycle.
 
 ## Contributing
 Contributors are more than welcome. Just upload a PR with a description of your changes.

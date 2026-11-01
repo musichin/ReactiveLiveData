@@ -41,7 +41,7 @@ class MergeTest {
 
     @Test
     fun testMergeSingle() {
-        val source = listOf(liveData { "test_value" }).merge()
+        val source = listOf(lazyLiveData { "test_value" }).merge()
         assertNull(source.value)
 
         val observer = TestObserver<String>()

@@ -12,7 +12,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveData(value))
+fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveDataOf(value))
 
 /**
  * Returns new [LiveData] instance that starts with given elements.
@@ -41,7 +41,7 @@ fun <T> LiveData<T>.startWith(vararg values: T): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> = startWith(liveData(value))
+fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> = startWith(lazyLiveData(value))
 
 /**
  * Returns new [LiveData] instance that starts with the first element emitted by [other].

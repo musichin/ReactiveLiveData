@@ -13,7 +13,7 @@ class StartWithTest {
 
     @Test
     fun testStartWithValue() {
-        val source = liveData(2).startWith(1)
+        val source = liveDataOf(2).startWith(1)
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
@@ -23,7 +23,7 @@ class StartWithTest {
 
     @Test
     fun testStartWithValues() {
-        val source = liveData(4).startWith(1, 2, 3)
+        val source = liveDataOf(4).startWith(1, 2, 3)
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
@@ -37,7 +37,7 @@ class StartWithTest {
 
     @Test
     fun testStartWithNoValues() {
-        val origin = liveData(4)
+        val origin = liveDataOf(4)
         val source = origin.startWith()
         assertNotSame(origin, source)
         assertNull(source.value)
@@ -49,7 +49,7 @@ class StartWithTest {
 
     @Test
     fun testStartWithFunction() {
-        val source = liveData(2).startWith<Int> { 1 }
+        val source = liveDataOf(2).startWith<Int> { 1 }
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
@@ -59,8 +59,8 @@ class StartWithTest {
 
     @Test
     fun testStartWithLiveData() {
-        val startWith = liveData { 1 }
-        val source = liveData(2).startWith(startWith)
+        val startWith = lazyLiveData { 1 }
+        val source = liveDataOf(2).startWith(startWith)
         assertNull(source.value)
 
         val observer = TestObserver<Int>()
