@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.github.musichin.reactivelivedata"
+    namespace = "de.musichin.reactivelivedata"
 
     compileSdk = 36
 
