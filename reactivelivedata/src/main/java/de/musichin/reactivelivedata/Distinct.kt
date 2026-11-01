@@ -4,7 +4,6 @@ import androidx.annotation.CheckResult
 import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.distinctUntilChanged as distinctUntilChangedImpl
 
 /**
  * Returns new [LiveData] instance that emits only distinct elements
@@ -69,12 +68,3 @@ fun <T> LiveData<T>.distinctUntilChanged(comparer: (T, T) -> Boolean): LiveData<
 
     return result
 }
-
-/**
- * Returns new [LiveData] instance that ensures emitted element is not equal to previous element
- * using [Any.equals] for comparison.
- * @return new [LiveData] instance.
- */
-@MainThread
-@CheckResult
-fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> = distinctUntilChangedImpl()
