@@ -33,6 +33,7 @@ This library provides basic transformation functions for your [`LiveData`](https
 * `skipWhile`
 * `skipLast`
 * `buffer`
+* `zipWithNext`
 * `sample`
 * `scan`
 * `cast`
