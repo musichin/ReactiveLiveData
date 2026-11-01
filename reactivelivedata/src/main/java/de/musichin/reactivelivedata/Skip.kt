@@ -70,3 +70,24 @@ fun <T> LiveData<T>.skip(count: Int): LiveData<T> {
     var counter = 0
     return skipUntil { ++counter > count }
 }
+
+/**
+ * Returns new [LiveData] instance that skips last [count] elements by delaying every element
+ * until [count] further elements have been received.
+ * Only elements received while the returned [LiveData] is active are counted.
+ * @param count number of last elements to skip, must not be negative.
+ * @return new [LiveData] instance.
+ * @throws IllegalArgumentException if [count] is negative.
+ */
+@MainThread
+@CheckResult
+fun <T> LiveData<T>.skipLast(count: Int): LiveData<T> {
+    require(count >= 0) { "count $count must not be negative." }
+    val result = MediatorLiveData<T>()
+    val buffer = ArrayDeque<T>(count + 1)
+    result.addSource(this) { value ->
+        buffer.addLast(value)
+        if (buffer.size > count) result.value = buffer.removeFirst()
+    }
+    return result
+}
