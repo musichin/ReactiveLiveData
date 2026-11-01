@@ -17,7 +17,7 @@ import androidx.lifecycle.MediatorLiveData
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T> LiveData<T>.sample(other: LiveData<*>): LiveData<T> {
+public fun <T> LiveData<T>.sample(other: LiveData<*>): LiveData<T> {
     val result = MediatorLiveData<T>()
     if (other === this) {
         result.addSource(this) { value -> result.value = value }

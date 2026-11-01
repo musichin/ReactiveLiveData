@@ -12,7 +12,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.doOnValue(onValue: (T) -> Unit): LiveData<T> {
+public fun <T> LiveData<T>.doOnValue(onValue: (T) -> Unit): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value ->
         onValue(value)
@@ -28,7 +28,7 @@ fun <T> LiveData<T>.doOnValue(onValue: (T) -> Unit): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.doOnActive(onActive: () -> Unit): LiveData<T> {
+public fun <T> LiveData<T>.doOnActive(onActive: () -> Unit): LiveData<T> {
     val hook =
         object : LiveData<T>() {
             override fun onActive() = onActive()
@@ -47,7 +47,7 @@ fun <T> LiveData<T>.doOnActive(onActive: () -> Unit): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.doOnInactive(onInactive: () -> Unit): LiveData<T> {
+public fun <T> LiveData<T>.doOnInactive(onInactive: () -> Unit): LiveData<T> {
     val hook =
         object : LiveData<T>() {
             override fun onInactive() = onInactive()

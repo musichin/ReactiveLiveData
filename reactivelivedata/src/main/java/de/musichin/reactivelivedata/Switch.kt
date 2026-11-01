@@ -11,4 +11,4 @@ import androidx.lifecycle.switchMap
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<out LiveData<T>?>.switchLatest(): LiveData<T> = switchMap { it }
+public fun <T> LiveData<out LiveData<T>?>.switchLatest(): LiveData<T> = switchMap { it }

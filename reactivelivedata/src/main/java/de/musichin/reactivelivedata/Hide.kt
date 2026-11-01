@@ -11,4 +11,4 @@ import androidx.lifecycle.MutableLiveData
  */
 @MainThread
 @CheckResult
-fun <T> MutableLiveData<T>.hide(): LiveData<T> = this
+public fun <T> MutableLiveData<T>.hide(): LiveData<T> = this

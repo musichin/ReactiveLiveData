@@ -12,7 +12,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveDataOf(value))
+public fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveDataOf(value))
 
 /**
  * Returns new [LiveData] instance that starts with given elements.
@@ -24,7 +24,7 @@ fun <T> LiveData<T>.startWith(value: T): LiveData<T> = startWith(liveDataOf(valu
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(vararg values: T): LiveData<T> {
+public fun <T> LiveData<T>.startWith(vararg values: T): LiveData<T> {
     if (values.isEmpty()) {
         val result = MediatorLiveData<T>()
         result.addSource(this) { value -> result.value = value }
@@ -41,7 +41,7 @@ fun <T> LiveData<T>.startWith(vararg values: T): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> = startWith(lazyLiveData(value))
+public fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> = startWith(lazyLiveData(value))
 
 /**
  * Returns new [LiveData] instance that starts with the first element emitted by [other].
@@ -50,7 +50,7 @@ fun <T> LiveData<T>.startWith(value: () -> T): LiveData<T> = startWith(lazyLiveD
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.startWith(other: LiveData<T>): LiveData<T> {
+public fun <T> LiveData<T>.startWith(other: LiveData<T>): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(other) { valueStart ->
         result.removeSource(other)

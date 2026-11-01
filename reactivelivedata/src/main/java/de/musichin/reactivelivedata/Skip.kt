@@ -13,7 +13,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.skipUntil(predicate: (T) -> Boolean): LiveData<T> {
+public fun <T> LiveData<T>.skipUntil(predicate: (T) -> Boolean): LiveData<T> {
     val result = MediatorLiveData<T>()
     var drop = true
     result.addSource(this) { value ->
@@ -33,7 +33,7 @@ fun <T> LiveData<T>.skipUntil(predicate: (T) -> Boolean): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.skipUntil(other: LiveData<*>): LiveData<T> {
+public fun <T> LiveData<T>.skipUntil(other: LiveData<*>): LiveData<T> {
     val result = MediatorLiveData<T>()
     var drop = other !== this
     if (drop) {
@@ -55,7 +55,7 @@ fun <T> LiveData<T>.skipUntil(other: LiveData<*>): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> = skipUntil { !predicate(it) }
+public fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> = skipUntil { !predicate(it) }
 
 /**
  * Returns new [LiveData] instance that skips first [count] elements.
@@ -66,7 +66,7 @@ fun <T> LiveData<T>.skipWhile(predicate: (T) -> Boolean): LiveData<T> = skipUnti
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.skip(count: Int): LiveData<T> {
+public fun <T> LiveData<T>.skip(count: Int): LiveData<T> {
     require(count >= 0) { "count $count must not be negative." }
     var counter = 0
     return skipUntil { ++counter > count }
@@ -82,7 +82,7 @@ fun <T> LiveData<T>.skip(count: Int): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.skipLast(count: Int): LiveData<T> {
+public fun <T> LiveData<T>.skipLast(count: Int): LiveData<T> {
     require(count >= 0) { "count $count must not be negative." }
     val result = MediatorLiveData<T>()
     val buffer = ArrayDeque<T>(count + 1)

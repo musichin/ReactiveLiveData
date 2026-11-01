@@ -33,7 +33,7 @@ private fun <T> Iterator<LiveData<out T>>.mergeWith(): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> Iterable<LiveData<out T>>.merge(): LiveData<T> = iterator().mergeWith()
+public fun <T> Iterable<LiveData<out T>>.merge(): LiveData<T> = iterator().mergeWith()
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
@@ -42,7 +42,7 @@ fun <T> Iterable<LiveData<out T>>.merge(): LiveData<T> = iterator().mergeWith()
  */
 @MainThread
 @CheckResult
-fun <T> Array<out LiveData<out T>>.merge(): LiveData<T> = iterator().mergeWith()
+public fun <T> Array<out LiveData<out T>>.merge(): LiveData<T> = iterator().mergeWith()
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
@@ -52,7 +52,7 @@ fun <T> Array<out LiveData<out T>>.merge(): LiveData<T> = iterator().mergeWith()
  */
 @MainThread
 @CheckResult
-fun <T> mergeArray(vararg sources: LiveData<out T>): LiveData<T> = sources.iterator().mergeWith()
+public fun <T> mergeArray(vararg sources: LiveData<out T>): LiveData<T> = sources.iterator().mergeWith()
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by any given source.
@@ -62,7 +62,7 @@ fun <T> mergeArray(vararg sources: LiveData<out T>): LiveData<T> = sources.itera
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
 ): LiveData<T> = mergeArray(source0, source1)
@@ -76,7 +76,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -92,7 +92,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -110,7 +110,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -130,7 +130,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -152,7 +152,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -176,7 +176,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -202,7 +202,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -230,7 +230,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> merge(
+public fun <T> merge(
     source0: LiveData<out T>,
     source1: LiveData<out T>,
     source2: LiveData<out T>,
@@ -250,7 +250,7 @@ fun <T> merge(
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<out T>.mergeWith(other: LiveData<out T>): LiveData<T> = mergeArray(this, other)
+public fun <T> LiveData<out T>.mergeWith(other: LiveData<out T>): LiveData<T> = mergeArray(this, other)
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by current source or [other].
@@ -259,7 +259,7 @@ fun <T> LiveData<out T>.mergeWith(other: LiveData<out T>): LiveData<T> = mergeAr
  */
 @MainThread
 @CheckResult
-operator fun <T> LiveData<out T>.plus(other: LiveData<out T>): LiveData<T> = mergeWith(other)
+public operator fun <T> LiveData<out T>.plus(other: LiveData<out T>): LiveData<T> = mergeWith(other)
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by current source or any of [others].
@@ -268,7 +268,7 @@ operator fun <T> LiveData<out T>.plus(other: LiveData<out T>): LiveData<T> = mer
  */
 @MainThread
 @CheckResult
-operator fun <T> LiveData<out T>.plus(others: Iterable<LiveData<out T>>): LiveData<T> = mergeWith(others.iterator())
+public operator fun <T> LiveData<out T>.plus(others: Iterable<LiveData<out T>>): LiveData<T> = mergeWith(others.iterator())
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by current source or any of [others].
@@ -277,7 +277,7 @@ operator fun <T> LiveData<out T>.plus(others: Iterable<LiveData<out T>>): LiveDa
  */
 @MainThread
 @CheckResult
-operator fun <T> LiveData<out T>.plus(others: Array<out LiveData<out T>>): LiveData<T> = mergeWith(others.iterator())
+public operator fun <T> LiveData<out T>.plus(others: Array<out LiveData<out T>>): LiveData<T> = mergeWith(others.iterator())
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by any of these sources or [other].
@@ -286,7 +286,7 @@ operator fun <T> LiveData<out T>.plus(others: Array<out LiveData<out T>>): LiveD
  */
 @MainThread
 @CheckResult
-operator fun <T> Iterable<LiveData<out T>>.plus(other: LiveData<out T>): LiveData<T> = other.mergeWith(iterator())
+public operator fun <T> Iterable<LiveData<out T>>.plus(other: LiveData<out T>): LiveData<T> = other.mergeWith(iterator())
 
 /**
  * Returns new [LiveData] instance that emits elements that are emitted by any of these sources or [other].
@@ -295,4 +295,4 @@ operator fun <T> Iterable<LiveData<out T>>.plus(other: LiveData<out T>): LiveDat
  */
 @MainThread
 @CheckResult
-operator fun <T> Array<out LiveData<out T>>.plus(other: LiveData<out T>): LiveData<T> = other.mergeWith(iterator())
+public operator fun <T> Array<out LiveData<out T>>.plus(other: LiveData<out T>): LiveData<T> = other.mergeWith(iterator())

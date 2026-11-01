@@ -12,7 +12,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.filter(predicate: (T) -> Boolean): LiveData<T> {
+public fun <T> LiveData<T>.filter(predicate: (T) -> Boolean): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value -> if (predicate(value)) result.value = value }
     return result
@@ -25,7 +25,7 @@ fun <T> LiveData<T>.filter(predicate: (T) -> Boolean): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T>.filterNot(predicate: (T) -> Boolean): LiveData<T> = filter { value -> !predicate(value) }
+public fun <T> LiveData<T>.filterNot(predicate: (T) -> Boolean): LiveData<T> = filter { value -> !predicate(value) }
 
 /**
  * Returns new [LiveData] instance that emits only elements that are not `null`.
@@ -33,7 +33,7 @@ fun <T> LiveData<T>.filterNot(predicate: (T) -> Boolean): LiveData<T> = filter {
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<T?>.filterNotNull(): LiveData<T> {
+public fun <T> LiveData<T?>.filterNotNull(): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) { value -> if (value != null) result.value = value }
     return result
@@ -47,7 +47,7 @@ fun <T> LiveData<T?>.filterNotNull(): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T, R : Any> LiveData<T>.mapNotNull(transform: (T) -> R?): LiveData<R> {
+public fun <T, R : Any> LiveData<T>.mapNotNull(transform: (T) -> R?): LiveData<R> {
     val result = MediatorLiveData<R>()
     result.addSource(this) { value -> transform(value)?.let { result.value = it } }
     return result
@@ -61,7 +61,7 @@ fun <T, R : Any> LiveData<T>.mapNotNull(transform: (T) -> R?): LiveData<R> {
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T> LiveData<*>.filterIsInstance(clazz: Class<T>): LiveData<T> {
+public fun <T> LiveData<*>.filterIsInstance(clazz: Class<T>): LiveData<T> {
     val objectType = (clazz as Class<*>).kotlin.javaObjectType
     return filter { objectType.isInstance(it) } as LiveData<T>
 }
@@ -72,4 +72,4 @@ fun <T> LiveData<*>.filterIsInstance(clazz: Class<T>): LiveData<T> {
  */
 @MainThread
 @CheckResult
-inline fun <reified T> LiveData<*>.filterIsInstance(): LiveData<T> = filterIsInstance(T::class.java)
+public inline fun <reified T> LiveData<*>.filterIsInstance(): LiveData<T> = filterIsInstance(T::class.java)

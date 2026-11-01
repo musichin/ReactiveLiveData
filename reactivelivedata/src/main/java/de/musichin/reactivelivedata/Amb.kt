@@ -32,7 +32,7 @@ private fun <T> Iterator<LiveData<out T>>.amb(): LiveData<T> {
  */
 @MainThread
 @CheckResult
-fun <T> Iterable<LiveData<out T>>.amb(): LiveData<T> = iterator().amb()
+public fun <T> Iterable<LiveData<out T>>.amb(): LiveData<T> = iterator().amb()
 
 /**
  * Returns new [LiveData] instance that emits elements of the source that emits first.
@@ -43,7 +43,7 @@ fun <T> Iterable<LiveData<out T>>.amb(): LiveData<T> = iterator().amb()
  */
 @MainThread
 @CheckResult
-fun <T> Array<out LiveData<out T>>.amb(): LiveData<T> = iterator().amb()
+public fun <T> Array<out LiveData<out T>>.amb(): LiveData<T> = iterator().amb()
 
 /**
  * Returns new [LiveData] instance that emits elements of current source or [other],
@@ -54,4 +54,4 @@ fun <T> Array<out LiveData<out T>>.amb(): LiveData<T> = iterator().amb()
  */
 @MainThread
 @CheckResult
-fun <T> LiveData<out T>.ambWith(other: LiveData<out T>): LiveData<T> = arrayOf(this, other).amb()
+public fun <T> LiveData<out T>.ambWith(other: LiveData<out T>): LiveData<T> = arrayOf(this, other).amb()

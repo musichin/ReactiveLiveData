@@ -14,7 +14,7 @@ import androidx.lifecycle.MediatorLiveData
  */
 @MainThread
 @CheckResult
-fun <T, R> LiveData<T>.scan(
+public fun <T, R> LiveData<T>.scan(
     initial: R,
     accumulator: (acc: R, value: T) -> R,
 ): LiveData<R> {
@@ -36,7 +36,7 @@ fun <T, R> LiveData<T>.scan(
 @MainThread
 @CheckResult
 @Suppress("UNCHECKED_CAST")
-fun <T> LiveData<T>.scan(accumulator: (acc: T, value: T) -> T): LiveData<T> {
+public fun <T> LiveData<T>.scan(accumulator: (acc: T, value: T) -> T): LiveData<T> {
     val result = MediatorLiveData<T>()
     var acc: Any? = NOT_SET
     result.addSource(this) { value ->
