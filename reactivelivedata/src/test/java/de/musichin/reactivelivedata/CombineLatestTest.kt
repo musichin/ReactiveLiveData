@@ -15,7 +15,7 @@ class CombineLatestTest {
 
     private fun createTest(
         size: Int,
-        func: (List<LiveData<out String>>, combiner: (Iterable<String>) -> String) -> LiveData<out String>,
+        func: (List<LiveData<out String>>, combiner: (Iterable<String>) -> String) -> LiveData<String>,
     ) {
         val observer = TestObserver<String>()
         val sources = (0 until size).map { MutableLiveData<String>() }
